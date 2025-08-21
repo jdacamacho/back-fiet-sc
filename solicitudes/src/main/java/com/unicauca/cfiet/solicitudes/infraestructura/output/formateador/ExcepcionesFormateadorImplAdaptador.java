@@ -4,6 +4,9 @@ import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIn
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.excepcionesPropias.*;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
+ */
 @Service
 public class ExcepcionesFormateadorImplAdaptador implements ExcepcionesFormateadorIntPuerto {
 
