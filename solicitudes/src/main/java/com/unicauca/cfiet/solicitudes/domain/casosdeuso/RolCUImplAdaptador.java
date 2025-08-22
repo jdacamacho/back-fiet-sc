@@ -23,9 +23,11 @@ public class RolCUImplAdaptador implements RolCUIntPuerto {
 
     @Override
     public List<Rol> getRoles(int pagina, int tamanio) {
+        if(pagina < 0 && tamanio < 0)
+            formateadorExcepciones.lanzarMalFormato("Error en la paginación o tamaño de la pagina...");
         List<Rol> roles = gateway.getRoles(pagina, tamanio);
         if(roles.isEmpty())
-            formateadorExcepciones.lanzarSinInformacion("No existen registrados roles en el sistema");
+            formateadorExcepciones.lanzarSinInformacion("No existen registrados roles en el sistema...");
         return  roles;
     }
 
@@ -33,7 +35,7 @@ public class RolCUImplAdaptador implements RolCUIntPuerto {
     public Rol getRol(String uuid) {
         Rol rol = gateway.getRol(uuid);
         if(rol == null)
-            formateadorExcepciones.lanzarEntidadNoExiste(String.format("Rol con id %s no fue encontrado en el sistema", uuid));
+            formateadorExcepciones.lanzarEntidadNoExiste(String.format("Rol con id %s no fue encontrado en el sistema...", uuid));
         return rol;
     }
 
@@ -41,7 +43,7 @@ public class RolCUImplAdaptador implements RolCUIntPuerto {
     public Rol actualizarRol(String uuid, Rol rol) {
         Rol rolObtenido = gateway.getRol(uuid);
         if(rolObtenido == null)
-            formateadorExcepciones.lanzarEntidadNoExiste(String.format("Rol con id %s no fue encontrado en el sistema", uuid));
+            formateadorExcepciones.lanzarEntidadNoExiste(String.format("Rol con id %s no fue encontrado en el sistema....", uuid));
 
         if(rol.getDescripcion() != null && !rol.getDescripcion().isBlank())
             rolObtenido.setDescripcion(rol.getDescripcion());
