@@ -1,15 +1,16 @@
-package com.unicauca.cfiet.solicitudes.domain.modelos;
+package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTORespuesta;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
-public class Rol {
+public class RolUsuarioDTORespuesta {
     private String uuidRol;
     private String nombre;
     private String descripcion;

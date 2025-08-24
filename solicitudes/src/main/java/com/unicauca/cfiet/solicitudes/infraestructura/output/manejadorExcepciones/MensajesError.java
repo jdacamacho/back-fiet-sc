@@ -1,0 +1,15 @@
+package com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones;
+
+/**
+ *  Definición de mensajes de error
+ *
+ * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
+ */
+public class MensajesError {
+    public static final String PAGINACION_ERROR = "Error en la paginación o tamaño de la pagina...";
+    public static final String SIN_REGISTROS = "No existen registrados %s en el sistema...";
+    public static final String ENTIDAD_NO_ENCONTRADA = "%s con id %s no fue encontrado en el sistema...";
+    public static final String ATRIBUTO_UNICO_YA_EXISTE = "%s con %s: %s existe en el sistema...";
+    public static final String ENTIDAD_NO_ENCONTRADA_FILTRO = "%s con %s: %s no fue encontrado en el sistema...";
+    public static final String INSTANCIA_NO_VALIDA = "Se intentó crear una instancia de %s no permitida...";
+}

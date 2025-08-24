@@ -4,6 +4,7 @@ import com.unicauca.cfiet.solicitudes.aplicacion.input.RolCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.RolGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.domain.modelos.Rol;
+import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.MensajesError;
 
 import java.util.List;
 
@@ -15,6 +16,9 @@ import java.util.List;
 public class RolCUImplAdaptador implements RolCUIntPuerto {
     private final RolGatewayIntPuerto gateway;
     private  final ExcepcionesFormateadorIntPuerto formateadorExcepciones;
+    /* Constantes */
+    private static final String ROLES = "roles";
+    private static final String ROL = "Rol";
 
     public RolCUImplAdaptador(RolGatewayIntPuerto gateway, ExcepcionesFormateadorIntPuerto formateadorExcepciones){
         this.gateway = gateway;
@@ -23,11 +27,11 @@ public class RolCUImplAdaptador implements RolCUIntPuerto {
 
     @Override
     public List<Rol> getRoles(int pagina, int tamanio) {
-        if(pagina < 0 && tamanio < 0)
-            formateadorExcepciones.lanzarMalFormato("Error en la paginación o tamaño de la pagina...");
+        if(pagina < 0 || tamanio < 0)
+            formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
         List<Rol> roles = gateway.getRoles(pagina, tamanio);
         if(roles.isEmpty())
-            formateadorExcepciones.lanzarSinInformacion("No existen registrados roles en el sistema...");
+            formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, ROLES));
         return  roles;
     }
 
@@ -35,7 +39,7 @@ public class RolCUImplAdaptador implements RolCUIntPuerto {
     public Rol getRol(String uuid) {
         Rol rol = gateway.getRol(uuid);
         if(rol == null)
-            formateadorExcepciones.lanzarEntidadNoExiste(String.format("Rol con id %s no fue encontrado en el sistema...", uuid));
+            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ROL, uuid));
         return rol;
     }
 
@@ -43,7 +47,7 @@ public class RolCUImplAdaptador implements RolCUIntPuerto {
     public Rol actualizarRol(String uuid, Rol rol) {
         Rol rolObtenido = gateway.getRol(uuid);
         if(rolObtenido == null)
-            formateadorExcepciones.lanzarEntidadNoExiste(String.format("Rol con id %s no fue encontrado en el sistema....", uuid));
+            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ROL, uuid));
 
         if(rol.getDescripcion() != null && !rol.getDescripcion().isBlank())
             rolObtenido.setDescripcion(rol.getDescripcion());

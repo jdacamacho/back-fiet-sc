@@ -41,7 +41,7 @@ public class RestApiExcepcion {
                                                         final Exception ex, final Locale locale) {
         final Error error = UtilidadesError
                 .crearError(CodigoError.ERROR_ENTIDAD_NO_EXISTE.getCodigo(),
-                        CodigoError.ERROR_ENTIDAD_NO_EXISTE.getMensaje(),
+                        ex.getMessage(),
                         HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -52,7 +52,7 @@ public class RestApiExcepcion {
                                                         final Exception ex, final Locale locale) {
         final Error error = UtilidadesError
                 .crearError(CodigoError.ERROR_ENTIDAD_EXISTE.getCodigo(),
-                        CodigoError.ERROR_ENTIDAD_EXISTE.getMensaje(),
+                        ex.getMessage(),
                         HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -63,7 +63,7 @@ public class RestApiExcepcion {
                                                       final Exception ex, final Locale locale) {
         final Error error = UtilidadesError
                 .crearError(CodigoError.ERROR_REGLA_DE_NEGOCIO_VIOLADA.getCodigo(),
-                        CodigoError.ERROR_REGLA_DE_NEGOCIO_VIOLADA.getMensaje(),
+                        ex.getMessage(),
                         HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -74,7 +74,7 @@ public class RestApiExcepcion {
                                                             final Exception ex, final Locale locale) {
         final Error error = UtilidadesError
                 .crearError(CodigoError.ERROR_CREDENCIALES.getCodigo(),
-                        CodigoError.ERROR_CREDENCIALES.getMensaje(),
+                        ex.getMessage(),
                         HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -85,7 +85,7 @@ public class RestApiExcepcion {
                                                                 final Exception ex, final Locale locale) {
         final Error error = UtilidadesError
                 .crearError(CodigoError.ERROR_MAL_FORMATO.getCodigo(),
-                        CodigoError.ERROR_MAL_FORMATO.getMensaje(),
+                        ex.getMessage(),
                         HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -96,7 +96,7 @@ public class RestApiExcepcion {
                                                    final Exception ex, final Locale locale) {
         final Error error = UtilidadesError
                 .crearError(CodigoError.ERROR_NO_INFORMACION.getCodigo(),
-                        CodigoError.ERROR_NO_INFORMACION.getMensaje(),
+                        ex.getMessage(),
                         HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -107,7 +107,7 @@ public class RestApiExcepcion {
                                                        final Exception ex, final Locale locale) {
         final Error error = UtilidadesError
                 .crearError(CodigoError.ERROR_SIN_ACCESO.getCodigo(),
-                        CodigoError.ERROR_SIN_ACCESO.getMensaje(),
+                        ex.getMessage(),
                         HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -118,7 +118,7 @@ public class RestApiExcepcion {
                                                   final Exception ex, final Locale locale) {
         final Error error = UtilidadesError
                 .crearError(CodigoError.ERROR_TOKEN_EXPIRADO.getCodigo(),
-                        CodigoError.ERROR_TOKEN_EXPIRADO.getMensaje(),
+                        ex.getMessage(),
                         HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);

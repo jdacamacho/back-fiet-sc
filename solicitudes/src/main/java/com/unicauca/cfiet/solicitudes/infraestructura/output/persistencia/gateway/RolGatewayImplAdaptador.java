@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Implementación de la fachada con el servicio de persistencia.
+ * Implementación de la fachada con el servicio de persistencia para la gestión de roles.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */

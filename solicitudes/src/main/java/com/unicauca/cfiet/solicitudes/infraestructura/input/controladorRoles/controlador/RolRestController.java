@@ -1,10 +1,10 @@
-package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.controlador;
+package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.controlador;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.RolCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.domain.modelos.Rol;
-import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.RolDTOPeticion;
-import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTORespuesta.RolDTORespuesta;
-import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.mapeador.MapperRolInfraestructuraDominio;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTOPeticion.RolDTOPeticion;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTORespuesta.RolDTORespuesta;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.mapeador.MapperRolInfraestructuraDominio;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

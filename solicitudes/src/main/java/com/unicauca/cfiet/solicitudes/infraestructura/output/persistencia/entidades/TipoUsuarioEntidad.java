@@ -1,27 +1,24 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Entity
-@Table(name = "roles")
+@Table(name = "tiposUsuario")
 @Data
 @NoArgsConstructor
-public class RolEntidad {
+public class TipoUsuarioEntidad {
     @Id
     @Column(length = 100)
-    private String uuidRol;
+    private String uuidTipoUsuario;
     @Column(nullable = false, unique = true, length = 45)
     private String nombre;
-    @Column(length = 300)
-    private String descripcion;
-    @Column(nullable = false)
-    private Boolean estado;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "objTipoUsuario")
+    private List<UsuarioEntidad> usuarios;
 }

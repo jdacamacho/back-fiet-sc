@@ -1,8 +1,8 @@
-package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.mapeador;
+package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.mapeador;
 
 import com.unicauca.cfiet.solicitudes.domain.modelos.Rol;
-import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.RolDTOPeticion;
-import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTORespuesta.RolDTORespuesta;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTOPeticion.RolDTOPeticion;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTORespuesta.RolDTORespuesta;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Qualifier;

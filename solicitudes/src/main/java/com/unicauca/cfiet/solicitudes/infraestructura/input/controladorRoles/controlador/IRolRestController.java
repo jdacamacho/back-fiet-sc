@@ -1,8 +1,8 @@
-package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.controlador;
+package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.controlador;
 
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.swagger.json.RolesJson;
-import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.RolDTOPeticion;
-import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTORespuesta.RolDTORespuesta;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTOPeticion.RolDTOPeticion;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTORespuesta.RolDTORespuesta;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.swagger.json.ErrorJson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

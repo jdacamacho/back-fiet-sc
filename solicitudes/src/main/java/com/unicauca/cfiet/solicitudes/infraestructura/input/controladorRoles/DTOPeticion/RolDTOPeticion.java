@@ -1,6 +1,6 @@
-package com.unicauca.cfiet.solicitudes.domain.modelos;
+package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTOPeticion;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,10 +8,9 @@ import lombok.NoArgsConstructor;
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class Rol {
-    private String uuidRol;
-    private String nombre;
+public class RolDTOPeticion {
     private String descripcion;
     private Boolean estado;
 }
