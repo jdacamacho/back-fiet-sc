@@ -100,4 +100,10 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
             return mapper.map(entidad, TipoUsuario.class);
         return null;
     }
+
+    @Override
+    public List<Rol> getRoles() {
+        List<RolEntidad> entidades = repositorio.findAllRoles();
+        return mapper.map(entidades,  new TypeToken<List<Rol>>(){}.getType());
+    }
 }

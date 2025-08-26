@@ -64,6 +64,11 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
         if(objTipoUsuario == null)
             formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA_FILTRO, TIPO_USUARIO,  NOMBRE, usuario.getObjTipoUsuario().getNombre()));
 
+        if(usuario.tieneRolesDuplicados())
+            formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.ROLES_DUPLICADOS_USUARIO);
+        if(!usuario.rolesSonValidos(gateway.getRoles()))
+            formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.ROLES_NO_VALIDOS);
+
         usuario.setUuidUsuario(UUID.randomUUID().toString());
         usuario.setObjTipoUsuario(objTipoUsuario);
         Usuario instancia = usuario.crearInstancia(tipoUsuario);
@@ -83,6 +88,11 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
         Usuario usuarioObtenido = gateway.getUsuario(uuid);
         if(usuarioObtenido == null)
             formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, USUARIO, uuid));
+
+        if(usuario.tieneRolesDuplicados())
+            formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.ROLES_DUPLICADOS_USUARIO);
+        if(!usuario.rolesSonValidos(gateway.getRoles()))
+            formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.ROLES_NO_VALIDOS);
 
         if(!usuarioObtenido.getNumeroDocumento().equals(usuario.getNumeroDocumento())){
             if(gateway.existeUsuarioNumeroDocumento(usuario.getNumeroDocumento()))

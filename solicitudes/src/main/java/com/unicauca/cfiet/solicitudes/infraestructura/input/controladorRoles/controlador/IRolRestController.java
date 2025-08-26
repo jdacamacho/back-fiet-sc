@@ -12,11 +12,15 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import java.util.List;
 
 /**
- * Interface del controlador con la documentación de swagger
+ * Interface del controlador con la documentación de swagger para gestión de Roles.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
@@ -167,5 +171,5 @@ public interface IRolRestController {
                     )
             }
     )
-    public ResponseEntity<RolDTORespuesta> actualizarRol(String uuid, RolDTOPeticion rolPeticion);
+    public ResponseEntity<?> actualizarRol(String uuid, @Valid @RequestBody RolDTOPeticion rolPeticion, BindingResult result);
 }

@@ -2,16 +2,16 @@ package com.unicauca.cfiet.solicitudes.domain.modelos;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Getter
 @Setter
-@SuperBuilder
 public class Usuario extends UsuarioLiviano{
     private String tipoDocumento;
     private String numeroDocumento;
@@ -25,6 +25,23 @@ public class Usuario extends UsuarioLiviano{
     public Usuario(){
         super();
         this.roles = new ArrayList<>();
+    }
+
+    public boolean rolesSonValidos(List<Rol> rolesValidos) {
+        List<Rol> roles = this.getRoles();
+        int wasFound = 0;
+        for (Rol rol : roles) {
+            for (Rol rolValido : rolesValidos) {
+                if (rol.equals(rolValido))
+                    wasFound++;
+            }
+        }
+        return roles.size() == wasFound;
+    }
+
+    public boolean tieneRolesDuplicados(){
+        Set<Rol> roleSet = new HashSet<>(roles);
+        return roleSet.size() < roles.size();
     }
 
     public Usuario crearInstancia(String tipoUsuario){
@@ -73,11 +90,13 @@ public class Usuario extends UsuarioLiviano{
             this.setUsername(usuario.getUsername());
         if (usuario.getObjTipoUsuario() != null)
             this.setObjTipoUsuario(usuario.getObjTipoUsuario());
-        if (usuario.getRoles() != null && !usuario.getRoles().isEmpty())
-            this.setRoles(usuario.getRoles());
         if (usuario.getNombres() != null && !usuario.getNombres().isBlank())
             this.setNombres(usuario.getNombres());
         if (usuario.getApellidos() != null && !usuario.getApellidos().isBlank())
             this.setApellidos(usuario.getApellidos());
+        if (usuario.getRoles() != null && !usuario.getRoles().isEmpty())
+            this.setRoles(usuario.getRoles());
+        else
+            this.setRoles(new ArrayList<>());
     }
 }

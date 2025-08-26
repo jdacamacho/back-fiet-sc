@@ -30,7 +30,7 @@ public class RestApiExcepcion {
                                                         final Exception ex, final Locale locale) {
         final Error error = UtilidadesError
                 .crearError(CodigoError.ERROR_GENERICO.getCodigo(),
-                        CodigoError.ERROR_GENERICO.getMensaje(),
+                        ex.getMessage(),
                         HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);

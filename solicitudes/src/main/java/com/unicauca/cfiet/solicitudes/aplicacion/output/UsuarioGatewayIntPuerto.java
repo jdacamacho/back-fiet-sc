@@ -1,5 +1,6 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.output;
 
+import com.unicauca.cfiet.solicitudes.domain.modelos.Rol;
 import com.unicauca.cfiet.solicitudes.domain.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.domain.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.domain.modelos.UsuarioLiviano;
@@ -20,4 +21,5 @@ public interface UsuarioGatewayIntPuerto {
     public boolean existeUsuarioUsername(String username);
     public List<TipoUsuario> getTiposUsuario();
     public TipoUsuario getTipoUsuarioPorNombre(String nombre);
+    public List<Rol> getRoles();
 }
