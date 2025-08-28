@@ -8,6 +8,7 @@ import com.unicauca.cfiet.solicitudes.domain.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.domain.modelos.UsuarioLiviano;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.MensajesError;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -79,8 +80,15 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
     }
 
     @Override
-    public List<Usuario> crearUsuarios(Usuario usuario) {
-        return List.of();
+    public List<Usuario> crearUsuarios(List<Usuario> usuarios) {
+        List<Usuario> usuariosRespuesta = new ArrayList<>();
+        if(usuarios.isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.ARCHIVO_EXCEL_VACIO, USUARIOS));
+
+        for(Usuario usuario: usuarios)
+            usuariosRespuesta.add(crearUsuario(usuario, usuario.getRoles().get(0).getNombre().replace(" ", "")));
+
+        return  usuariosRespuesta;
     }
 
     @Override

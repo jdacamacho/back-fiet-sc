@@ -49,6 +49,8 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
                 return mapper.map(entidad, Decano.class);
             else if (entidad instanceof SecretarioGeneralEntidad)
                 return mapper.map(entidad, SecretarioGeneral.class);
+            else if (entidad instanceof  SecretariaFietEntidad)
+                return mapper.map(entidad, SecretariaFiet.class);
             else
                 return mapper.map(entidad, Usuario.class);
         }
@@ -65,6 +67,8 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
             usuarioGuardar = mapper.map(usuario, FuncionarioEntidad.class);
         else if (usuario instanceof Decano)
             usuarioGuardar = mapper.map(usuario, DecanoEntidad.class);
+        else if (usuario instanceof  SecretariaFiet)
+            usuarioGuardar = mapper.map(usuario, SecretariaFietEntidad.class);
         else
             return null;
 

@@ -36,7 +36,15 @@ public class MapperUsuarioInfraestructuraDominio {
         return mapper.map(modelo, UsuarioDTORespuesta.class);
     }
 
-    public List<UsuarioLivianoDTORespuesta> mapearModelosARespuesta(List<UsuarioLiviano> modelos){
+    public List<UsuarioLivianoDTORespuesta> mapearModelosARespuestaLiviano(List<UsuarioLiviano> modelos){
         return mapper.map(modelos, new TypeToken<List<UsuarioLivianoDTORespuesta>>(){}.getType());
+    }
+
+    public List<UsuarioDTORespuesta> mapearModelosARespuesta(List<Usuario> modelos){
+        return mapper.map(modelos, new TypeToken<List<UsuarioLivianoDTORespuesta>>(){}.getType());
+    }
+
+    public List<Usuario> mapearPeticionesAModelo(List<UsuarioDTOPeticion> peticiones){
+        return mapper.map(peticiones, new TypeToken<List<Usuario>>(){}.getType());
     }
 }

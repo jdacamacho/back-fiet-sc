@@ -4,15 +4,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
+@SuperBuilder
 @Getter
 @Setter
-@NoArgsConstructor
 public class UsuarioLivianoDTOPeticion {
     @NotNull(message = "El nombre no puede ser nulo")
     @NotBlank(message = "El nombre no puede estar vacío")
@@ -26,4 +26,6 @@ public class UsuarioLivianoDTOPeticion {
 
     @NotNull(message = "El estado no puede ser nulo")
     private Boolean estado;
+
+    public UsuarioLivianoDTOPeticion(){}
 }

@@ -13,6 +13,6 @@ public interface UsuarioCUIntPuerto {
     public List<UsuarioLiviano> getUsuarios(int pagina, int tamanio);
     public Usuario getUsuario(String uuid);
     public Usuario crearUsuario(Usuario usuario, String tipoUsuario);
-    public List<Usuario> crearUsuarios(Usuario usuario);
+    public List<Usuario> crearUsuarios(List<Usuario> usuarios);
     public Usuario actualizarUsuario(String uuid, Usuario usuario);
 }

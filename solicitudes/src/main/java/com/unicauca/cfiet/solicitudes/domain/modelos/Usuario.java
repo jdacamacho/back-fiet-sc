@@ -56,6 +56,9 @@ public class Usuario extends UsuarioLiviano{
             case "FUNCIONARIO":
                 instancia = new Funcionario();
                 break;
+            case "SECRETARIADECANATURAFIET":
+                instancia = new SecretariaFiet();
+                break;
             default:
                 return null;
         }
