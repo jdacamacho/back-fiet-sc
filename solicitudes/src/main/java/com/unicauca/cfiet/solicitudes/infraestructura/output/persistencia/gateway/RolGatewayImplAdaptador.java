@@ -28,6 +28,12 @@ public class RolGatewayImplAdaptador implements RolGatewayIntPuerto {
     }
 
     @Override
+    public List<Rol> getRoles() {
+        List<RolEntidad> entidades = repositorio.findAll();
+        return mapper.map(entidades, new TypeToken<List<Rol>>(){}.getType());
+    }
+
+    @Override
     public List<Rol> getRoles(int pagina, int tamanio) {
         Pageable paginado = PageRequest.of(pagina, tamanio);
         List<RolEntidad> entidades = repositorio.findAll(paginado).getContent();

@@ -37,14 +37,14 @@ import java.util.Map;
 public class UsuarioRestController{
     private final UsuarioCUIntPuerto casoDeUso;
     private final MapperUsuarioInfraestructuraDominio mapper;
-    private final ProcesadorArchivos procesadorArchivos;
+    private final ProcesadorArchivos<UsuarioDTOPeticion> procesadorArchivos;
     private final UsuarioExcelService usuarioExcelService;
     @Value("${rol.secretarioGeneral}")
     private String rolSecretarioGeneral;
 
     public UsuarioRestController(UsuarioCUIntPuerto casoDeUso,
                                  MapperUsuarioInfraestructuraDominio mapper,
-                                 @Qualifier("archivos-usuarios") ProcesadorArchivos procesadorArchivos,
+                                 @Qualifier("archivos-usuarios") ProcesadorArchivos<UsuarioDTOPeticion> procesadorArchivos,
                                  UsuarioExcelService usuarioExcelService){
         this.casoDeUso = casoDeUso;
         this.mapper = mapper;
@@ -62,6 +62,15 @@ public class UsuarioRestController{
     }
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/paginado")
+    public ResponseEntity<?> indexPaginado(){
+        List<UsuarioLiviano> usuarios = casoDeUso.getUsuarios();
+        return new ResponseEntity<List<UsuarioLivianoDTORespuesta>>(
+                mapper.mapearModelosARespuestaLiviano(usuarios), HttpStatus.OK
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @GetMapping("/{uuidUsuario}")
     public ResponseEntity<?> getUsuario(@PathVariable String uuidUsuario){
         Usuario usuario = casoDeUso.getUsuario(uuidUsuario);
@@ -71,11 +80,13 @@ public class UsuarioRestController{
     }
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @Transactional
     @PostMapping
-    public ResponseEntity<?> crearUsuario(@Valid @RequestBody UsuarioDTOPeticion peticion, @RequestParam String tipoUsuario){
+    public ResponseEntity<?> crearUsuario(@Valid @RequestBody UsuarioDTOPeticion peticion, @RequestParam String tipoUsuario,
+                                          @RequestHeader("Authorization") String token){
         Usuario usuario;
         try{
-            usuario = casoDeUso.crearUsuario(mapper.mapearPeticionAModelo(peticion), tipoUsuario);
+            usuario = casoDeUso.crearUsuario(mapper.mapearPeticionAModelo(peticion), tipoUsuario, token.substring(7));
         } catch (DataAccessException ex){
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Error insertando en la base de datos....");
@@ -91,7 +102,7 @@ public class UsuarioRestController{
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @Transactional
     @PostMapping("/cargar/archivo")
-    public ResponseEntity<?> crearUsuarios(@RequestParam("file") MultipartFile file){
+    public ResponseEntity<?> crearUsuarios(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token){
         List<UsuarioDTOPeticion> peticiones = procesadorArchivos.procesarArchivo(file);
         Map<String, String> erroresPeticiones;
         for(UsuarioDTOPeticion peticion : peticiones) {
@@ -103,7 +114,7 @@ public class UsuarioRestController{
         List<Usuario> usuarios = mapper.mapearPeticionesAModelo(peticiones);
         List<Usuario> respuesta;
         try {
-            respuesta = casoDeUso.crearUsuarios(usuarios);
+            respuesta = casoDeUso.crearUsuarios(usuarios, token.substring(7));
         } catch (DataAccessException ex){
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Error insertando en la base de datos....");
@@ -117,11 +128,13 @@ public class UsuarioRestController{
     }
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @Transactional
     @PutMapping("/{uuidUsuario}")
-    public ResponseEntity<?> actualizarUsuario(@PathVariable String uuidUsuario, @Valid @RequestBody UsuarioActualizarDTOPeticion peticion){
+    public ResponseEntity<?> actualizarUsuario(@PathVariable String uuidUsuario, @Valid @RequestBody UsuarioActualizarDTOPeticion peticion,
+                                               @RequestHeader("Authorization") String token){
         Usuario usuario;
         try{
-            usuario = casoDeUso.actualizarUsuario(uuidUsuario, mapper.mapearPeticionActualizarAModelo(peticion));
+            usuario = casoDeUso.actualizarUsuario(uuidUsuario, mapper.mapearPeticionActualizarAModelo(peticion), token.substring(7));
         } catch (DataAccessException ex){
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Error insertando en la base de datos....");
@@ -134,10 +147,12 @@ public class UsuarioRestController{
         );
     }
 
+    @Transactional
     @PatchMapping("/{uuidUsuario}")
-    public ResponseEntity<?> actualizarContraseña(@PathVariable String uuidUsuario, @Valid @RequestBody CambioContraseñaDTOPeticion peticion){
+    public ResponseEntity<?> actualizarContraseña(@PathVariable String uuidUsuario, @Valid @RequestBody CambioContraseñaDTOPeticion peticion,
+                                                  @RequestHeader("Authorization") String token){
         try{
-            casoDeUso.cambiarContraseña(uuidUsuario, peticion.getContraseña(), peticion.getNuevaContraseña());
+            casoDeUso.cambiarContraseña(uuidUsuario, peticion.getContraseña(), peticion.getNuevaContraseña(), token.substring(7));
         } catch (DataAccessException ex){
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Error insertando en la base de datos....");

@@ -1,5 +1,6 @@
 package com.unicauca.cfiet.solicitudes.domain.casosdeuso;
 
+import com.unicauca.cfiet.solicitudes.aplicacion.input.LogCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.input.SesionCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.SesionGatewayIntPuerto;
@@ -14,11 +15,14 @@ import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepcione
  */
 public class SesionCUImplAdaptador implements SesionCUIntPuerto{
     private final SesionGatewayIntPuerto gateway;
+    private final LogCUIntPuerto log;
     private  final ExcepcionesFormateadorIntPuerto formateadorExcepciones;
 
     public SesionCUImplAdaptador(SesionGatewayIntPuerto gateway,
+                                 LogCUIntPuerto log,
                                  ExcepcionesFormateadorIntPuerto formateadorExcepciones){
         this.gateway = gateway;
+        this.log = log;
         this.formateadorExcepciones = formateadorExcepciones;
     }
 
@@ -28,6 +32,7 @@ public class SesionCUImplAdaptador implements SesionCUIntPuerto{
         if(token == null)
             formateadorExcepciones.lanzarCredencialesErroneas(MensajesError.CREDENCIALES_ERRONEAS);
         Usuario usuario = gateway.getUsuario(username);
+        log.crearLogSesion("Inicio de sesión", String.format("Usuario %s ha iniciado sesión", username), username);
         return usuario.tokenizarObjecto(token);
     }
 }

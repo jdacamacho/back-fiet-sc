@@ -12,6 +12,13 @@ public interface RolCUIntPuerto {
     /**
      * Consultar roles.
      *
+     * @return La información de los roles en el sistema, o lanza una excepción en caso de ocurrir un error.
+     */
+    List<Rol> getRoles();
+
+    /**
+     * Consultar roles.
+     *
      * @param pagina el numero de paginas.
      * @param tamanio el tamanio de las paginas.
      * @return La información de los roles en el sistema, o lanza una excepción en caso de ocurrir un error.
@@ -31,7 +38,8 @@ public interface RolCUIntPuerto {
      *
      * @param uuidRol identificador del rol a modificar.
      * @param rol campos a modificar del rol.
+     * @param token token de autorización
      * @return La información del rol guardado si la operación se realiza con éxito, o lanza una excepción en caso de ocurrir un error.
      */
-    Rol actualizarRol(String uuidRol, Rol rol);
+    Rol actualizarRol(String uuidRol, Rol rol, String token);
 }

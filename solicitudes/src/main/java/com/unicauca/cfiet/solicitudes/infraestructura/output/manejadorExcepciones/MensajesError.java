@@ -17,4 +17,5 @@ public class MensajesError {
     public static final String ROLES_NO_VALIDOS = "Los roles ingresados no son validos...";
     public static final String CONTRASEÑA_INCORRECTA = "Contraseña incorrecta...";
     public static final String CREDENCIALES_ERRONEAS = "Credenciales erroneas, revise su username o contraseña...";
+    public static final String USERNAME_TOKEN =  "No se pudo extraer el username del token...";
 }

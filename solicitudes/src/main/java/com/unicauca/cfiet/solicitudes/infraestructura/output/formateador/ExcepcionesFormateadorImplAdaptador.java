@@ -11,6 +11,11 @@ import org.springframework.stereotype.Service;
 public class ExcepcionesFormateadorImplAdaptador implements ExcepcionesFormateadorIntPuerto {
 
     @Override
+    public void lanzarErrorGenerico(String mensaje) {
+        throw new ErrorGenericoExcepcion(mensaje);
+    }
+
+    @Override
     public void lanzarEntidadNoExiste(String mensaje) {
         throw new ErrorEntidadNoExisteExcepcion(mensaje);
     }

@@ -13,6 +13,13 @@ public interface RolGatewayIntPuerto {
     /**
      * Consultar roles.
      *
+     * @return La información de los roles en el sistema, o lanza una excepción en caso de ocurrir un error.
+     */
+    List<Rol> getRoles();
+
+    /**
+     * Consultar roles.
+     *
      * @param pagina el numero de paginas.
      * @param tamanio el tamanio de las paginas.
      * @return La información de los roles en el sistema, o lanza una excepción en caso de ocurrir un error.

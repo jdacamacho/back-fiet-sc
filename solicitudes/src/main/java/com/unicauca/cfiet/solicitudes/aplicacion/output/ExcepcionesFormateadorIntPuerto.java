@@ -7,6 +7,12 @@ package com.unicauca.cfiet.solicitudes.aplicacion.output;
  */
 public interface ExcepcionesFormateadorIntPuerto {
     /**
+     * Método para devolver un mensaje de error cuando ocurre un error generico.
+     *
+     * @param mensaje Mensaje descriptivo del error.
+     */
+    void lanzarErrorGenerico(String mensaje);
+    /**
      * Método para devolver un mensaje de error cuando no existe la entidad.
      *
      * @param mensaje Mensaje descriptivo del error.

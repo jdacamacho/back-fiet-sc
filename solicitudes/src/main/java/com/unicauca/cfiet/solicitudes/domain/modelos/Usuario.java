@@ -21,10 +21,12 @@ public class Usuario extends UsuarioLiviano{
     private String password;
     private TipoUsuario objTipoUsuario;
     private List<Rol> roles;
+    private List<Log> logs;
 
     public Usuario(){
         super();
         this.roles = new ArrayList<>();
+        this.logs = new ArrayList<>();
     }
 
     public UsuarioTokenizado tokenizarObjecto(String token) {

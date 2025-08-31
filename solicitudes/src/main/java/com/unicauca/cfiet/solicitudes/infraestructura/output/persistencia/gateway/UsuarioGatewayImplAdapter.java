@@ -33,6 +33,12 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
     }
 
     @Override
+    public List<UsuarioLiviano> getUsuarios() {
+        List<UsuarioLivianoEntidad> entidades = repositorioBasico.findAll();
+        return mapper.map(entidades, new TypeToken<List<UsuarioLiviano>>(){}.getType());
+    }
+
+    @Override
     public List<UsuarioLiviano> getUsuarios(int pagina, int tamanio) {
         Pageable paginado = PageRequest.of(pagina, tamanio);
         List<UsuarioLivianoEntidad> entidades = repositorioBasico.findAll(paginado).getContent();

@@ -40,6 +40,8 @@ public class UsuarioEntidad extends UsuarioLivianoEntidad implements UserDetails
             inverseJoinColumns = @JoinColumn(name = "uuidRol")
     )
     private List<RolEntidad> roles;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "objUsuarioLog")
+    private List<LogEntidad> logs;
 
     public UsuarioEntidad(){
         super();

@@ -1,5 +1,6 @@
 package com.unicauca.cfiet.solicitudes.domain.casosdeuso;
 
+import com.unicauca.cfiet.solicitudes.aplicacion.input.LogCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.input.RolCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.RolGatewayIntPuerto;
@@ -16,13 +17,24 @@ import java.util.List;
 public class RolCUImplAdaptador implements RolCUIntPuerto {
     private final RolGatewayIntPuerto gateway;
     private  final ExcepcionesFormateadorIntPuerto formateadorExcepciones;
+    private final LogCUIntPuerto log;
     /* Constantes */
     private static final String ROLES = "roles";
     private static final String ROL = "Rol";
 
-    public RolCUImplAdaptador(RolGatewayIntPuerto gateway, ExcepcionesFormateadorIntPuerto formateadorExcepciones){
+    public RolCUImplAdaptador(RolGatewayIntPuerto gateway, ExcepcionesFormateadorIntPuerto formateadorExcepciones,
+                              LogCUIntPuerto log){
         this.gateway = gateway;
         this.formateadorExcepciones = formateadorExcepciones;
+        this.log = log;
+    }
+
+    @Override
+    public List<Rol> getRoles() {
+        List<Rol> roles = gateway.getRoles();
+        if(roles.isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, ROLES));
+        return  roles;
     }
 
     @Override
@@ -44,7 +56,7 @@ public class RolCUImplAdaptador implements RolCUIntPuerto {
     }
 
     @Override
-    public Rol actualizarRol(String uuidRol, Rol rol) {
+    public Rol actualizarRol(String uuidRol, Rol rol, String token) {
         Rol rolObtenido = gateway.getRol(uuidRol);
         if(rolObtenido == null)
             formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ROL, uuidRol));
@@ -55,6 +67,7 @@ public class RolCUImplAdaptador implements RolCUIntPuerto {
         if(rol.getEstado() != null)
             rolObtenido.setEstado(rol.getEstado());
 
+        log.crearLog("Actualizar rol", String.format("Rol %s actualizado", rolObtenido.getNombre()), token);
         return gateway.guardarRol(rolObtenido);
     }
 }

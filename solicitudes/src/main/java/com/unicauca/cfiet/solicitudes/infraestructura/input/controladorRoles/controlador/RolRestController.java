@@ -6,6 +6,7 @@ import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTO
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTORespuesta.RolDTORespuesta;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.mapeador.MapperRolInfraestructuraDominio;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +36,16 @@ public class RolRestController {
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @GetMapping
-    public ResponseEntity<List<RolDTORespuesta>> index(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
+    public ResponseEntity<List<RolDTORespuesta>> index(){
+        List<Rol> roles = casoDeUso.getRoles();
+        return new ResponseEntity<List<RolDTORespuesta>>(
+                mapper.mapearModelosARespuesta(roles), HttpStatus.OK
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/paginado")
+    public ResponseEntity<List<RolDTORespuesta>> indexPaginado(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
         List<Rol> roles = casoDeUso.getRoles(pagina, tamanio);
         return new ResponseEntity<List<RolDTORespuesta>>(
                 mapper.mapearModelosARespuesta(roles), HttpStatus.OK
@@ -53,10 +63,12 @@ public class RolRestController {
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @PutMapping("/{uuidRol}")
-    public ResponseEntity<?> actualizarRol(@PathVariable String uuidRol, @Valid @RequestBody RolDTOPeticion rolPeticion){
+    @Transactional
+    public ResponseEntity<?> actualizarRol(@PathVariable String uuidRol, @Valid @RequestBody RolDTOPeticion rolPeticion,
+                                           @RequestHeader("Authorization") String token){
         Rol rol;
         try {
-             rol = casoDeUso.actualizarRol(uuidRol, mapper.mapearPeticionAModelo(rolPeticion));
+             rol = casoDeUso.actualizarRol(uuidRol, mapper.mapearPeticionAModelo(rolPeticion), token.substring(7));
         } catch (DataAccessException ex){
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Error insertando en la base de datos....");

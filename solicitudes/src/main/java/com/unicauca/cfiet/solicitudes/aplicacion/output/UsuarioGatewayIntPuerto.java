@@ -16,6 +16,13 @@ public interface UsuarioGatewayIntPuerto {
     /**
      * Obtiene la lista de usuarios de manera paginada.
      *
+     * @return la lista de usuarios livianos correspondientes a la página.
+     */
+    List<UsuarioLiviano> getUsuarios();
+
+    /**
+     * Obtiene la lista de usuarios de manera paginada.
+     *
      * @param pagina el número de la página a recuperar (empezando desde 0).
      * @param tamanio la cantidad de elementos por página.
      * @return la lista de usuarios livianos correspondientes a la página.

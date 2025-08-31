@@ -1,5 +1,6 @@
 package com.unicauca.cfiet.solicitudes.domain.casosdeuso;
 
+import com.unicauca.cfiet.solicitudes.aplicacion.input.LogCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.input.UsuarioCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.PasswordEncoderGatewayIntPuerto;
@@ -21,6 +22,7 @@ import java.util.UUID;
 public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
     private final UsuarioGatewayIntPuerto gateway;
     private final ExcepcionesFormateadorIntPuerto formateadorExcepciones;
+    private final LogCUIntPuerto log;
     private final PasswordEncoderGatewayIntPuerto encoder;
     /* Constantes */
     private static final String USUARIOS = "usuarios";
@@ -31,11 +33,22 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
     private static final String TIPO_USUARIO = "Tipo de usuario";
     private static final String NOMBRE = "nombre";
 
-    public UsuarioCUImplAdaptador(UsuarioGatewayIntPuerto gateway, ExcepcionesFormateadorIntPuerto formateadorExcepciones,
+    public UsuarioCUImplAdaptador(UsuarioGatewayIntPuerto gateway,
+                                  ExcepcionesFormateadorIntPuerto formateadorExcepciones,
+                                  LogCUIntPuerto log,
                                   PasswordEncoderGatewayIntPuerto encoder){
         this.gateway = gateway;
         this.formateadorExcepciones = formateadorExcepciones;
+        this.log = log;
         this.encoder = encoder;
+    }
+
+    @Override
+    public List<UsuarioLiviano> getUsuarios() {
+        List<UsuarioLiviano> usuarios = gateway.getUsuarios();
+        if(usuarios.isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, USUARIOS));
+        return  usuarios;
     }
 
     @Override
@@ -57,7 +70,7 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
     }
 
     @Override
-    public Usuario crearUsuario(Usuario usuario, String tipoUsuario) {
+    public Usuario crearUsuario(Usuario usuario, String tipoUsuario, String token) {
         if(gateway.existeUsuarioNumeroDocumento(usuario.getNumeroDocumento()))
             formateadorExcepciones.lanzarEntidadExiste(String.format(MensajesError.ATRIBUTO_UNICO_YA_EXISTE, USUARIO, NUMERO_DOCUMENTO, usuario.getNumeroDocumento()));
         if(gateway.existeUsuarioCorreo(usuario.getCorreoElectronico()))
@@ -81,23 +94,25 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
         if(instancia == null)
             formateadorExcepciones.lanzarReglaNegocioViolada(String.format(MensajesError.INSTANCIA_NO_VALIDA, USUARIO));
 
+        log.crearLog("Crear Usuario", String.format("Usuario %s %s creado con uuid %s",usuario.getNombres(), usuario.getApellidos(), usuario.getUuidUsuario()), token);
         return gateway.guardarUsuario(instancia);
     }
 
     @Override
-    public List<Usuario> crearUsuarios(List<Usuario> usuarios) {
+    public List<Usuario> crearUsuarios(List<Usuario> usuarios, String token) {
         List<Usuario> usuariosRespuesta = new ArrayList<>();
         if(usuarios.isEmpty())
             formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.ARCHIVO_EXCEL_VACIO, USUARIOS));
 
-        for(Usuario usuario: usuarios)
-            usuariosRespuesta.add(crearUsuario(usuario, usuario.getRoles().get(0).getNombre().replace(" ", "")));
-
+        for(Usuario usuario: usuarios) {
+            usuariosRespuesta.add(crearUsuario(usuario, usuario.getRoles().get(0).getNombre().replace(" ", ""), token));
+            log.crearLog("Crear Usuario", String.format("Usuario %s %s creado con uuid %s",usuario.getNombres(), usuario.getApellidos(), usuario.getUuidUsuario()), token);
+        }
         return  usuariosRespuesta;
     }
 
     @Override
-    public Usuario actualizarUsuario(String uuidUsuario, Usuario usuario) {
+    public Usuario actualizarUsuario(String uuidUsuario, Usuario usuario, String token) {
         Usuario usuarioObtenido = gateway.getUsuario(uuidUsuario);
         if(usuarioObtenido == null)
             formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, USUARIO, uuidUsuario));
@@ -123,15 +138,17 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
         }
 
         usuarioObtenido.actualizarUsuario(usuario);
+        log.crearLog("Actualizar Usuario", "Usuario actualizado con éxito", token);
         return gateway.guardarUsuario(usuarioObtenido);
     }
 
     @Override
-    public Usuario cambiarContraseña(String uuidUsuario, String contraseña, String nuevaContraseña) {
+    public Usuario cambiarContraseña(String uuidUsuario, String contraseña, String nuevaContraseña, String token) {
         Usuario usuario = getUsuario(uuidUsuario);
         if(encoder.contraseñaCoincide(usuario.getPassword(), contraseña))
             formateadorExcepciones.lanzarCredencialesErroneas(MensajesError.CONTRASEÑA_INCORRECTA);
         usuario.setPassword(encoder.encriptarContraseña(nuevaContraseña));
+        log.crearLog("Actualizar Usuario", "Usuario actualizo contraseña con éxito", token);
         return gateway.guardarUsuario(usuario);
     }
 }
