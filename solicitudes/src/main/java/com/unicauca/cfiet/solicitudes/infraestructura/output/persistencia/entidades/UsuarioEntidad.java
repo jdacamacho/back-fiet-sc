@@ -3,8 +3,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -14,7 +18,7 @@ import java.util.List;
 @Table(name = "usuarios")
 @Getter
 @Setter
-public class UsuarioEntidad extends UsuarioLivianoEntidad{
+public class UsuarioEntidad extends UsuarioLivianoEntidad implements UserDetails {
     @Column(nullable = false, length = 45)
     private String tipoDocumento;
     @Column(nullable = false, unique = true, length = 45)
@@ -30,7 +34,7 @@ public class UsuarioEntidad extends UsuarioLivianoEntidad{
     @ManyToOne
     @JoinColumn(name = "uuidTipoUsuario", nullable = false)
     private TipoUsuarioEntidad objTipoUsuario;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name="Usuario_has_Roles",
             joinColumns = @JoinColumn(name = "uuidUsuario"),
             inverseJoinColumns = @JoinColumn(name = "uuidRol")
@@ -40,5 +44,13 @@ public class UsuarioEntidad extends UsuarioLivianoEntidad{
     public UsuarioEntidad(){
         super();
         this.roles = new ArrayList<>();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> autorizaciones = new ArrayList<>();
+        for(RolEntidad rol : roles)
+            autorizaciones.add(new SimpleGrantedAuthority(rol.getNombre()));
+        return autorizaciones;
     }
 }

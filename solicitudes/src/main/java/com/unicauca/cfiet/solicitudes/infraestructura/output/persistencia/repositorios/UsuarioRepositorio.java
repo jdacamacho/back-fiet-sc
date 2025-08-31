@@ -19,6 +19,7 @@ public interface UsuarioRepositorio extends JpaRepository <UsuarioEntidad, Strin
     boolean existsByNumeroDocumento(String numeroDocumento);
     boolean existsByCorreoElectronico(String correoElectronico);
     boolean existsByUsername(String username);
+    Optional<UsuarioEntidad> findByUsername(String username);
 
     @Query("from RolEntidad")
     List<RolEntidad> findAllRoles();

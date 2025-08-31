@@ -7,6 +7,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -69,15 +72,34 @@ public class RestApiExcepcion {
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(ErrorCredencialesIncorrectasExcepcion.class)
-    public ResponseEntity<Error> manejarCredencialesIncorrectas(final HttpServletRequest req,
-                                                            final Exception ex, final Locale locale) {
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Error> manejarCredencialesIncorrectas(final HttpServletRequest req, final Exception ex, final Locale locale) {
         final Error error = UtilidadesError
                 .crearError(CodigoError.ERROR_CREDENCIALES.getCodigo(),
-                        ex.getMessage(),
+                        CodigoError.ERROR_CREDENCIALES.getMensaje(),
                         HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Error> manejarNoAutenticacion(final HttpServletRequest req, final Exception ex, final Locale locale) {
+        final Error error = UtilidadesError
+                .crearError(CodigoError.ERROR_SIN_ACCESO.getCodigo(),
+                        CodigoError.ERROR_SIN_ACCESO.getMensaje(),
+                        HttpStatus.FORBIDDEN.value())
+                .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Error> manejarNoAAcceso(final HttpServletRequest req, final Exception ex, final Locale locale) {
+        final Error error = UtilidadesError
+                .crearError(CodigoError.ERROR_SIN_ACCESO.getCodigo(),
+                        CodigoError.ERROR_SIN_ACCESO.getMensaje(),
+                        HttpStatus.FORBIDDEN.value())
+                .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
+        return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(ErrorMalFormatoExcepcion.class)
@@ -114,8 +136,7 @@ public class RestApiExcepcion {
     }
 
     @ExceptionHandler(ErrorTokenExpiradoExcepcion.class)
-    public ResponseEntity<Error> manejarTokenExpirado(final HttpServletRequest req,
-                                                  final Exception ex, final Locale locale) {
+    public ResponseEntity<Error> manejarTokenExpirado(final HttpServletRequest req, final Exception ex, final Locale locale) {
         final Error error = UtilidadesError
                 .crearError(CodigoError.ERROR_TOKEN_EXPIRADO.getCodigo(),
                         ex.getMessage(),

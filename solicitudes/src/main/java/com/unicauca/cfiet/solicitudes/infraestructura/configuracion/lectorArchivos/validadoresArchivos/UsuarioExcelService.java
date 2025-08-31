@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
+ * Valida los atributos de la petición creada por medio del archivo excel.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Service

@@ -15,4 +15,6 @@ public class MensajesError {
     public static final String INSTANCIA_NO_VALIDA = "Se intentó crear una instancia de %s no permitida...";
     public static final String ROLES_DUPLICADOS_USUARIO = "El usuario tiene roles duplicados...";
     public static final String ROLES_NO_VALIDOS = "Los roles ingresados no son validos...";
+    public static final String CONTRASEÑA_INCORRECTA = "Contraseña incorrecta...";
+    public static final String CREDENCIALES_ERRONEAS = "Credenciales erroneas, revise su username o contraseña...";
 }

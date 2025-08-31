@@ -1,9 +1,8 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.configuracion;
 
-import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIntPuerto;
-import com.unicauca.cfiet.solicitudes.aplicacion.output.RolGatewayIntPuerto;
-import com.unicauca.cfiet.solicitudes.aplicacion.output.UsuarioGatewayIntPuerto;
+import com.unicauca.cfiet.solicitudes.aplicacion.output.*;
 import com.unicauca.cfiet.solicitudes.domain.casosdeuso.RolCUImplAdaptador;
+import com.unicauca.cfiet.solicitudes.domain.casosdeuso.SesionCUImplAdaptador;
 import com.unicauca.cfiet.solicitudes.domain.casosdeuso.UsuarioCUImplAdaptador;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +21,12 @@ public class BeanConfiguracion {
     }
 
     @Bean
-    public UsuarioCUImplAdaptador createUsuarioCU(UsuarioGatewayIntPuerto gateway, ExcepcionesFormateadorIntPuerto formateadorExcepciones){
-        return new UsuarioCUImplAdaptador(gateway, formateadorExcepciones);
+    public UsuarioCUImplAdaptador createUsuarioCU(UsuarioGatewayIntPuerto gateway, ExcepcionesFormateadorIntPuerto formateadorExcepciones, PasswordEncoderGatewayIntPuerto encoder){
+        return new UsuarioCUImplAdaptador(gateway, formateadorExcepciones, encoder);
+    }
+
+    @Bean
+    public SesionCUImplAdaptador createSesionCU(SesionGatewayIntPuerto gateway, ExcepcionesFormateadorIntPuerto formateadorExcepciones){
+        return new SesionCUImplAdaptador(gateway, formateadorExcepciones);
     }
 }

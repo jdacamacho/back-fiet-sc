@@ -2,12 +2,13 @@ package com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepcion
 
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.estructura.CodigoError;
 import lombok.Getter;
+import org.springframework.security.authentication.BadCredentialsException;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Getter
-public class ErrorCredencialesIncorrectasExcepcion extends RuntimeException {
+public class ErrorCredencialesIncorrectasExcepcion extends BadCredentialsException {
     private final String mensaje;
     private final String codigo;
 

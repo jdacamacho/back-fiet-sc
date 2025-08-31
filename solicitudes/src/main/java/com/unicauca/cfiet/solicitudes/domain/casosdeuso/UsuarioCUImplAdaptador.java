@@ -2,6 +2,7 @@ package com.unicauca.cfiet.solicitudes.domain.casosdeuso;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.UsuarioCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIntPuerto;
+import com.unicauca.cfiet.solicitudes.aplicacion.output.PasswordEncoderGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.UsuarioGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.domain.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.domain.modelos.Usuario;
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
     private final UsuarioGatewayIntPuerto gateway;
     private final ExcepcionesFormateadorIntPuerto formateadorExcepciones;
+    private final PasswordEncoderGatewayIntPuerto encoder;
     /* Constantes */
     private static final String USUARIOS = "usuarios";
     private static final String USUARIO = "Usuario";
@@ -29,9 +31,11 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
     private static final String TIPO_USUARIO = "Tipo de usuario";
     private static final String NOMBRE = "nombre";
 
-    public UsuarioCUImplAdaptador(UsuarioGatewayIntPuerto gateway, ExcepcionesFormateadorIntPuerto formateadorExcepciones){
+    public UsuarioCUImplAdaptador(UsuarioGatewayIntPuerto gateway, ExcepcionesFormateadorIntPuerto formateadorExcepciones,
+                                  PasswordEncoderGatewayIntPuerto encoder){
         this.gateway = gateway;
         this.formateadorExcepciones = formateadorExcepciones;
+        this.encoder = encoder;
     }
 
     @Override
@@ -45,10 +49,10 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
     }
 
     @Override
-    public Usuario getUsuario(String uuid) {
-        Usuario usuario = gateway.getUsuario(uuid);
+    public Usuario getUsuario(String uuidUsuario) {
+        Usuario usuario = gateway.getUsuario(uuidUsuario);
         if(usuario == null)
-            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, USUARIO, uuid));
+            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, USUARIO, uuidUsuario));
         return usuario;
     }
 
@@ -71,6 +75,7 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
             formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.ROLES_NO_VALIDOS);
 
         usuario.setUuidUsuario(UUID.randomUUID().toString());
+        usuario.setPassword(encoder.encriptarContraseña(usuario.getPassword()));
         usuario.setObjTipoUsuario(objTipoUsuario);
         Usuario instancia = usuario.crearInstancia(tipoUsuario);
         if(instancia == null)
@@ -92,10 +97,10 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
     }
 
     @Override
-    public Usuario actualizarUsuario(String uuid, Usuario usuario) {
-        Usuario usuarioObtenido = gateway.getUsuario(uuid);
+    public Usuario actualizarUsuario(String uuidUsuario, Usuario usuario) {
+        Usuario usuarioObtenido = gateway.getUsuario(uuidUsuario);
         if(usuarioObtenido == null)
-            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, USUARIO, uuid));
+            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, USUARIO, uuidUsuario));
 
         if(usuario.tieneRolesDuplicados())
             formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.ROLES_DUPLICADOS_USUARIO);
@@ -119,5 +124,14 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
 
         usuarioObtenido.actualizarUsuario(usuario);
         return gateway.guardarUsuario(usuarioObtenido);
+    }
+
+    @Override
+    public Usuario cambiarContraseña(String uuidUsuario, String contraseña, String nuevaContraseña) {
+        Usuario usuario = getUsuario(uuidUsuario);
+        if(encoder.contraseñaCoincide(usuario.getPassword(), contraseña))
+            formateadorExcepciones.lanzarCredencialesErroneas(MensajesError.CONTRASEÑA_INCORRECTA);
+        usuario.setPassword(encoder.encriptarContraseña(nuevaContraseña));
+        return gateway.guardarUsuario(usuario);
     }
 }

@@ -27,6 +27,23 @@ public class Usuario extends UsuarioLiviano{
         this.roles = new ArrayList<>();
     }
 
+    public UsuarioTokenizado tokenizarObjecto(String token) {
+        UsuarioTokenizado usuarioTokenizado = new UsuarioTokenizado();
+        usuarioTokenizado.setUuidUsuario(this.getUuidUsuario());
+        usuarioTokenizado.setEstado(this.getEstado());
+        usuarioTokenizado.setNombres(this.getNombres());
+        usuarioTokenizado.setApellidos(this.getApellidos());
+        usuarioTokenizado.setTipoDocumento(this.tipoDocumento);
+        usuarioTokenizado.setNumeroDocumento(this.numeroDocumento);
+        usuarioTokenizado.setTelefono(this.telefono);
+        usuarioTokenizado.setCorreoElectronico(this.correoElectronico);
+        usuarioTokenizado.setUsername(this.username);
+        usuarioTokenizado.setObjTipoUsuario(this.objTipoUsuario);
+        usuarioTokenizado.setRoles(this.roles);
+        usuarioTokenizado.setToken(token);
+        return usuarioTokenizado;
+    }
+
     public boolean rolesSonValidos(List<Rol> rolesValidos) {
         List<Rol> roles = this.getRoles();
         int wasFound = 0;

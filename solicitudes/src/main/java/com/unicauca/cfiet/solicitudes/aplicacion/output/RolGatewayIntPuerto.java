@@ -17,15 +17,15 @@ public interface RolGatewayIntPuerto {
      * @param tamanio el tamanio de las paginas.
      * @return La información de los roles en el sistema, o lanza una excepción en caso de ocurrir un error.
      */
-    public List<Rol> getRoles(int pagina, int tamanio);
+    List<Rol> getRoles(int pagina, int tamanio);
 
     /**
      * Consultar rol.
      *
-     * @param uuid Identificador del rol a consultar.
+     * @param uuidRol Identificador del rol a consultar.
      * @return La información del rol consultado, o lanza una excepción en caso de ocurrir un error.
      */
-    public Rol getRol(String uuid);
+    Rol getRol(String uuidRol);
 
     /**
      * Actualiza un rol existente
@@ -33,5 +33,5 @@ public interface RolGatewayIntPuerto {
      * @param rol El rol a guardar.
      * @return La información del rol guardado si la operación se realiza con éxito, o lanza una excepción en caso de ocurrir un error.
      */
-    public Rol guardarRol(Rol rol);
+    Rol guardarRol(Rol rol);
 }

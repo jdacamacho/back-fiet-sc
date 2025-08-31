@@ -5,6 +5,7 @@ import com.unicauca.cfiet.solicitudes.domain.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.domain.modelos.UsuarioLiviano;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.ProcesadorArchivos;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.validadoresArchivos.UsuarioExcelService;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.CambioContraseñaDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.UsuarioActualizarDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.UsuarioDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTORespuesta.UsuarioDTORespuesta;
@@ -13,9 +14,11 @@ import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +39,8 @@ public class UsuarioRestController{
     private final MapperUsuarioInfraestructuraDominio mapper;
     private final ProcesadorArchivos procesadorArchivos;
     private final UsuarioExcelService usuarioExcelService;
+    @Value("${rol.secretarioGeneral}")
+    private String rolSecretarioGeneral;
 
     public UsuarioRestController(UsuarioCUIntPuerto casoDeUso,
                                  MapperUsuarioInfraestructuraDominio mapper,
@@ -47,6 +52,7 @@ public class UsuarioRestController{
         this.usuarioExcelService = usuarioExcelService;
     }
 
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @GetMapping
     public ResponseEntity<?> index(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
         List<UsuarioLiviano> usuarios = casoDeUso.getUsuarios(pagina, tamanio);
@@ -55,14 +61,16 @@ public class UsuarioRestController{
         );
     }
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<?> getUsuario(@PathVariable String uuid){
-        Usuario usuario = casoDeUso.getUsuario(uuid);
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/{uuidUsuario}")
+    public ResponseEntity<?> getUsuario(@PathVariable String uuidUsuario){
+        Usuario usuario = casoDeUso.getUsuario(uuidUsuario);
         return new ResponseEntity<UsuarioDTORespuesta>(
                 mapper.mapearModeloARespuesta(usuario), HttpStatus.OK
         );
     }
 
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @PostMapping
     public ResponseEntity<?> crearUsuario(@Valid @RequestBody UsuarioDTOPeticion peticion, @RequestParam String tipoUsuario){
         Usuario usuario;
@@ -80,6 +88,7 @@ public class UsuarioRestController{
         );
     }
 
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @Transactional
     @PostMapping("/cargar/archivo")
     public ResponseEntity<?> crearUsuarios(@RequestParam("file") MultipartFile file){
@@ -107,11 +116,12 @@ public class UsuarioRestController{
         );
     }
 
-    @PutMapping("/{uuid}")
-    public ResponseEntity<?> actualizarUsuario(@PathVariable String uuid, @Valid @RequestBody UsuarioActualizarDTOPeticion peticion){
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PutMapping("/{uuidUsuario}")
+    public ResponseEntity<?> actualizarUsuario(@PathVariable String uuidUsuario, @Valid @RequestBody UsuarioActualizarDTOPeticion peticion){
         Usuario usuario;
         try{
-            usuario = casoDeUso.actualizarUsuario(uuid, mapper.mapearPeticionActualizarAModelo(peticion));
+            usuario = casoDeUso.actualizarUsuario(uuidUsuario, mapper.mapearPeticionActualizarAModelo(peticion));
         } catch (DataAccessException ex){
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Error insertando en la base de datos....");
@@ -122,5 +132,19 @@ public class UsuarioRestController{
         return new ResponseEntity<UsuarioDTORespuesta>(
                 mapper.mapearModeloARespuesta(usuario), HttpStatus.OK
         );
+    }
+
+    @PatchMapping("/{uuidUsuario}")
+    public ResponseEntity<?> actualizarContraseña(@PathVariable String uuidUsuario, @Valid @RequestBody CambioContraseñaDTOPeticion peticion){
+        try{
+            casoDeUso.cambiarContraseña(uuidUsuario, peticion.getContraseña(), peticion.getNuevaContraseña());
+        } catch (DataAccessException ex){
+            Map<String, Object> response = new HashMap<>();
+            response.put("mensaje", "Error insertando en la base de datos....");
+            response.put("error", ex.getMessage() + " " + ex.getMostSpecificCause().getMessage());
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return ResponseEntity.ok().build();
     }
 }

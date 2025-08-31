@@ -36,18 +36,18 @@ public class RolCUImplAdaptador implements RolCUIntPuerto {
     }
 
     @Override
-    public Rol getRol(String uuid) {
-        Rol rol = gateway.getRol(uuid);
+    public Rol getRol(String uuidRol) {
+        Rol rol = gateway.getRol(uuidRol);
         if(rol == null)
-            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ROL, uuid));
+            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ROL, uuidRol));
         return rol;
     }
 
     @Override
-    public Rol actualizarRol(String uuid, Rol rol) {
-        Rol rolObtenido = gateway.getRol(uuid);
+    public Rol actualizarRol(String uuidRol, Rol rol) {
+        Rol rolObtenido = gateway.getRol(uuidRol);
         if(rolObtenido == null)
-            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ROL, uuid));
+            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ROL, uuidRol));
 
         if(rol.getDescripcion() != null && !rol.getDescripcion().isBlank())
             rolObtenido.setDescripcion(rol.getDescripcion());

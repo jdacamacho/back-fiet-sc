@@ -11,40 +11,40 @@ public interface ExcepcionesFormateadorIntPuerto {
      *
      * @param mensaje Mensaje descriptivo del error.
      */
-    public void lanzarEntidadNoExiste(String mensaje);
+    void lanzarEntidadNoExiste(String mensaje);
 
     /**
      * Método para devolver un mensaje de error cuando la entidad esta duplicada.
      *
      * @param mensaje Mensaje descriptivo del error.
      */
-    public void lanzarEntidadExiste(String mensaje);
+    void lanzarEntidadExiste(String mensaje);
 
     /**
      * Método para devolver un mensaje de error cuando una regla de negocio fue violada.
      *
      * @param mensaje Mensaje descriptivo del error.
      */
-    public void lanzarReglaNegocioViolada(String mensaje);
+    void lanzarReglaNegocioViolada(String mensaje);
 
     /**
      * Método para devolver un mensaje de error cuando fallo la autenticación del usuario.
      *
      * @param mensaje Mensaje descriptivo del error.
      */
-    public void lanzarCredencialesErroneas(String mensaje);
+    void lanzarCredencialesErroneas(String mensaje);
 
     /**
      * Método para devolver un mensaje de error cuando un formato es erroneo.
      *
      * @param mensaje Mensaje descriptivo del error.
      */
-    public void lanzarMalFormato(String mensaje);
+    void lanzarMalFormato(String mensaje);
 
     /**
      * Método para devolver un mensaje de error cuando una consulta no obtuvo información.
      *
      * @param mensaje Mensaje descriptivo del error.
      */
-    public void lanzarSinInformacion(String mensaje);
+    void lanzarSinInformacion(String mensaje);
 }
