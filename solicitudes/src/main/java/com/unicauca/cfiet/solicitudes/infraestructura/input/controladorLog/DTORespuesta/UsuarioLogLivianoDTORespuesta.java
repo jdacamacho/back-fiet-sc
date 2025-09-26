@@ -11,8 +11,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UsuarioLogLivianoDTORespuesta {
-    private  String uuidUsuario;
     private String nombres;
     private String apellidos;
-    private Boolean estado;
 }

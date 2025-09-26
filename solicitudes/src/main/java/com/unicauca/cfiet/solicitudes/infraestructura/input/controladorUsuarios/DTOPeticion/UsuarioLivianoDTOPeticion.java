@@ -16,12 +16,12 @@ import lombok.experimental.SuperBuilder;
 public class UsuarioLivianoDTOPeticion {
     @NotNull(message = "El nombre no puede ser nulo")
     @NotBlank(message = "El nombre no puede estar vacío")
-    @Size(min = 2, max = 200, message = "El nombre debe tener entre 2 y 200 caracteres")
+    @Size(min = 2, max = 100, message = "El nombre debe tener entre 2 y 100 caracteres")
     private String nombres;
 
     @NotNull(message = "El apellido no puede ser nulo")
     @NotBlank(message = "El apellido no puede estar vacío")
-    @Size(min = 2, max = 200, message = "El apellido debe tener entre 2 y 200 caracteres")
+    @Size(min = 2, max = 100, message = "El apellido debe tener entre 2 y 100 caracteres")
     private String apellidos;
 
     @NotNull(message = "El estado no puede ser nulo")

@@ -14,16 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 public class UsuarioLogDTORespuesta extends UsuarioLogLivianoDTORespuesta {
-    private String tipoDocumento;
-    private String numeroDocumento;
-    private String telefono;
-    private String correoElectronico;
-    private String username;
-    private TipoUsuarioDTORespuesta objTipoUsuario;
-    private List<RolUsuarioDTORespuesta> roles;
-
     public UsuarioLogDTORespuesta(){
         super();
-        this.roles = new ArrayList<>();
     }
 }

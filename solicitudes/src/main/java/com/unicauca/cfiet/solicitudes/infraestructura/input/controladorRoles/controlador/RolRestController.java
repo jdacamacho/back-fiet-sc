@@ -25,6 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("${url.application}roles")
+@CrossOrigin(origins = "${url.frontend}")
 @Validated
 @RequiredArgsConstructor
 @Tag(name = "Roles", description = "Operaciones relacionadas con la gestión de roles.")

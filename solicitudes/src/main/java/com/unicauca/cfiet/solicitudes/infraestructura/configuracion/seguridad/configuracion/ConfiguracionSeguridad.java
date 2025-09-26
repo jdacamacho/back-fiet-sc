@@ -35,10 +35,10 @@ public class ConfiguracionSeguridad {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authRequest -> authRequest
-                        .requestMatchers(baseUrl + "sesiones").permitAll()
-                        .requestMatchers(baseUrl + "roles/**").hasAuthority("Secretario General")
-                        .requestMatchers(baseUrl + "usuarios/**").hasAuthority("Secretario General")
-                        .requestMatchers(HttpMethod.PATCH, baseUrl + "usuarios/**").authenticated()
+                        //.requestMatchers(baseUrl + "sesiones").permitAll()
+                        //.requestMatchers(baseUrl + "roles/**").hasAuthority("Secretario General")
+                        //.requestMatchers(baseUrl + "usuarios/**").hasAuthority("Secretario General")
+                        //.requestMatchers(HttpMethod.PATCH, baseUrl + "usuarios/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .exceptionHandling(ex -> ex

@@ -31,6 +31,7 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
     private static final String CORREO_ELECTRONICO = "Correo Electrónico";
     private  static final String USERNAME = "username";
     private static final String TIPO_USUARIO = "Tipo de usuario";
+    private static final String TIPOS_USUARIO = "Tipos de usuario";
     private static final String NOMBRE = "nombre";
 
     public UsuarioCUImplAdaptador(UsuarioGatewayIntPuerto gateway,
@@ -150,5 +151,13 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
         usuario.setPassword(encoder.encriptarContraseña(nuevaContraseña));
         log.crearLog("Actualizar Usuario", "Usuario actualizo contraseña con éxito", token);
         return gateway.guardarUsuario(usuario);
+    }
+
+    @Override
+    public List<TipoUsuario> getTiposUsuario() {
+        List<TipoUsuario> tiposUsuario = gateway.getTiposUsuario();
+        if(tiposUsuario.isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, TIPOS_USUARIO));
+        return  tiposUsuario;
     }
 }

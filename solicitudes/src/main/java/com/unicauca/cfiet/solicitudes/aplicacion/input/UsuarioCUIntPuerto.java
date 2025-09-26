@@ -1,5 +1,7 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.input;
 
+import com.unicauca.cfiet.solicitudes.domain.modelos.Rol;
+import com.unicauca.cfiet.solicitudes.domain.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.domain.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.domain.modelos.UsuarioLiviano;
 import java.util.List;
@@ -73,4 +75,11 @@ public interface UsuarioCUIntPuerto {
      * @return el usuario con la contraseña actualizada.
      */
     Usuario cambiarContraseña(String uuidUsuario, String contraseña, String nuevaContraseña, String token);
+
+    /**
+     * Obtener los tipos de Usuario soportados
+     *
+     * @return lista de tipos de usuario soportados
+     */
+    List<TipoUsuario> getTiposUsuario();
 }

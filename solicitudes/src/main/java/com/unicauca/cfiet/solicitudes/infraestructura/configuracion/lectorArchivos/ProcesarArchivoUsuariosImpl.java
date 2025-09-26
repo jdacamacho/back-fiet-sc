@@ -4,9 +4,7 @@ import com.unicauca.cfiet.solicitudes.aplicacion.output.UsuarioGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.RolUsuarioDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.TipoUsuarioDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.UsuarioDTOPeticion;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -46,11 +44,27 @@ public class ProcesarArchivoUsuariosImpl implements ProcesadorArchivos<UsuarioDT
             Sheet sheet = workbook.getSheetAt(0);
             for (Row row : sheet) {
                 if (row.getRowNum() == 0) continue;
+                if (filaVacia(row)) break;
+
                 String nombres = row.getCell(0) != null ? row.getCell(0).toString() : "";
                 String apellidos = row.getCell(1) != null ? row.getCell(1).toString() : "";
                 String tipoDocumento = row.getCell(2) != null ? row.getCell(2).toString() : "";
-                String numeroDocumento = row.getCell(3) != null ? String.valueOf((long) row.getCell(3).getNumericCellValue()) : "";
-                String telefono = row.getCell(4) != null ? "+" + String.valueOf((long) row.getCell(4).getNumericCellValue()) : "";
+                String numeroDocumento = "";
+                Cell cell3 = row.getCell(3);
+                if (cell3 != null) {
+                    if (cell3.getCellType() == CellType.NUMERIC)
+                        numeroDocumento = String.valueOf((long) cell3.getNumericCellValue());
+                    else
+                        numeroDocumento = cell3.toString();
+                }
+                String telefono = "";
+                Cell cell4 = row.getCell(4);
+                if (cell4 != null) {
+                    if (cell4.getCellType() == CellType.NUMERIC)
+                        telefono = "+" + String.valueOf((long) cell4.getNumericCellValue());
+                    else
+                        telefono = "+" + cell4.toString();
+                }
                 String correo = row.getCell(5) != null ? row.getCell(5).toString() : "";
                 String estado = row.getCell(6) != null ? row.getCell(6).toString() : "";
                 String username = row.getCell(7) != null ? row.getCell(7).toString() : "";
@@ -80,6 +94,16 @@ public class ProcesarArchivoUsuariosImpl implements ProcesadorArchivos<UsuarioDT
         }
 
         return peticiones;
+    }
+
+    private boolean filaVacia(Row row) {
+        if (row == null) return true;
+        for (int i = 0; i < row.getLastCellNum(); i++) {
+            Cell cell = row.getCell(i);
+            if (cell != null && !cell.toString().trim().isEmpty())
+                return false;
+        }
+        return true;
     }
 
     private HashMap<String, TipoUsuarioDTOPeticion> cachearTiposDeUsuario() {

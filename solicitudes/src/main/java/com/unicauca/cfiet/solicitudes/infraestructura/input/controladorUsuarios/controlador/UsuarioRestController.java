@@ -1,6 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.controlador;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.UsuarioCUIntPuerto;
+import com.unicauca.cfiet.solicitudes.domain.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.domain.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.domain.modelos.UsuarioLiviano;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.ProcesadorArchivos;
@@ -8,6 +9,7 @@ import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchiv
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.CambioContraseñaDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.UsuarioActualizarDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.UsuarioDTOPeticion;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTORespuesta.TipoUsuarioDTORespuesta;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTORespuesta.UsuarioDTORespuesta;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTORespuesta.UsuarioLivianoDTORespuesta;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.mapeador.MapperUsuarioInfraestructuraDominio;
@@ -32,6 +34,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("${url.application}usuarios")
+@CrossOrigin(origins = "${url.frontend}")
 @Validated
 @Tag(name = "Usuarios", description = "Operaciones relacionadas con la gestión de Usuarios.")
 public class UsuarioRestController{
@@ -53,8 +56,17 @@ public class UsuarioRestController{
     }
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
-    @GetMapping
-    public ResponseEntity<?> index(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
+    @GetMapping("/tipos")
+    public ResponseEntity<?> getTiposUsuarios(){
+        List<TipoUsuario> tiposUsuario = casoDeUso.getTiposUsuario();
+        return new ResponseEntity<List<TipoUsuarioDTORespuesta>>(
+                mapper.mapearTipoUsuarioARespuesta(tiposUsuario), HttpStatus.OK
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/paginado")
+    public ResponseEntity<?> indexPaginado(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
         List<UsuarioLiviano> usuarios = casoDeUso.getUsuarios(pagina, tamanio);
         return new ResponseEntity<List<UsuarioLivianoDTORespuesta>>(
                 mapper.mapearModelosARespuestaLiviano(usuarios), HttpStatus.OK
@@ -62,8 +74,8 @@ public class UsuarioRestController{
     }
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
-    @GetMapping("/paginado")
-    public ResponseEntity<?> indexPaginado(){
+    @GetMapping
+    public ResponseEntity<?> index(){
         List<UsuarioLiviano> usuarios = casoDeUso.getUsuarios();
         return new ResponseEntity<List<UsuarioLivianoDTORespuesta>>(
                 mapper.mapearModelosARespuestaLiviano(usuarios), HttpStatus.OK
