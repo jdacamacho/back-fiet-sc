@@ -1,17 +1,14 @@
 package com.unicauca.cfiet.solicitudes.domain.modelos;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
-@Getter
-@Setter
-public class UsuarioTokenizado extends Usuario{
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UsuarioTokenizado{
+    private String uuidUsuario;
     private String token;
-
-    public UsuarioTokenizado(){
-        super();
-    }
 }

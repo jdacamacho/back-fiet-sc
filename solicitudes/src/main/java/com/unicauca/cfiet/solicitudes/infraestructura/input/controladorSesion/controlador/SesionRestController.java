@@ -20,13 +20,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("${url.application}sesiones")
 @Validated
 @RequiredArgsConstructor
+@CrossOrigin(origins = "${url.frontend}")
 @Tag(name = "Sesión", description = "Autenticación en la aplicación.")
 public class SesionRestController {
     private final SesionCUIntPuerto casoDeUso;
     private final MapperSesionInfraestructuraDominio mapper;
 
     @PostMapping
-    public ResponseEntity<?> index(@Valid @RequestBody SesionDTOPeticion peticion){
+    public ResponseEntity<?> auth(@Valid @RequestBody SesionDTOPeticion peticion){
         UsuarioTokenizado usuario = casoDeUso.login(peticion.getUsername(), peticion.getPassword());
         return new ResponseEntity<UsuarioTokenizadoDTORespuesta>(
                 mapper.mapearModeloARespuesta(usuario) , HttpStatus.OK

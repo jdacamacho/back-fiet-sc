@@ -13,6 +13,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.List;
 
 /**
  *  Configuración de Seguridad (Acceso en endpoints)
@@ -25,6 +30,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class ConfiguracionSeguridad {
     @Value("${url.application}")
     private String baseUrl;
+
+    @Value("${url.frontend}")
+    private String frontendUrl;
+
     private final JwtFiltroAutenticacion jwtFiltro;
     private final AuthenticationProvider authenticationProvider;
 
@@ -34,12 +43,14 @@ public class ConfiguracionSeguridad {
                                                    CustomAccessDeniedHandler accessDeniedHandler) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authRequest -> authRequest
-                        //.requestMatchers(baseUrl + "sesiones").permitAll()
-                        //.requestMatchers(baseUrl + "roles/**").hasAuthority("Secretario General")
-                        //.requestMatchers(baseUrl + "usuarios/**").hasAuthority("Secretario General")
-                        //.requestMatchers(HttpMethod.PATCH, baseUrl + "usuarios/**").authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers(baseUrl + "sesiones").permitAll()
+                        .requestMatchers(baseUrl + "logs").hasAuthority("Secretario General")
+                        .requestMatchers(baseUrl + "roles/**").hasAuthority("Secretario General")
+                        .requestMatchers(HttpMethod.GET, baseUrl + "usuarios/**").authenticated()
+                        .requestMatchers(baseUrl + "usuarios/**").hasAuthority("Secretario General")
+                        .requestMatchers(HttpMethod.PATCH, baseUrl + "usuarios/**").authenticated()
                 )
                 .exceptionHandling(ex -> ex
                     .authenticationEntryPoint(authEntryPoint)
@@ -49,6 +60,20 @@ public class ConfiguracionSeguridad {
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtFiltro, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(List.of(frontendUrl));
+        config.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setExposedHeaders(List.of("Authorization"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 
 }

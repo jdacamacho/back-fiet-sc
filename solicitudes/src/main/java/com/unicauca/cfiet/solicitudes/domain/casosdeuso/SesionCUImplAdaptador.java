@@ -33,6 +33,6 @@ public class SesionCUImplAdaptador implements SesionCUIntPuerto{
             formateadorExcepciones.lanzarCredencialesErroneas(MensajesError.CREDENCIALES_ERRONEAS);
         Usuario usuario = gateway.getUsuario(username);
         log.crearLogSesion("Inicio de sesión", String.format("Usuario %s ha iniciado sesión", username), username);
-        return usuario.tokenizarObjecto(token);
+        return new UsuarioTokenizado(usuario.getUuidUsuario(), token);
     }
 }

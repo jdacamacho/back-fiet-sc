@@ -1,18 +1,17 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSesion.DTORespuesta;
 
-import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTORespuesta.UsuarioDTORespuesta;
-import lombok.Getter;
-import lombok.Setter;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
-@Getter
-@Setter
-public class UsuarioTokenizadoDTORespuesta extends UsuarioDTORespuesta{
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UsuarioTokenizadoDTORespuesta{
+    private String uuidUsuario;
     private String token;
-
-    public UsuarioTokenizadoDTORespuesta(){
-        super();
-    }
 }

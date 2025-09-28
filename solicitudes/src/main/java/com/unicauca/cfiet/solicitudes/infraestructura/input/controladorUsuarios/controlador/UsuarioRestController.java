@@ -82,7 +82,6 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @GetMapping("/{uuidUsuario}")
     public ResponseEntity<?> getUsuario(@PathVariable String uuidUsuario){
         Usuario usuario = casoDeUso.getUsuario(uuidUsuario);
