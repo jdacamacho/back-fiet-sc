@@ -20,6 +20,6 @@ public class PasswordEnconderGatewayImplAdaptador implements PasswordEncoderGate
 
     @Override
     public boolean contraseñaCoincide(String contraseñaOriginal, String contraseña) {
-        return passwordEncoder.matches(contraseñaOriginal, contraseña);
+        return passwordEncoder.matches(contraseña, contraseñaOriginal);
     }
 }

@@ -146,7 +146,7 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
     @Override
     public Usuario cambiarContraseña(String uuidUsuario, String contraseña, String nuevaContraseña, String token) {
         Usuario usuario = getUsuario(uuidUsuario);
-        if(encoder.contraseñaCoincide(usuario.getPassword(), contraseña))
+        if(!encoder.contraseñaCoincide(usuario.getPassword(), contraseña))
             formateadorExcepciones.lanzarCredencialesErroneas(MensajesError.CONTRASEÑA_INCORRECTA);
         usuario.setPassword(encoder.encriptarContraseña(nuevaContraseña));
         log.crearLog("Actualizar Usuario", "Usuario actualizo contraseña con éxito", token);
