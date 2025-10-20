@@ -101,15 +101,58 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
 
     @Override
     public List<Usuario> crearUsuarios(List<Usuario> usuarios, String token) {
-        List<Usuario> usuariosRespuesta = new ArrayList<>();
-        if(usuarios.isEmpty())
+        if (usuarios.isEmpty())
             formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.ARCHIVO_EXCEL_VACIO, USUARIOS));
 
-        for(Usuario usuario: usuarios) {
-            usuariosRespuesta.add(crearUsuario(usuario, usuario.getRoles().get(0).getNombre().replace(" ", ""), token));
-            log.crearLog("Crear Usuario", String.format("Usuario %s %s creado con uuid %s",usuario.getNombres(), usuario.getApellidos(), usuario.getUuidUsuario()), token);
+        for (Usuario usuario : usuarios) {
+            if (gateway.existeUsuarioNumeroDocumento(usuario.getNumeroDocumento()))
+                formateadorExcepciones.lanzarEntidadExiste(String.format(
+                        MensajesError.ATRIBUTO_UNICO_YA_EXISTE, USUARIO, NUMERO_DOCUMENTO, usuario.getNumeroDocumento()));
+
+            if (gateway.existeUsuarioCorreo(usuario.getCorreoElectronico()))
+                formateadorExcepciones.lanzarEntidadExiste(String.format(
+                        MensajesError.ATRIBUTO_UNICO_YA_EXISTE, USUARIO, CORREO_ELECTRONICO, usuario.getCorreoElectronico()));
+
+            if (gateway.existeUsuarioUsername(usuario.getUsername()))
+                formateadorExcepciones.lanzarEntidadExiste(String.format(
+                        MensajesError.ATRIBUTO_UNICO_YA_EXISTE, USUARIO, USERNAME, usuario.getUsername()));
+
+            TipoUsuario objTipoUsuario = gateway.getTipoUsuarioPorNombre(usuario.getObjTipoUsuario().getNombre());
+            if (objTipoUsuario == null)
+                formateadorExcepciones.lanzarEntidadNoExiste(String.format(
+                        MensajesError.ENTIDAD_NO_ENCONTRADA_FILTRO, TIPO_USUARIO, NOMBRE, usuario.getObjTipoUsuario().getNombre()));
+
+            if (usuario.tieneRolesDuplicados())
+                formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.ROLES_DUPLICADOS_USUARIO);
+
+            if (!usuario.rolesSonValidos(gateway.getRoles()))
+                formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.ROLES_NO_VALIDOS);
+
+            usuario.setUuidUsuario(UUID.randomUUID().toString());
+            usuario.setPassword(encoder.encriptarContraseña(usuario.getPassword()));
+            usuario.setObjTipoUsuario(objTipoUsuario);
         }
-        return  usuariosRespuesta;
+
+        List<Usuario> instancias = new ArrayList<>();
+        for (Usuario usuario : usuarios) {
+            String tipoUsuario = usuario.getRoles().get(0).getNombre().replace(" ", "");
+            Usuario instancia = usuario.crearInstancia(tipoUsuario);
+
+            if (instancia == null)
+                formateadorExcepciones.lanzarReglaNegocioViolada(String.format(MensajesError.INSTANCIA_NO_VALIDA, USUARIO));
+
+            instancias.add(instancia);
+        }
+
+        List<Usuario> guardados = gateway.guardarUsuarios(instancias);
+
+        for (Usuario usuario : guardados) {
+            log.crearLog("Crear Usuario", String.format(
+                    "Usuario %s %s creado con uuid %s",
+                    usuario.getNombres(), usuario.getApellidos(), usuario.getUuidUsuario()), token);
+        }
+
+        return guardados;
     }
 
     @Override

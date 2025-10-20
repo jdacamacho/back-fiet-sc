@@ -46,7 +46,7 @@ public class ConfiguracionSeguridad {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authRequest -> authRequest
                         .requestMatchers(baseUrl + "sesiones").permitAll()
-                        .requestMatchers(baseUrl + "logs").hasAuthority("Secretario General")
+                        .requestMatchers(baseUrl + "logs/**").hasAuthority("Secretario General")
                         .requestMatchers(baseUrl + "roles/**").hasAuthority("Secretario General")
                         .requestMatchers(HttpMethod.GET, baseUrl + "usuarios/**").authenticated()
                         .requestMatchers(baseUrl + "usuarios/**").hasAuthority("Secretario General")

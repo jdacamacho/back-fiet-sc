@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -80,6 +82,31 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
 
         UsuarioEntidad usuarioGuardado = repositorio.save(usuarioGuardar);
         return mapper.map(usuarioGuardado, Usuario.class);
+    }
+
+    @Override
+    public List<Usuario> guardarUsuarios(List<Usuario> usuarios) {
+        List<UsuarioEntidad> entidades = new ArrayList<>();
+
+        for (Usuario usuario : usuarios) {
+            UsuarioEntidad entidad;
+
+            if (usuario instanceof SecretarioGeneral)
+                entidad = mapper.map(usuario, SecretarioGeneralEntidad.class);
+            else if (usuario instanceof Funcionario)
+                entidad = mapper.map(usuario, FuncionarioEntidad.class);
+            else if (usuario instanceof Decano)
+                entidad = mapper.map(usuario, DecanoEntidad.class);
+            else if (usuario instanceof SecretariaFiet)
+                entidad = mapper.map(usuario, SecretariaFietEntidad.class);
+            else
+                continue;
+
+            entidades.add(entidad);
+        }
+
+        List<UsuarioEntidad> guardados = repositorio.saveAll(entidades);
+        return mapper.map(guardados, new TypeToken<List<Usuario>>(){}.getType());
     }
 
     @Override

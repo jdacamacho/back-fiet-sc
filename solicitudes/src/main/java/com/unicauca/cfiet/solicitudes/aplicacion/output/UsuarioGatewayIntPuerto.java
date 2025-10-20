@@ -46,6 +46,14 @@ public interface UsuarioGatewayIntPuerto {
     Usuario guardarUsuario(Usuario usuario);
 
     /**
+     * Guarda usuarios en el sistema.
+     *
+     * @param usuarios la lista de usuarios a guardarr
+     * @return los usuarios guardados.
+     */
+    List<Usuario> guardarUsuarios(List<Usuario> usuarios);
+
+    /**
      * Verifica si existe un usuario con el número de documento dado.
      *
      * @param numeroDocumento el número de documento a verificar.
