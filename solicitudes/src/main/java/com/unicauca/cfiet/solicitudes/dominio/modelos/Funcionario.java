@@ -1,4 +1,4 @@
-package com.unicauca.cfiet.solicitudes.domain.modelos;
+package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
 import lombok.Getter;
 import lombok.Setter;

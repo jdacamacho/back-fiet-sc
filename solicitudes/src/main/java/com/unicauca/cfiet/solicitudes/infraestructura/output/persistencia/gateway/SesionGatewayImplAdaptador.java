@@ -1,7 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.gateway;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.output.SesionGatewayIntPuerto;
-import com.unicauca.cfiet.solicitudes.domain.modelos.Usuario;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.seguridad.jwt.JwtServicio;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.UsuarioEntidad;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.UsuarioRepositorio;

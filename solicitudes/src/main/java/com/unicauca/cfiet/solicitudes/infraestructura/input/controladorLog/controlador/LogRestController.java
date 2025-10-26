@@ -1,7 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorLog.controlador;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.LogCUIntPuerto;
-import com.unicauca.cfiet.solicitudes.domain.modelos.Log;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorLog.DTORespuesta.LogDTORespuesta;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorLog.mapeador.MapperLogInfraestructuraDominio;
 import io.swagger.v3.oas.annotations.tags.Tag;

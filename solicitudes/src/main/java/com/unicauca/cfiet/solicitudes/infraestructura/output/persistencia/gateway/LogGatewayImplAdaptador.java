@@ -1,8 +1,8 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.gateway;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.output.LogGatewayIntPuerto;
-import com.unicauca.cfiet.solicitudes.domain.modelos.Log;
-import com.unicauca.cfiet.solicitudes.domain.modelos.Usuario;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.LogEntidad;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.UsuarioEntidad;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.LogRepositorio;

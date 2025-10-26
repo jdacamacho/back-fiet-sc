@@ -1,7 +1,7 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.output;
 
-import com.unicauca.cfiet.solicitudes.domain.modelos.Log;
-import com.unicauca.cfiet.solicitudes.domain.modelos.Usuario;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 
 
 import java.util.List;

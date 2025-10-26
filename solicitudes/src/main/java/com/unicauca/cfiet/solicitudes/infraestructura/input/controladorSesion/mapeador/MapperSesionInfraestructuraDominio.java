@@ -1,6 +1,6 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSesion.mapeador;
 
-import com.unicauca.cfiet.solicitudes.domain.modelos.UsuarioTokenizado;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioTokenizado;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSesion.DTORespuesta.UsuarioTokenizadoDTORespuesta;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;

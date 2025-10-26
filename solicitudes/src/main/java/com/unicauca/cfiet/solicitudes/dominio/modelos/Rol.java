@@ -1,6 +1,5 @@
-package com.unicauca.cfiet.solicitudes.domain.modelos;
+package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

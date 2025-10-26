@@ -1,7 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.gateway;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.output.RolGatewayIntPuerto;
-import com.unicauca.cfiet.solicitudes.domain.modelos.Rol;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.RolEntidad;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.RolRepositorio;
 import org.modelmapper.ModelMapper;

@@ -1,6 +1,6 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.input;
 
-import com.unicauca.cfiet.solicitudes.domain.modelos.UsuarioTokenizado;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioTokenizado;
 
 /**
  * Interface de los casos de usos para la gestión de Sesiones.

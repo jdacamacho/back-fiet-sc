@@ -1,6 +1,6 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.mapeador;
 
-import com.unicauca.cfiet.solicitudes.domain.modelos.Rol;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTOPeticion.RolDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTORespuesta.RolDTORespuesta;
 import org.modelmapper.ModelMapper;

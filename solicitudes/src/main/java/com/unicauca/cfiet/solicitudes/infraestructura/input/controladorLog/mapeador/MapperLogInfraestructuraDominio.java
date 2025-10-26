@@ -1,6 +1,6 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorLog.mapeador;
 
-import com.unicauca.cfiet.solicitudes.domain.modelos.Log;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorLog.DTORespuesta.LogDTORespuesta;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;

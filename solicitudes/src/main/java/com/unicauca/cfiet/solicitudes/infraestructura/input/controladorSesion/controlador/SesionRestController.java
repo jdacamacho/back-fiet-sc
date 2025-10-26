@@ -1,7 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSesion.controlador;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.SesionCUIntPuerto;
-import com.unicauca.cfiet.solicitudes.domain.modelos.UsuarioTokenizado;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioTokenizado;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSesion.DTOPeticion.SesionDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSesion.DTORespuesta.UsuarioTokenizadoDTORespuesta;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSesion.mapeador.MapperSesionInfraestructuraDominio;

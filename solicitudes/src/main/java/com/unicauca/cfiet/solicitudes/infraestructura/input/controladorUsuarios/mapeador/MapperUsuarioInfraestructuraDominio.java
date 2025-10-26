@@ -1,8 +1,8 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.mapeador;
 
-import com.unicauca.cfiet.solicitudes.domain.modelos.TipoUsuario;
-import com.unicauca.cfiet.solicitudes.domain.modelos.Usuario;
-import com.unicauca.cfiet.solicitudes.domain.modelos.UsuarioLiviano;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.UsuarioActualizarDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.UsuarioDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTORespuesta.TipoUsuarioDTORespuesta;

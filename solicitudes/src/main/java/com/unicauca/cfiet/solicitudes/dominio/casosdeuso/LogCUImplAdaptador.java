@@ -1,11 +1,11 @@
-package com.unicauca.cfiet.solicitudes.domain.casosdeuso;
+package com.unicauca.cfiet.solicitudes.dominio.casosdeuso;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.LogCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.IJwtServicio;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.LogGatewayIntPuerto;
-import com.unicauca.cfiet.solicitudes.domain.modelos.Log;
-import com.unicauca.cfiet.solicitudes.domain.modelos.Usuario;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.MensajesError;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.estructura.CodigoError;
 

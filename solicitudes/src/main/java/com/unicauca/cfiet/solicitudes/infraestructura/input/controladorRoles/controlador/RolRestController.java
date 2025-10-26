@@ -1,7 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.controlador;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.RolCUIntPuerto;
-import com.unicauca.cfiet.solicitudes.domain.modelos.Rol;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTOPeticion.RolDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTORespuesta.RolDTORespuesta;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.mapeador.MapperRolInfraestructuraDominio;

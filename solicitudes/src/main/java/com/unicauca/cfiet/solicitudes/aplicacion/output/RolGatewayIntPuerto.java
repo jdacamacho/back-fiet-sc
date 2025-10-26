@@ -1,6 +1,6 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.output;
 
-import com.unicauca.cfiet.solicitudes.domain.modelos.Rol;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 
 import java.util.List;
 

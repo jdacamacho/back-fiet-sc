@@ -1,4 +1,4 @@
-package com.unicauca.cfiet.solicitudes.domain.modelos;
+package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +8,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class SecretariaFiet extends Usuario{
-    public SecretariaFiet(){
+public class SecretarioGeneral extends Usuario{
+    public SecretarioGeneral(){
         super();
     }
 }
