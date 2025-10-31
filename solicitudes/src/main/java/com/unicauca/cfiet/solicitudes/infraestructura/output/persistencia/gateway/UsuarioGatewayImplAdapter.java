@@ -51,9 +51,9 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
     public Usuario getUsuario(String uuid) {
         if(repositorio.existsById(uuid)) {
             UsuarioEntidad entidad = repositorio.findById(uuid).get();
-            if (entidad instanceof FuncionarioEntidad)
+            if (entidad instanceof FuncionarioEntidad) {
                 return mapper.map(entidad, Funcionario.class);
-            else if (entidad instanceof DecanoEntidad)
+            } else if (entidad instanceof DecanoEntidad)
                 return mapper.map(entidad, Decano.class);
             else if (entidad instanceof SecretarioGeneralEntidad)
                 return mapper.map(entidad, SecretarioGeneral.class);
