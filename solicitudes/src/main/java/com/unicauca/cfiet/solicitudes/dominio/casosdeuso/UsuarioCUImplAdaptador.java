@@ -71,6 +71,8 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
 
     @Override
     public Usuario crearUsuario(Usuario usuario, String tipoUsuario, String token) {
+        if(!usuario.revisarTipoDocumento())
+            formateadorExcepciones.lanzarMalFormato(MensajesError.TIPO_DOCUMENTO_ERRONEO);
         if(gateway.existeUsuarioNumeroDocumento(usuario.getNumeroDocumento()))
             formateadorExcepciones.lanzarEntidadExiste(String.format(MensajesError.ATRIBUTO_UNICO_YA_EXISTE, USUARIO, NUMERO_DOCUMENTO, usuario.getNumeroDocumento()));
         if(gateway.existeUsuarioCorreo(usuario.getCorreoElectronico()))
@@ -104,6 +106,8 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
             formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.ARCHIVO_EXCEL_VACIO, USUARIOS));
 
         for (Usuario usuario : usuarios) {
+            if(!usuario.revisarTipoDocumento())
+                formateadorExcepciones.lanzarMalFormato(MensajesError.TIPO_DOCUMENTO_ERRONEO);
             if (gateway.existeUsuarioNumeroDocumento(usuario.getNumeroDocumento()))
                 formateadorExcepciones.lanzarEntidadExiste(String.format(
                         MensajesError.ATRIBUTO_UNICO_YA_EXISTE, USUARIO, NUMERO_DOCUMENTO, usuario.getNumeroDocumento()));
@@ -159,6 +163,9 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
         Usuario usuarioObtenido = gateway.getUsuario(uuidUsuario);
         if(usuarioObtenido == null)
             formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, USUARIO, uuidUsuario));
+
+        if(!usuario.revisarTipoDocumento())
+            formateadorExcepciones.lanzarMalFormato(MensajesError.TIPO_DOCUMENTO_ERRONEO);
 
         if(usuario.tieneRolesDuplicados())
             formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.ROLES_DUPLICADOS_USUARIO);

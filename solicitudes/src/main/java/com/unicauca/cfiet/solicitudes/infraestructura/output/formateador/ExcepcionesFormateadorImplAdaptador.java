@@ -44,4 +44,9 @@ public class ExcepcionesFormateadorImplAdaptador implements ExcepcionesFormatead
     public void lanzarSinInformacion(String mensaje) {
         throw new ErrorNoInformacionExcepcion(mensaje);
     }
+
+    @Override
+    public void lanzarSinAcceso(String mensaje) {
+        throw new ErrorSinAccesoExcepcion(mensaje);
+    }
 }
