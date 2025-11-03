@@ -5,7 +5,7 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 import java.util.List;
 
 /**
- * Interface que actua como fachada con la capa de persistencia para la gestión de roles.
+ * Interfacz que actua como fachada con la capa de persistencia para la gestión de roles.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */

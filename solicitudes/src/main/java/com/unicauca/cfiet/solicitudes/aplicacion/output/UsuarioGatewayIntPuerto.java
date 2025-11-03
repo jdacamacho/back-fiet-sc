@@ -4,11 +4,10 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
-
 import java.util.List;
 
 /**
- * Interface que actua como fachada con la capa de persistencia para la gestión de usuarios.
+ * Interfaz que actua como fachada con la capa de persistencia para la gestión de usuarios.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */

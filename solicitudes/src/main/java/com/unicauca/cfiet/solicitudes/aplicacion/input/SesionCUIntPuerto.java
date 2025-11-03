@@ -3,7 +3,7 @@ package com.unicauca.cfiet.solicitudes.aplicacion.input;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioTokenizado;
 
 /**
- * Interface de los casos de usos para la gestión de Sesiones.
+ * Interfaz de caso de uso para la gestión de Sesiones.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */

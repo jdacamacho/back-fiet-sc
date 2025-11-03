@@ -6,7 +6,6 @@ import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIn
 import com.unicauca.cfiet.solicitudes.aplicacion.output.RolGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.MensajesError;
-
 import java.util.List;
 
 /**

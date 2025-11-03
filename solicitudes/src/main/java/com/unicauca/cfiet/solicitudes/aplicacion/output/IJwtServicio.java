@@ -1,7 +1,7 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.output;
 
 /**
- * Interface para interacción con la seguridad de spring boot.
+ * Interfaz para interacción con la seguridad de spring boot.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
