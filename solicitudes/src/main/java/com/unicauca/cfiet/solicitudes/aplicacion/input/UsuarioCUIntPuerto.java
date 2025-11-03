@@ -6,7 +6,7 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
 import java.util.List;
 
 /**
- * Interface de los casos de usos para la gestión de usuarios.
+ * Interfaz de caso de uso para la gestión de Usuarios.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */

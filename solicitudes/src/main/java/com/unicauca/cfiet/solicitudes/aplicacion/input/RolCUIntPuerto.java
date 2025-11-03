@@ -4,7 +4,7 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 import java.util.List;
 
 /**
- * Interface de los casos de usos para la gestión de Roles.
+ * Interfaz de caso de uso para la gestión de Roles.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */

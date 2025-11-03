@@ -1,7 +1,7 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.output;
 
 /**
- * Interface que encripta contraseñas
+ * Interfaz que encripta contraseñas
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */

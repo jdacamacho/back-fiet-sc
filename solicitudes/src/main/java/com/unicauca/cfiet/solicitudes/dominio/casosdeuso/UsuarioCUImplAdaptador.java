@@ -9,7 +9,6 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.MensajesError;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

@@ -4,7 +4,7 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
 import java.util.List;
 
 /**
- * Interface de los casos de usos para la gestión de Logs.
+ * Interfaz de caso de uso para la gestión de Logs en el sistema.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */

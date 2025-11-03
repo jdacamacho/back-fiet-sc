@@ -3,7 +3,7 @@ package com.unicauca.cfiet.solicitudes.aplicacion.output;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 
 /**
- * Interface que actua como fachada con la capa de persistencia para la gestión de sesiones.
+ * Interfaz que actua como fachada con la capa de persistencia para la gestión de sesiones.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */

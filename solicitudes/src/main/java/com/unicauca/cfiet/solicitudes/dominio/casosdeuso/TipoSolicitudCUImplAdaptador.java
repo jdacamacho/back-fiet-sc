@@ -7,7 +7,6 @@ import com.unicauca.cfiet.solicitudes.aplicacion.output.TipoSolicitudGatewayIntP
 import com.unicauca.cfiet.solicitudes.aplicacion.output.UsuarioGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.*;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.MensajesError;
-
 import java.util.List;
 import java.util.UUID;
 

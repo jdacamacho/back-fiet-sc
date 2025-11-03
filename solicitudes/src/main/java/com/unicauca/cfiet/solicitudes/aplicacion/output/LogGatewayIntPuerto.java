@@ -7,7 +7,7 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import java.util.List;
 
 /**
- * Interface que actua como fachada con la capa de persistencia para la gestión de logs.
+ * Interfaz que actua como fachada con la capa de persistencia para la gestión de logs.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */

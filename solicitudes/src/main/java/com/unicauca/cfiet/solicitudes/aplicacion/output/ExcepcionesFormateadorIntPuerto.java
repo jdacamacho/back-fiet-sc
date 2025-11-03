@@ -1,7 +1,7 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.output;
 
 /**
- *  Interface para manejar excepciones
+ *  Interfaz para manejar excepciones
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
