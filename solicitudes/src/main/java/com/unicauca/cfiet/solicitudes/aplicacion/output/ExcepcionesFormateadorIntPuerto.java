@@ -53,4 +53,11 @@ public interface ExcepcionesFormateadorIntPuerto {
      * @param mensaje Mensaje descriptivo del error.
      */
     void lanzarSinInformacion(String mensaje);
+
+    /**
+     * Método para devolver un mensaje de error cuando no se tiene acceso a una acción.
+     *
+     * @param mensaje Mensaje descriptivo del error.
+     */
+    void lanzarSinAcceso(String mensaje);
 }

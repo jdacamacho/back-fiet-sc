@@ -29,6 +29,35 @@ public class Usuario extends UsuarioLiviano{
         this.logs = new ArrayList<>();
     }
 
+    public boolean revisarTipoDocumento() {
+        String tipoDocumento = getTipoDocumento();
+        switch (tipoDocumento.trim().toLowerCase()) {
+            case "cédula de ciudadanía":
+                setTipoDocumento("Cédula de ciudadanía");
+                return true;
+            case "tarjeta de identidad":
+                setTipoDocumento("Tarjeta de identidad");
+                return true;
+            case "cédula de extranjería":
+                setTipoDocumento("Cédula de extranjería");
+                return true;
+            case "pasaporte":
+                setTipoDocumento("Pasaporte");
+                return true;
+            case "registro civil de nacimiento":
+                setTipoDocumento("Registro civil de nacimiento");
+                return true;
+            case "permiso especial de permanencia":
+                setTipoDocumento("Permiso especial de permanencia");
+                return true;
+            case "carné diplomático":
+                setTipoDocumento("Carné diplomático");
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public boolean rolesSonValidos(List<Rol> rolesValidos) {
         List<Rol> roles = this.getRoles();
         int wasFound = 0;
