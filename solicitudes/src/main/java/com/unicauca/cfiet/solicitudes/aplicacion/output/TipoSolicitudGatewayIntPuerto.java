@@ -13,4 +13,5 @@ public interface TipoSolicitudGatewayIntPuerto {
     List<TipoSolicitud> getTiposSolicitudes(int pagina, int tamanio);
     TipoSolicitud getTipoSolicitud(String uuidTipoSolicitud);
     TipoSolicitud guardarTipoSolicitud(TipoSolicitud tipoSolicitud);
+    List<TipoSolicitud> guardarTiposSolicitud(List<TipoSolicitud> tiposSolicitud);
 }

@@ -63,10 +63,12 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
     }
 
     @Override
-    public TipoSolicitud crearTipoSolicitud(TipoSolicitud tipoSolicitud, String uuidFuncionario, String token) {
-        asignarFuncionario(tipoSolicitud, uuidFuncionario);
+    public TipoSolicitud crearTipoSolicitud(TipoSolicitud tipoSolicitud, String token) {
+        asignarFuncionario(tipoSolicitud, tipoSolicitud.getUuidFuncionario());
         tipoSolicitud.setUuidTipoSolicitud(UUID.randomUUID().toString());
         if(tipoSolicitud.getAnexos() != null){
+            if(!tipoSolicitud.revisarSeccion())
+                formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.SECCION_NO_EXISTENTE);
             if(!tipoSolicitud.revisarAnexos())
                 formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.MAL_FORMATO_ANEXO);
 
@@ -80,27 +82,53 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
     }
 
     @Override
-    public TipoSolicitud actualizarTipoSolicitud(String uuidTipoSolicitud, String uuidFuncionario, TipoSolicitud tipoSolicitud, String token) {
+    public TipoSolicitud actualizarTipoSolicitud(String uuidTipoSolicitud, TipoSolicitud tipoSolicitud, String token) {
         TipoSolicitud tipoSolicitudObtenida = gateway.getTipoSolicitud(uuidTipoSolicitud);
 
         if(tipoSolicitudObtenida == null)
             formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, TIPO_SOLICITUD, uuidTipoSolicitud));
-        if(tipoSolicitudObtenida.getObjFuncionarioEncargado() != null && (uuidFuncionario == null ||  uuidFuncionario.isBlank())){
+        if(tipoSolicitudObtenida.getObjFuncionarioEncargado() != null && (tipoSolicitud.getUuidFuncionario() == null ||  tipoSolicitud.getUuidFuncionario().isBlank())){
             Funcionario funcionarioAnterior = tipoSolicitudObtenida.getObjFuncionarioEncargado();
             funcionarioAnterior.getTiposSolicitudes().remove(tipoSolicitudObtenida);
             tipoSolicitudObtenida.setObjFuncionarioEncargado(null);
         }
-        if(tipoSolicitudObtenida.getObjFuncionarioEncargado() == null && uuidFuncionario != null && !uuidFuncionario.isBlank())
-            asignarFuncionario(tipoSolicitud, uuidFuncionario);
-        if(tipoSolicitudObtenida.getObjFuncionarioEncargado() != null && !tipoSolicitudObtenida.getObjFuncionarioEncargado().getUuidUsuario().equals(uuidFuncionario)
-                && uuidFuncionario != null && !uuidFuncionario.isBlank())
-            asignarFuncionario(tipoSolicitud, uuidFuncionario);
+        if(tipoSolicitudObtenida.getObjFuncionarioEncargado() == null && tipoSolicitud.getUuidFuncionario() != null && !tipoSolicitud.getUuidFuncionario().isBlank())
+            asignarFuncionario(tipoSolicitud, tipoSolicitud.getUuidFuncionario());
+        if(tipoSolicitudObtenida.getObjFuncionarioEncargado() != null && !tipoSolicitudObtenida.getObjFuncionarioEncargado().getUuidUsuario().equals(tipoSolicitud.getUuidFuncionario())
+                && tipoSolicitud.getUuidFuncionario() != null && !tipoSolicitud.getUuidFuncionario().isBlank())
+            asignarFuncionario(tipoSolicitud, tipoSolicitud.getUuidFuncionario());
 
         tipoSolicitudObtenida.actualizarTipoSolicitud(tipoSolicitud);
+        if(!tipoSolicitud.revisarSeccion())
+            formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.SECCION_NO_EXISTENTE);
         if(!tipoSolicitud.revisarAnexos())
             formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.MAL_FORMATO_ANEXO);
         log.crearLog("Actualizar Tipo Solicitud", "Tipo de Solicitud Actualizado con exito!", token);
         return gateway.guardarTipoSolicitud(tipoSolicitudObtenida);
+    }
+
+    @Override
+    public List<TipoSolicitud> crearTiposSolicitud(List<TipoSolicitud> tiposSolicitud, String token) {
+        for(TipoSolicitud tipoSolicitud: tiposSolicitud){
+            asignarFuncionario(tipoSolicitud, tipoSolicitud.getUuidFuncionario());
+            tipoSolicitud.setUuidTipoSolicitud(UUID.randomUUID().toString());
+            if(tipoSolicitud.getAnexos() != null){
+                if(!tipoSolicitud.revisarSeccion())
+                    formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.SECCION_NO_EXISTENTE);
+                if(!tipoSolicitud.revisarAnexos())
+                    formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.MAL_FORMATO_ANEXO);
+
+                for(TipoAnexo anexo : tipoSolicitud.getAnexos()) {
+                    anexo.setUuidTipoAnexo(UUID.randomUUID().toString());
+                    anexo.setObjTipoSolicitud(tipoSolicitud);
+                }
+            }
+        }
+
+        List<TipoSolicitud> guardados = gateway.guardarTiposSolicitud(tiposSolicitud);
+        for(TipoSolicitud tipoSolicitudGuardado: guardados)
+            log.crearLog("Crear Tipo de Solicitud", String.format("Tipo de Solicitud %s con uuid %s",tipoSolicitudGuardado.getNombre(), tipoSolicitudGuardado.getUuidTipoSolicitud()),token);
+        return guardados;
     }
 
     private void asignarFuncionario(TipoSolicitud tipoSolicitud, String uuidFuncionario){

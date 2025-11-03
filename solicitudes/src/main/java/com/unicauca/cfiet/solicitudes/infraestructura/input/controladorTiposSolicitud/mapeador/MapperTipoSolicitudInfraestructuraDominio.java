@@ -25,6 +25,10 @@ public class MapperTipoSolicitudInfraestructuraDominio {
         return mapper.map(peticion, TipoSolicitud.class);
     }
 
+    public List<TipoSolicitud> mapearPeticionesAModelo(List<TipoSolicitudDTOPeticion> peticiones){
+        return mapper.map(peticiones, new TypeToken<List<TipoSolicitud>>(){}.getType());
+    }
+
     public TipoSolicitudDTORespuesta mapearModeloARespuesta(TipoSolicitud modelo){
         return mapper.map(modelo, TipoSolicitudDTORespuesta.class);
     }

@@ -6,6 +6,7 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.ProcesadorArchivos;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.validadoresArchivos.UsuarioExcelService;
+import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.validadoresArchivos.ValidadorPeticionesExcel;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.CambioContraseñaDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.UsuarioActualizarDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.UsuarioDTOPeticion;
@@ -16,7 +17,6 @@ import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,18 +41,16 @@ public class UsuarioRestController{
     private final UsuarioCUIntPuerto casoDeUso;
     private final MapperUsuarioInfraestructuraDominio mapper;
     private final ProcesadorArchivos<UsuarioDTOPeticion> procesadorArchivos;
-    private final UsuarioExcelService usuarioExcelService;
-    @Value("${rol.secretarioGeneral}")
-    private String rolSecretarioGeneral;
+    private final ValidadorPeticionesExcel<UsuarioDTOPeticion> validadorPeticion;
 
     public UsuarioRestController(UsuarioCUIntPuerto casoDeUso,
                                  MapperUsuarioInfraestructuraDominio mapper,
                                  @Qualifier("archivos-usuarios") ProcesadorArchivos<UsuarioDTOPeticion> procesadorArchivos,
-                                 UsuarioExcelService usuarioExcelService){
+                                 @Qualifier("validador-usuarios") ValidadorPeticionesExcel<UsuarioDTOPeticion> validadorPeticion){
         this.casoDeUso = casoDeUso;
         this.mapper = mapper;
         this.procesadorArchivos = procesadorArchivos;
-        this.usuarioExcelService = usuarioExcelService;
+        this.validadorPeticion = validadorPeticion;
     }
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
@@ -117,7 +115,7 @@ public class UsuarioRestController{
         List<UsuarioDTOPeticion> peticiones = procesadorArchivos.procesarArchivo(file);
         Map<String, String> erroresPeticiones;
         for(UsuarioDTOPeticion peticion : peticiones) {
-            erroresPeticiones = usuarioExcelService.validarUsuario(peticion);
+            erroresPeticiones = validadorPeticion.validar(peticion);
             if(erroresPeticiones != null)
                 return new ResponseEntity<Map<String, String>>(erroresPeticiones, HttpStatus.BAD_REQUEST);
         }

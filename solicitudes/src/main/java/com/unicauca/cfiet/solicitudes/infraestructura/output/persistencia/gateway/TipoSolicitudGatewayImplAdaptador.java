@@ -57,4 +57,11 @@ public class TipoSolicitudGatewayImplAdaptador implements TipoSolicitudGatewayIn
         TipoSolicitudEntidad entidadGuardada = repositorio.save(entidad);
         return mapper.map(entidadGuardada, TipoSolicitud.class);
     }
+
+    @Override
+    public List<TipoSolicitud> guardarTiposSolicitud(List<TipoSolicitud> tiposSolicitud) {
+        List<TipoSolicitudEntidad> entidades = mapper.map(tiposSolicitud, new TypeToken<List<TipoSolicitudEntidad>>(){}.getType());
+        List<TipoSolicitudEntidad> guardados = repositorio.saveAll(entidades);
+        return mapper.map(guardados, new TypeToken<List<TipoSolicitud>>(){}.getType());
+    }
 }

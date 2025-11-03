@@ -18,9 +18,30 @@ public class TipoSolicitud {
     private String seccion;
     private List<TipoAnexo> anexos;
     private Funcionario objFuncionarioEncargado;
+    private String uuidFuncionario;
 
     public TipoSolicitud(){
         this.anexos = new ArrayList<>();
+    }
+
+    public boolean revisarSeccion() {
+        String seccion = getSeccion();
+        switch (seccion.trim().toLowerCase()) {
+            case "decanatura":
+                setSeccion("Decanatura");
+                return true;
+            case "posgrado":
+                setSeccion("Posgrado");
+                return true;
+            case "pregrado":
+                setSeccion("Pregrado");
+                return true;
+            case "otro":
+                setSeccion("Otro");
+                return true;
+            default:
+                return false;
+        }
     }
 
     public boolean revisarAnexos(){
@@ -47,7 +68,8 @@ public class TipoSolicitud {
         }
         if (tipoSolicitud.getObjFuncionarioEncargado() != null)
             this.objFuncionarioEncargado = tipoSolicitud.getObjFuncionarioEncargado();
-
+        if(tipoSolicitud.getUuidFuncionario() != null && !tipoSolicitud.getUuidFuncionario().isBlank())
+            this.uuidFuncionario = tipoSolicitud.getUuidFuncionario();
     }
 
 }

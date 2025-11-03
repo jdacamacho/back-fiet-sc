@@ -3,6 +3,7 @@ package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorTiposSol
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Builder
 public class TipoAnexoDTOPeticion {
     @NotNull(message = "El nombre del anexo no puede ser nulo")
     @NotBlank(message = "El nombre del anexo no puede estar vacío")

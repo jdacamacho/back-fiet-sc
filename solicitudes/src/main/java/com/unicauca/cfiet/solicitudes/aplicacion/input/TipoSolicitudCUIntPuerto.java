@@ -12,6 +12,7 @@ public interface TipoSolicitudCUIntPuerto {
     List<TipoSolicitud> getTiposSolicitud();
     List<TipoSolicitud> getTiposSolicitud(int pagina, int tamanio);
     TipoSolicitud getTipoSolicitud(String uuidTipoSolicitud);
-    TipoSolicitud crearTipoSolicitud(TipoSolicitud tipoSolicitud, String uuidFuncionario, String token);
-    TipoSolicitud actualizarTipoSolicitud(String uuidTipoSolicitud, String uuidFuncionario, TipoSolicitud tipoSolicitud, String token);
+    TipoSolicitud crearTipoSolicitud(TipoSolicitud tipoSolicitud, String token);
+    TipoSolicitud actualizarTipoSolicitud(String uuidTipoSolicitud, TipoSolicitud tipoSolicitud, String token);
+    List<TipoSolicitud> crearTiposSolicitud(List<TipoSolicitud> tiposSolicitud, String token);
 }

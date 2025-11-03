@@ -1,5 +1,6 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.validadoresArchivos;
 
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorTiposSolicitud.DTOPeticion.TipoSolicitudDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.UsuarioDTOPeticion;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
@@ -14,14 +15,14 @@ import java.util.stream.Collectors;
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
-@Service("validador-usuarios")
+@Service("validador-tipos-solicitud")
 @RequiredArgsConstructor
-public class UsuarioExcelService implements ValidadorPeticionesExcel<UsuarioDTOPeticion>{
+public class TipoSolicitudExcelService implements ValidadorPeticionesExcel<TipoSolicitudDTOPeticion>{
     private final Validator validator;
 
     @Override
-    public Map<String, String> validar(UsuarioDTOPeticion peticion) {
-        Set<ConstraintViolation<UsuarioDTOPeticion>> violaciones = validator.validate(peticion);
+    public Map<String, String> validar(TipoSolicitudDTOPeticion peticion) {
+        Set<ConstraintViolation<TipoSolicitudDTOPeticion>> violaciones = validator.validate(peticion);
         if (violaciones.isEmpty())
             return null;
 
