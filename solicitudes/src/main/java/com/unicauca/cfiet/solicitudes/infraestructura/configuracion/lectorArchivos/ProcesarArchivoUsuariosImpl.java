@@ -28,7 +28,7 @@ public class ProcesarArchivoUsuariosImpl implements ProcesadorArchivos<UsuarioDT
     private final ModelMapper mapper;
 
     public ProcesarArchivoUsuariosImpl( UsuarioGatewayIntPuerto gateway
-            , @Qualifier("mapeadorSimple") ModelMapper mapper){
+            ,@Qualifier("mapeadorSimple") ModelMapper mapper){
         this.gateway = gateway;
         this.mapper = mapper;
     }

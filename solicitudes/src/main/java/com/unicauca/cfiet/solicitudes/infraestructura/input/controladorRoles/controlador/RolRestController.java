@@ -32,8 +32,6 @@ import java.util.Map;
 public class RolRestController {
     private final RolCUIntPuerto casoDeUso;
     private final MapperRolInfraestructuraDominio mapper;
-    @Value("${rol.secretarioGeneral}")
-    private String rolSecretarioGeneral;
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @GetMapping

@@ -27,8 +27,6 @@ import java.util.List;
 public class LogRestController {
     private final LogCUIntPuerto casoDeUso;
     private final MapperLogInfraestructuraDominio mapper;
-    @Value("${rol.secretarioGeneral}")
-    private String rolSecretarioGeneral;
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @GetMapping

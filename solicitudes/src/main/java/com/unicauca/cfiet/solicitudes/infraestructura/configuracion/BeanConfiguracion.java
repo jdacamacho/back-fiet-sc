@@ -2,10 +2,7 @@ package com.unicauca.cfiet.solicitudes.infraestructura.configuracion;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.LogCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.*;
-import com.unicauca.cfiet.solicitudes.dominio.casosdeuso.LogCUImplAdaptador;
-import com.unicauca.cfiet.solicitudes.dominio.casosdeuso.RolCUImplAdaptador;
-import com.unicauca.cfiet.solicitudes.dominio.casosdeuso.SesionCUImplAdaptador;
-import com.unicauca.cfiet.solicitudes.dominio.casosdeuso.UsuarioCUImplAdaptador;
+import com.unicauca.cfiet.solicitudes.dominio.casosdeuso.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -39,5 +36,10 @@ public class BeanConfiguracion {
     @Bean
     public LogCUImplAdaptador crearLogCU(LogGatewayIntPuerto gateway,ExcepcionesFormateadorIntPuerto formateadorExcepciones, IJwtServicio jwtServicio){
         return new LogCUImplAdaptador(gateway, formateadorExcepciones, jwtServicio);
+    }
+
+    @Bean
+    public TipoSolicitudCUImplAdaptador crearTipoSolicitudCU(TipoSolicitudGatewayIntPuerto gateway, UsuarioGatewayIntPuerto gatewayUsuario, ExcepcionesFormateadorIntPuerto formateadorExcepciones, LogCUIntPuerto log){
+        return new TipoSolicitudCUImplAdaptador(gateway, gatewayUsuario, formateadorExcepciones, log);
     }
 }

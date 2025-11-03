@@ -18,4 +18,7 @@ public class MensajesError {
     public static final String CONTRASEÑA_INCORRECTA = "Contraseña incorrecta...";
     public static final String CREDENCIALES_ERRONEAS = "Credenciales erroneas, revise su username o contraseña...";
     public static final String USERNAME_TOKEN =  "No se pudo extraer el username del token...";
+    public static final String MAL_FORMATO_ANEXO = "El formato de anexo ingresado no esta soportado...";
+    public static final String MAL_ASIGNACION = "Solo los usuarios creados inicialmente como funcionarios pueden tener tipos de solicitudes asignados...";
+    public static final String SECCION_NO_EXISTENTE = "Sección universitaria no soportada...";
 }
