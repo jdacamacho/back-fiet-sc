@@ -5,6 +5,7 @@ import com.unicauca.cfiet.solicitudes.aplicacion.input.UsuarioCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.PasswordEncoderGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.UsuarioGatewayIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
@@ -52,13 +53,28 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
     }
 
     @Override
-    public List<UsuarioLiviano> getUsuarios(int pagina, int tamanio) {
-        if(pagina < 0 || tamanio < 0)
+    public PaginacionRespuestaDTO<UsuarioLiviano> getUsuarios(int pagina, int tamanio) {
+        if (pagina < 0 || tamanio < 0)
             formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
-        List<UsuarioLiviano> usuarios = gateway.getUsuarios(pagina, tamanio);
-        if(usuarios.isEmpty())
+        PaginacionRespuestaDTO<UsuarioLiviano> respuesta = gateway.getUsuarios(pagina, tamanio);
+        if (respuesta.getContent().isEmpty())
             formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, USUARIOS));
-        return  usuarios;
+        return respuesta;
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<UsuarioLiviano> getUsuariosByNombreCompleto(String nombreCompleto, int pagina, int tamanio) {
+        if (pagina < 0 || tamanio < 0)
+            formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
+        PaginacionRespuestaDTO<UsuarioLiviano> respuesta = gateway.getUsuariosByNombreCompleto(nombreCompleto, pagina, tamanio);
+        if (respuesta.getContent().isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, USUARIOS));
+        return respuesta;
+    }
+
+    @Override
+    public long countUsuarios() {
+        return gateway.countUsuarios();
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.RolEntidad;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.RolRepositorio;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,14 +29,18 @@ public class RolGatewayImplAdaptador implements RolGatewayIntPuerto {
     @Override
     public List<Rol> getRoles() {
         List<RolEntidad> entidades = repositorio.findAll();
-        return mapper.map(entidades, new TypeToken<List<Rol>>(){}.getType());
+        return entidades.stream()
+                .map(e -> mapper.map(e, Rol.class))
+                .toList();
     }
 
     @Override
     public List<Rol> getRoles(int pagina, int tamanio) {
         Pageable paginado = PageRequest.of(pagina, tamanio);
         List<RolEntidad> entidades = repositorio.findAll(paginado).getContent();
-        return mapper.map(entidades, new TypeToken<List<Rol>>(){}.getType());
+        return entidades.stream()
+                .map(e -> mapper.map(e, Rol.class))
+                .toList();
     }
 
     @Override

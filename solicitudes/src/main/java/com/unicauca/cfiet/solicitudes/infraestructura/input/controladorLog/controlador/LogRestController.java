@@ -45,4 +45,24 @@ public class LogRestController {
                 mapper.mapearModelosARespuesta(logs), HttpStatus.OK
         );
     }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/filtro")
+    public ResponseEntity<List<LogDTORespuesta>> filtrarLogs(
+            @RequestParam(value = "responsable", required = false) String responsable,
+            @RequestParam(value = "fecha", required = false) String fecha,
+            @RequestParam("pagina") int pagina,
+            @RequestParam("tamanio") int tamanio) {
+        List<Log> logs = casoDeUso.getLogs(responsable, fecha, pagina, tamanio);
+        return new ResponseEntity<>(
+                mapper.mapearModelosARespuesta(logs), HttpStatus.OK
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/total")
+    public ResponseEntity<Long> getTotalLogs() {
+        long totalLogs = casoDeUso.countLogs();
+        return ResponseEntity.ok(totalLogs);
+    }
 }

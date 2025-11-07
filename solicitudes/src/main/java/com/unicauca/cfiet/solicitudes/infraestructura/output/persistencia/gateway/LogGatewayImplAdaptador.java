@@ -7,8 +7,8 @@ import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entida
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.UsuarioEntidad;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.LogRepositorio;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,13 +41,32 @@ public class LogGatewayImplAdaptador implements LogGatewayIntPuerto {
     public List<Log> getLogs(int pagina, int tamanio) {
         Pageable paginado = PageRequest.of(pagina, tamanio);
         List<LogEntidad> entidades = repositorio.findAll(paginado).getContent();
-        return mapper.map(entidades, new TypeToken<List<Log>>(){}.getType());
+        return entidades.stream()
+                .map(e -> mapper.map(e, Log.class))
+                .toList();
     }
 
     @Override
     public List<Log> getLogs() {
         List<LogEntidad> entidades = repositorio.findAll();
-        return mapper.map(entidades, new TypeToken<List<Log>>(){}.getType());
+        return entidades.stream()
+                .map(e -> mapper.map(e, Log.class))
+                .toList();
+    }
+
+    @Override
+    public List<Log> getLogs(String responsable, String fecha, int pagina, int tamanio){
+        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Page<LogEntidad> page = repositorio.findByResponsableAndFecha(responsable, fecha, paginado);
+
+        return page.getContent().stream()
+                .map(e -> mapper.map(e, Log.class))
+                .toList();
+    }
+
+    @Override
+    public long countLogs() {
+        return repositorio.countLogs();
     }
 
     @Override

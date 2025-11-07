@@ -96,6 +96,18 @@ public class LogCUImplAdaptador implements LogCUIntPuerto {
     }
 
     @Override
+    public List<Log> getLogs(String responsable, String fecha, int pagina, int tamanio){
+        if(pagina < 0 || tamanio < 0)
+            formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
+        return gateway.getLogs(responsable, fecha, pagina, tamanio);
+    }
+
+    @Override
+    public long countLogs() {
+        return gateway.countLogs();
+    }
+
+    @Override
     public List<Log> getLogs() {
         List<Log> logs = gateway.getLogs();
         if(logs.isEmpty())

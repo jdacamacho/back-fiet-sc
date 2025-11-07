@@ -1,6 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.controlador;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.UsuarioCUIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
@@ -64,10 +65,31 @@ public class UsuarioRestController{
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @GetMapping("/paginado")
-    public ResponseEntity<?> indexPaginado(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
-        List<UsuarioLiviano> usuarios = casoDeUso.getUsuarios(pagina, tamanio);
-        return new ResponseEntity<List<UsuarioLivianoDTORespuesta>>(
-                mapper.mapearModelosARespuestaLiviano(usuarios), HttpStatus.OK
+    public ResponseEntity<?> indexPaginado(@RequestParam("pagina") int pagina,
+                                           @RequestParam("tamanio") int tamanio) {
+        var respuesta = casoDeUso.getUsuarios(pagina, tamanio);
+        return new ResponseEntity<>(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuestaLiviano(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                ),
+                HttpStatus.OK
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/filtro")
+    public ResponseEntity<?> getUsuariosByNombresApellidos(
+            @RequestParam(value = "nombreCompleto", required = false) String nombreCompleto,
+            @RequestParam("pagina") int pagina,
+            @RequestParam("tamanio") int tamanio) {
+        var respuesta = casoDeUso.getUsuariosByNombreCompleto(nombreCompleto, pagina, tamanio);
+        return new ResponseEntity<>(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuestaLiviano(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                ),
+                HttpStatus.OK
         );
     }
 
@@ -170,5 +192,12 @@ public class UsuarioRestController{
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/total")
+    public ResponseEntity<Long> getTotalUsuarios() {
+        long totalUsuarios = casoDeUso.countUsuarios();
+        return ResponseEntity.ok(totalUsuarios);
     }
 }

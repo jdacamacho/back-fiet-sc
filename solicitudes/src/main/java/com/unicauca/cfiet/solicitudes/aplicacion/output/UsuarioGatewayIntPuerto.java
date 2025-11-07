@@ -1,5 +1,6 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.output;
 
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
@@ -26,7 +27,7 @@ public interface UsuarioGatewayIntPuerto {
      * @param tamanio la cantidad de elementos por página.
      * @return la lista de usuarios livianos correspondientes a la página.
      */
-    List<UsuarioLiviano> getUsuarios(int pagina, int tamanio);
+    PaginacionRespuestaDTO<UsuarioLiviano> getUsuarios(int pagina, int tamanio);
 
     /**
      * Obtiene un usuario por su identificador único.
@@ -47,10 +48,20 @@ public interface UsuarioGatewayIntPuerto {
     /**
      * Guarda usuarios en el sistema.
      *
-     * @param usuarios la lista de usuarios a guardarr
+     * @param usuarios la lista de usuarios a guardar
      * @return los usuarios guardados.
      */
     List<Usuario> guardarUsuarios(List<Usuario> usuarios);
+
+    /**
+     * Obtiene la lista de usuarios filtrados por nombre y apellido.
+     *
+     * @param nombreCompleto nomre completo del Usuario
+     * @param pagina el número de página.
+     * @param tamanio el tamaño de la página.
+     * @return la lista de usuarios filtrados.
+     */
+    PaginacionRespuestaDTO<UsuarioLiviano> getUsuariosByNombreCompleto(String nombreCompleto, int pagina, int tamanio);
 
     /**
      * Verifica si existe un usuario con el número de documento dado.
@@ -59,6 +70,13 @@ public interface UsuarioGatewayIntPuerto {
      * @return true si el usuario existe, false en caso contrario.
      */
     boolean existeUsuarioNumeroDocumento(String numeroDocumento);
+
+    /**
+     * Cuenta los usuarios en el sistema.
+     *
+     * @return el numero de usuarios en el sistema.
+     */
+    long countUsuarios();
 
     /**
      * Verifica si existe un usuario con el correo dado.

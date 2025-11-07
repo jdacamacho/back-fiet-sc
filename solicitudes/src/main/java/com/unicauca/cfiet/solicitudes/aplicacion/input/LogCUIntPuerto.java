@@ -37,6 +37,23 @@ public interface LogCUIntPuerto {
     List<Log> getLogs(int pagina, int tamanio);
 
     /**
+     * Obtener logs filtrados.
+     * @param responsable responsable de la acción.
+     * @param fecha fecha de creación.
+     * @param pagina el número de página.
+     * @param tamanio el tamaño de cada página.
+     * @return Lista de logs correspondiente a la página solicitada.
+     */
+    List<Log> getLogs(String responsable, String fecha, int pagina, int tamanio);
+
+    /**
+     * Cuenta los logs del sistema.
+     *
+     * @return Numero de logs en el sistema.
+     */
+    long countLogs();
+
+    /**
      * Obtener todos los logs del sistema.
      *
      * @return Lista completa de logs.
