@@ -32,14 +32,18 @@ public class TipoSolicitudGatewayImplAdaptador implements TipoSolicitudGatewayIn
     @Override
     public List<TipoSolicitud> getTiposSolicitudes() {
         List<TipoSolicitudEntidad> entidades = repositorio.findAll();
-        return  mapper.map(entidades, new TypeToken<List<TipoSolicitud>>(){}.getType());
+        return entidades.stream()
+                .map(e -> mapper.map(e, TipoSolicitud.class))
+                .toList();
     }
 
     @Override
     public List<TipoSolicitud> getTiposSolicitudes(int pagina, int tamanio) {
         Pageable paginado = PageRequest.of(pagina, tamanio);
         List<TipoSolicitudEntidad> entidades = repositorio.findAll(paginado).getContent();
-        return  mapper.map(entidades, new TypeToken<List<TipoSolicitud>>(){}.getType());
+        return entidades.stream()
+                .map(e -> mapper.map(e, TipoSolicitud.class))
+                .toList();
     }
 
     @Override
