@@ -1,6 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.gateway;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.output.LogGatewayIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.LogEntidad;
@@ -38,12 +39,15 @@ public class LogGatewayImplAdaptador implements LogGatewayIntPuerto {
     }
 
     @Override
-    public List<Log> getLogs(int pagina, int tamanio) {
+    public PaginacionRespuestaDTO<Log> getLogs(int pagina, int tamanio) {
         Pageable paginado = PageRequest.of(pagina, tamanio);
-        List<LogEntidad> entidades = repositorio.findAll(paginado).getContent();
-        return entidades.stream()
+        Page<LogEntidad> page = repositorio.findAll(paginado);
+
+        List<Log> logs = page.getContent().stream()
                 .map(e -> mapper.map(e, Log.class))
                 .toList();
+
+        return new PaginacionRespuestaDTO<>(logs, page.getTotalElements());
     }
 
     @Override
@@ -55,13 +59,15 @@ public class LogGatewayImplAdaptador implements LogGatewayIntPuerto {
     }
 
     @Override
-    public List<Log> getLogs(String responsable, String fecha, int pagina, int tamanio){
+    public PaginacionRespuestaDTO<Log> getLogs(String responsable, String fecha, int pagina, int tamanio) {
         Pageable paginado = PageRequest.of(pagina, tamanio);
         Page<LogEntidad> page = repositorio.findByResponsableAndFecha(responsable, fecha, paginado);
 
-        return page.getContent().stream()
+        List<Log> logs = page.getContent().stream()
                 .map(e -> mapper.map(e, Log.class))
                 .toList();
+
+        return new PaginacionRespuestaDTO<>(logs, page.getTotalElements());
     }
 
     @Override

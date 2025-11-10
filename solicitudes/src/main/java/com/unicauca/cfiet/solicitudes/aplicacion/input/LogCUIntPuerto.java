@@ -1,5 +1,6 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.input;
 
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public interface LogCUIntPuerto {
      * @param tamanio el tamaño de cada página.
      * @return Lista de logs correspondientes a la página solicitada.
      */
-    List<Log> getLogs(int pagina, int tamanio);
+    PaginacionRespuestaDTO<Log> getLogs(int pagina, int tamanio);
 
     /**
      * Obtener logs filtrados.
@@ -44,7 +45,7 @@ public interface LogCUIntPuerto {
      * @param tamanio el tamaño de cada página.
      * @return Lista de logs correspondiente a la página solicitada.
      */
-    List<Log> getLogs(String responsable, String fecha, int pagina, int tamanio);
+    PaginacionRespuestaDTO<Log> getLogs(String responsable, String fecha, int pagina, int tamanio);
 
     /**
      * Cuenta los logs del sistema.

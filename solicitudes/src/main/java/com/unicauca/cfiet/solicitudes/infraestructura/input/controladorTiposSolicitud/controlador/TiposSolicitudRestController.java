@@ -9,6 +9,7 @@ import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorTiposSoli
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorTiposSolicitud.mapeador.MapperTipoSolicitudInfraestructuraDominio;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
@@ -48,10 +50,33 @@ public class TiposSolicitudRestController {
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @GetMapping("/paginado")
-    public ResponseEntity<?> indexPaginado(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
-        List<TipoSolicitud> tipos = casoDeUso.getTiposSolicitud(pagina, tamanio);
-        return new ResponseEntity<List<TipoSolicitudDTORespuesta>>(
-                mapper.mapearModelosARespuesta(tipos), HttpStatus.OK
+    public ResponseEntity<?> indexPaginado(
+            @RequestParam("pagina") int pagina,
+            @RequestParam("tamanio") int tamanio) {
+        var respuesta = casoDeUso.getTiposSolicitud(pagina, tamanio);
+        return new ResponseEntity<>(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuesta(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                ),
+                HttpStatus.OK
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/filtro")
+    public ResponseEntity<?> getTiposDeSolicitudFiltrado(
+            @RequestParam(value = "nombreSolicitud", required = false) String nombreSolicitud,
+            @RequestParam(value = "funcionario", required = false) String funcionario,
+            @RequestParam("pagina") int pagina,
+            @RequestParam("tamanio") int tamanio) {
+        var respuesta = casoDeUso.getTiposSolicitud(nombreSolicitud, funcionario, pagina, tamanio);
+        return new ResponseEntity<>(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuesta(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                ),
+                HttpStatus.OK
         );
     }
 

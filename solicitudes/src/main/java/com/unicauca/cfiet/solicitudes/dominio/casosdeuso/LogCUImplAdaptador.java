@@ -4,6 +4,7 @@ import com.unicauca.cfiet.solicitudes.aplicacion.input.LogCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.IJwtServicio;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.LogGatewayIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.MensajesError;
@@ -86,17 +87,17 @@ public class LogCUImplAdaptador implements LogCUIntPuerto {
     }
 
     @Override
-    public List<Log> getLogs(int pagina, int tamanio) {
-        if(pagina < 0 || tamanio < 0)
+    public PaginacionRespuestaDTO<Log> getLogs(int pagina, int tamanio) {
+        if (pagina < 0 || tamanio < 0)
             formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
-        List<Log> logs = gateway.getLogs(pagina, tamanio);
-        if(logs.isEmpty())
+        PaginacionRespuestaDTO<Log> respuesta = gateway.getLogs(pagina, tamanio);
+        if (respuesta.getContent().isEmpty())
             formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, LOGS));
-        return  logs;
+        return respuesta;
     }
 
     @Override
-    public List<Log> getLogs(String responsable, String fecha, int pagina, int tamanio){
+    public PaginacionRespuestaDTO<Log> getLogs(String responsable, String fecha, int pagina, int tamanio){
         if(pagina < 0 || tamanio < 0)
             formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
         return gateway.getLogs(responsable, fecha, pagina, tamanio);

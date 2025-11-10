@@ -1,5 +1,6 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.input;
 
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoSolicitud;
 import java.util.List;
 
@@ -24,7 +25,17 @@ public interface TipoSolicitudCUIntPuerto {
      * @param tamanio cantidad de elementos por página.
      * @return lista con los tipos de solicitud de la página solicitada.
      */
-    List<TipoSolicitud> getTiposSolicitud(int pagina, int tamanio);
+    PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitud(int pagina, int tamanio);
+
+    /**
+     * Obtener los tipos de solicitud filtrados de forma paginada.
+     * @param nombreSolicitud nombre del Tipo de Solicitud.
+     * @param funcionario nombre del funcionario (nombres o apellidos).
+     * @param pagina número de la página a consultar.
+     * @param tamanio cantidad de elementos por página.
+     * @return lista con los tipos de solicitud de la página solicitada.
+     */
+    PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitud(String nombreSolicitud, String funcionario, int pagina, int tamanio);
 
     /**
      * Buscar un tipo de solicitud por su identificador único.
