@@ -71,14 +71,8 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
     public Usuario getUsuario(String uuid) {
         if(repositorio.existsById(uuid)) {
             UsuarioEntidad entidad = repositorio.findById(uuid).get();
-            if (entidad instanceof FuncionarioEntidad) {
+            if (entidad instanceof FuncionarioEntidad)
                 return mapper.map(entidad, Funcionario.class);
-            } else if (entidad instanceof DecanoEntidad)
-                return mapper.map(entidad, Decano.class);
-            else if (entidad instanceof SecretarioGeneralEntidad)
-                return mapper.map(entidad, SecretarioGeneral.class);
-            else if (entidad instanceof  SecretariaFietEntidad)
-                return mapper.map(entidad, SecretariaFiet.class);
             else
                 return mapper.map(entidad, Usuario.class);
         }
@@ -88,18 +82,10 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
     @Override
     public Usuario guardarUsuario(Usuario usuario) {
         UsuarioEntidad usuarioGuardar;
-
-        if(usuario instanceof SecretarioGeneral)
-            usuarioGuardar = mapper.map(usuario, SecretarioGeneralEntidad.class);
-        else if (usuario instanceof Funcionario)
+        if (usuario instanceof Funcionario)
             usuarioGuardar = mapper.map(usuario, FuncionarioEntidad.class);
-        else if (usuario instanceof Decano)
-            usuarioGuardar = mapper.map(usuario, DecanoEntidad.class);
-        else if (usuario instanceof  SecretariaFiet)
-            usuarioGuardar = mapper.map(usuario, SecretariaFietEntidad.class);
         else
-            return null;
-
+            usuarioGuardar = mapper.map(usuario, UsuarioEntidad.class);
         UsuarioEntidad usuarioGuardado = repositorio.save(usuarioGuardar);
         return mapper.map(usuarioGuardado, Usuario.class);
     }
@@ -111,33 +97,20 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
         for (Usuario usuario : usuarios) {
             UsuarioEntidad entidad;
 
-            if (usuario instanceof SecretarioGeneral)
-                entidad = mapper.map(usuario, SecretarioGeneralEntidad.class);
-            else if (usuario instanceof Funcionario)
+            if (usuario instanceof Funcionario)
                 entidad = mapper.map(usuario, FuncionarioEntidad.class);
-            else if (usuario instanceof Decano)
-                entidad = mapper.map(usuario, DecanoEntidad.class);
-            else if (usuario instanceof SecretariaFiet)
-                entidad = mapper.map(usuario, SecretariaFietEntidad.class);
             else
-                continue;
-
+                entidad = mapper.map(usuario, UsuarioEntidad.class);
             entidades.add(entidad);
         }
 
         List<UsuarioEntidad> guardados = repositorio.saveAll(entidades);
         return guardados.stream()
                 .map(e -> {
-                    if (e instanceof SecretarioGeneralEntidad)
-                        return mapper.map(e, SecretarioGeneral.class);
-                    else if (e instanceof FuncionarioEntidad)
+                    if (e instanceof FuncionarioEntidad)
                         return mapper.map(e, Funcionario.class);
-                    else if (e instanceof DecanoEntidad)
-                        return mapper.map(e, Decano.class);
-                    else if (e instanceof SecretariaFietEntidad)
-                        return mapper.map(e, SecretariaFiet.class);
                     else
-                        return null;
+                        return mapper.map(e, Usuario.class);
                 })
                 .filter(Objects::nonNull)
                 .toList();
