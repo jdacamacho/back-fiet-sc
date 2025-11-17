@@ -1,5 +1,7 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.input;
 
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Funcionario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
@@ -19,13 +21,37 @@ public interface UsuarioCUIntPuerto {
     List<UsuarioLiviano> getUsuarios();
 
     /**
+     * Obtiene la lista de funcionarios..
+     *
+     * @return la lista de funcionarios.
+     */
+    List<Funcionario> getFuncionarios();
+
+    /**
      * Consultar lista de usuarios.
      *
      * @param pagina el número de página.
      * @param tamanio el tamaño de la página.
      * @return la lista de usuarios en formato liviano.
      */
-    List<UsuarioLiviano> getUsuarios(int pagina, int tamanio);
+    PaginacionRespuestaDTO<UsuarioLiviano> getUsuarios(int pagina, int tamanio);
+
+    /**
+     * Consultar lista de usuarios filtrada.
+     *
+     * @param nombreCompleto nombre completo del usuario.
+     * @param pagina el número de página.
+     * @param tamanio el tamaño de la página.
+     * @return la lista de usuarios filtrados.
+     */
+    PaginacionRespuestaDTO<UsuarioLiviano> getUsuariosByNombreCompleto(String nombreCompleto, int pagina, int tamanio);
+
+    /**
+     * Cuenta los usuarios en el sistema.
+     *
+     * @return el numero de usuarios en el sistema.
+     */
+    long countUsuarios();
 
     /**
      * Consultar un usuario por su identificador.

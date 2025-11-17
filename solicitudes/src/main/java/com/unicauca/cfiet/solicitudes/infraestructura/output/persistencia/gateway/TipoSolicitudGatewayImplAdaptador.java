@@ -1,12 +1,13 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.gateway;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.output.TipoSolicitudGatewayIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoSolicitud;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.TipoSolicitudEntidad;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.TipoSolicitudRepositorio;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,12 +39,23 @@ public class TipoSolicitudGatewayImplAdaptador implements TipoSolicitudGatewayIn
     }
 
     @Override
-    public List<TipoSolicitud> getTiposSolicitudes(int pagina, int tamanio) {
+    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudes(int pagina, int tamanio) {
         Pageable paginado = PageRequest.of(pagina, tamanio);
-        List<TipoSolicitudEntidad> entidades = repositorio.findAll(paginado).getContent();
-        return entidades.stream()
+        Page<TipoSolicitudEntidad> page = repositorio.findAll(paginado);
+        List<TipoSolicitud> tipos = page.getContent().stream()
                 .map(e -> mapper.map(e, TipoSolicitud.class))
                 .toList();
+        return new PaginacionRespuestaDTO<>(tipos, page.getTotalElements());
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudes(String nombreSolicitud, String funcionario, int pagina, int tamanio){
+        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Page<TipoSolicitudEntidad> page = repositorio.findByNombreAndFuncionario(nombreSolicitud, funcionario, paginado);
+        List<TipoSolicitud> tipos = page.getContent().stream()
+                .map(e -> mapper.map(e, TipoSolicitud.class))
+                .toList();
+        return new PaginacionRespuestaDTO<>(tipos, page.getTotalElements());
     }
 
     @Override
@@ -64,8 +76,12 @@ public class TipoSolicitudGatewayImplAdaptador implements TipoSolicitudGatewayIn
 
     @Override
     public List<TipoSolicitud> guardarTiposSolicitud(List<TipoSolicitud> tiposSolicitud) {
-        List<TipoSolicitudEntidad> entidades = mapper.map(tiposSolicitud, new TypeToken<List<TipoSolicitudEntidad>>(){}.getType());
+        List<TipoSolicitudEntidad> entidades = tiposSolicitud.stream()
+                .map(ts -> mapper.map(ts, TipoSolicitudEntidad.class))
+                .toList();
         List<TipoSolicitudEntidad> guardados = repositorio.saveAll(entidades);
-        return mapper.map(guardados, new TypeToken<List<TipoSolicitud>>(){}.getType());
+        return guardados.stream()
+                .map(e -> mapper.map(e, TipoSolicitud.class))
+                .toList();
     }
 }

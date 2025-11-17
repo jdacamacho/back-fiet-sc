@@ -1,6 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorLog.controlador;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.LogCUIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorLog.DTORespuesta.LogDTORespuesta;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorLog.mapeador.MapperLogInfraestructuraDominio;
@@ -39,10 +40,38 @@ public class LogRestController {
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @GetMapping("/paginado")
-    public ResponseEntity<List<LogDTORespuesta>> indexPaginado(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
-        List<Log> logs = casoDeUso.getLogs(pagina, tamanio);
-        return new ResponseEntity<List<LogDTORespuesta>>(
-                mapper.mapearModelosARespuesta(logs), HttpStatus.OK
+    public ResponseEntity<?> indexPaginado(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
+        var respuesta = casoDeUso.getLogs(pagina, tamanio);
+        return new ResponseEntity<>(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuesta(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                ),
+                HttpStatus.OK
         );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/filtro")
+    public ResponseEntity<?> filtrarLogs(
+            @RequestParam(value = "responsable", required = false) String responsable,
+            @RequestParam(value = "fecha", required = false) String fecha,
+            @RequestParam("pagina") int pagina,
+            @RequestParam("tamanio") int tamanio) {
+        var respuesta = casoDeUso.getLogs(responsable, fecha, pagina, tamanio);
+        return new ResponseEntity<>(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuesta(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                ),
+                HttpStatus.OK
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/total")
+    public ResponseEntity<Long> getTotalLogs() {
+        long totalLogs = casoDeUso.countLogs();
+        return ResponseEntity.ok(totalLogs);
     }
 }

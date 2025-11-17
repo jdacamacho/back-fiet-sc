@@ -1,11 +1,12 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.controlador;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.UsuarioCUIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Funcionario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.ProcesadorArchivos;
-import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.validadoresArchivos.UsuarioExcelService;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.validadoresArchivos.ValidadorPeticionesExcel;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.CambioContraseñaDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.UsuarioActualizarDTOPeticion;
@@ -64,10 +65,31 @@ public class UsuarioRestController{
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
     @GetMapping("/paginado")
-    public ResponseEntity<?> indexPaginado(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
-        List<UsuarioLiviano> usuarios = casoDeUso.getUsuarios(pagina, tamanio);
-        return new ResponseEntity<List<UsuarioLivianoDTORespuesta>>(
-                mapper.mapearModelosARespuestaLiviano(usuarios), HttpStatus.OK
+    public ResponseEntity<?> indexPaginado(@RequestParam("pagina") int pagina,
+                                           @RequestParam("tamanio") int tamanio) {
+        var respuesta = casoDeUso.getUsuarios(pagina, tamanio);
+        return new ResponseEntity<>(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuestaLiviano(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                ),
+                HttpStatus.OK
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/filtro")
+    public ResponseEntity<?> getUsuariosByNombresApellidos(
+            @RequestParam(value = "nombreCompleto", required = false) String nombreCompleto,
+            @RequestParam("pagina") int pagina,
+            @RequestParam("tamanio") int tamanio) {
+        var respuesta = casoDeUso.getUsuariosByNombreCompleto(nombreCompleto, pagina, tamanio);
+        return new ResponseEntity<>(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuestaLiviano(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                ),
+                HttpStatus.OK
         );
     }
 
@@ -77,6 +99,15 @@ public class UsuarioRestController{
         List<UsuarioLiviano> usuarios = casoDeUso.getUsuarios();
         return new ResponseEntity<List<UsuarioLivianoDTORespuesta>>(
                 mapper.mapearModelosARespuestaLiviano(usuarios), HttpStatus.OK
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/funcionarios")
+    public ResponseEntity<?> getFuncionarios(){
+        List<Funcionario> funcionarios = casoDeUso.getFuncionarios();
+        return new ResponseEntity<List<UsuarioLivianoDTORespuesta>>(
+                mapper.mapearModelosARespuestaFuncionario(funcionarios), HttpStatus.OK
         );
     }
 
@@ -170,5 +201,12 @@ public class UsuarioRestController{
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/total")
+    public ResponseEntity<Long> getTotalUsuarios() {
+        long totalUsuarios = casoDeUso.countUsuarios();
+        return ResponseEntity.ok(totalUsuarios);
     }
 }

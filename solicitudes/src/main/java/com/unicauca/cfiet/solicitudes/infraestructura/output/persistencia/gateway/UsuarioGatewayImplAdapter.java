@@ -1,19 +1,21 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.gateway;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.output.UsuarioGatewayIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.*;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.*;
+import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.FuncionarioRepositorio;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.UsuarioLivianoRepositorio;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.UsuarioRepositorio;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Implementación de la fachada con el servicio de persistencia para la gestión de usuarios.
@@ -24,27 +26,45 @@ import java.util.List;
 public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
     private final UsuarioLivianoRepositorio repositorioBasico;
     private final UsuarioRepositorio repositorio;
+    private final FuncionarioRepositorio repositorioFuncionarios;
     private final ModelMapper mapper;
 
     public UsuarioGatewayImplAdapter(UsuarioLivianoRepositorio repositorioBasico,
                                      UsuarioRepositorio repositorio,
+                                     FuncionarioRepositorio repositorioFuncionarios,
                                      @Qualifier("mapeadorSimple") ModelMapper mapper){
         this.repositorioBasico = repositorioBasico;
         this.repositorio = repositorio;
+        this.repositorioFuncionarios = repositorioFuncionarios;
         this.mapper = mapper;
     }
 
     @Override
     public List<UsuarioLiviano> getUsuarios() {
         List<UsuarioLivianoEntidad> entidades = repositorioBasico.findAll();
-        return mapper.map(entidades, new TypeToken<List<UsuarioLiviano>>(){}.getType());
+        return entidades.stream()
+                .map(e -> mapper.map(e, UsuarioLiviano.class))
+                .toList();
     }
 
     @Override
-    public List<UsuarioLiviano> getUsuarios(int pagina, int tamanio) {
+    public List<Funcionario> getFuncionarios(){
+        List<FuncionarioEntidad> entidades = repositorioFuncionarios.findAll();
+        return entidades.stream()
+                .map(e -> mapper.map(e, Funcionario.class))
+                .toList();
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<UsuarioLiviano> getUsuarios(int pagina, int tamanio) {
         Pageable paginado = PageRequest.of(pagina, tamanio);
-        List<UsuarioLivianoEntidad> entidades = repositorioBasico.findAll(paginado).getContent();
-        return mapper.map(entidades, new TypeToken<List<UsuarioLiviano>>(){}.getType());
+        Page<UsuarioLivianoEntidad> page = repositorioBasico.findAll(paginado);
+
+        List<UsuarioLiviano> usuarios = page.getContent().stream()
+                .map(e -> mapper.map(e, UsuarioLiviano.class))
+                .toList();
+
+        return new PaginacionRespuestaDTO<>(usuarios, page.getTotalElements());
     }
 
     @Override
@@ -106,12 +126,43 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
         }
 
         List<UsuarioEntidad> guardados = repositorio.saveAll(entidades);
-        return mapper.map(guardados, new TypeToken<List<Usuario>>(){}.getType());
+        return guardados.stream()
+                .map(e -> {
+                    if (e instanceof SecretarioGeneralEntidad)
+                        return mapper.map(e, SecretarioGeneral.class);
+                    else if (e instanceof FuncionarioEntidad)
+                        return mapper.map(e, Funcionario.class);
+                    else if (e instanceof DecanoEntidad)
+                        return mapper.map(e, Decano.class);
+                    else if (e instanceof SecretariaFietEntidad)
+                        return mapper.map(e, SecretariaFiet.class);
+                    else
+                        return null;
+                })
+                .filter(Objects::nonNull)
+                .toList();
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<UsuarioLiviano> getUsuariosByNombreCompleto(String nombreCompleto, int pagina, int tamanio) {
+        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Page<UsuarioLivianoEntidad> page = repositorioBasico.findByNombreCompleto(nombreCompleto, paginado);
+
+        List<UsuarioLiviano> usuarios = page.getContent().stream()
+                .map(e -> mapper.map(e, UsuarioLiviano.class))
+                .toList();
+
+        return new PaginacionRespuestaDTO<>(usuarios, page.getTotalElements());
     }
 
     @Override
     public boolean existeUsuarioNumeroDocumento(String numeroDocumento) {
         return repositorio.existsByNumeroDocumento(numeroDocumento);
+    }
+
+    @Override
+    public long countUsuarios() {
+        return repositorioBasico.countUsuarios();
     }
 
     @Override
@@ -127,7 +178,9 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
     @Override
     public List<TipoUsuario> getTiposUsuario() {
         List<TipoUsuarioEntidad> entidades = repositorio.findAllTipoUsuario();
-        return mapper.map(entidades,  new TypeToken<List<TipoUsuario>>(){}.getType());
+        return entidades.stream()
+                .map(e -> mapper.map(e, TipoUsuario.class))
+                .toList();
     }
 
     @Override
@@ -141,6 +194,8 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
     @Override
     public List<Rol> getRoles() {
         List<RolEntidad> entidades = repositorio.findAllRoles();
-        return mapper.map(entidades,  new TypeToken<List<Rol>>(){}.getType());
+        return entidades.stream()
+                .map(e -> mapper.map(e, Rol.class))
+                .toList();
     }
 }

@@ -1,14 +1,15 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.gateway;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.output.LogGatewayIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.LogEntidad;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.UsuarioEntidad;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.LogRepositorio;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,16 +39,40 @@ public class LogGatewayImplAdaptador implements LogGatewayIntPuerto {
     }
 
     @Override
-    public List<Log> getLogs(int pagina, int tamanio) {
+    public PaginacionRespuestaDTO<Log> getLogs(int pagina, int tamanio) {
         Pageable paginado = PageRequest.of(pagina, tamanio);
-        List<LogEntidad> entidades = repositorio.findAll(paginado).getContent();
-        return mapper.map(entidades, new TypeToken<List<Log>>(){}.getType());
+        Page<LogEntidad> page = repositorio.findAll(paginado);
+
+        List<Log> logs = page.getContent().stream()
+                .map(e -> mapper.map(e, Log.class))
+                .toList();
+
+        return new PaginacionRespuestaDTO<>(logs, page.getTotalElements());
     }
 
     @Override
     public List<Log> getLogs() {
         List<LogEntidad> entidades = repositorio.findAll();
-        return mapper.map(entidades, new TypeToken<List<Log>>(){}.getType());
+        return entidades.stream()
+                .map(e -> mapper.map(e, Log.class))
+                .toList();
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<Log> getLogs(String responsable, String fecha, int pagina, int tamanio) {
+        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Page<LogEntidad> page = repositorio.findByResponsableAndFecha(responsable, fecha, paginado);
+
+        List<Log> logs = page.getContent().stream()
+                .map(e -> mapper.map(e, Log.class))
+                .toList();
+
+        return new PaginacionRespuestaDTO<>(logs, page.getTotalElements());
+    }
+
+    @Override
+    public long countLogs() {
+        return repositorio.countLogs();
     }
 
     @Override

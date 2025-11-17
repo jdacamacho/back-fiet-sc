@@ -5,6 +5,7 @@ import com.unicauca.cfiet.solicitudes.aplicacion.input.TipoSolicitudCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.TipoSolicitudGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.UsuarioGatewayIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.*;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.MensajesError;
 import java.util.List;
@@ -44,13 +45,23 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
     }
 
     @Override
-    public List<TipoSolicitud> getTiposSolicitud(int pagina, int tamanio) {
-        if(pagina < 0 || tamanio < 0)
+    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitud(int pagina, int tamanio) {
+        if (pagina < 0 || tamanio < 0)
             formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
-        List<TipoSolicitud> tipoSolicitudes = gateway.getTiposSolicitudes(pagina, tamanio);
-        if(tipoSolicitudes.isEmpty())
+        PaginacionRespuestaDTO<TipoSolicitud> respuesta = gateway.getTiposSolicitudes(pagina, tamanio);
+        if (respuesta.getContent().isEmpty())
             formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, TIPOS_SOLICITUD));
-        return  tipoSolicitudes;
+        return respuesta;
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitud(String nombreSolicitud, String funcionario, int pagina, int tamanio){
+        if (pagina < 0 || tamanio < 0)
+            formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
+        PaginacionRespuestaDTO<TipoSolicitud> respuesta = gateway.getTiposSolicitudes(nombreSolicitud, funcionario, pagina, tamanio);
+        if (respuesta.getContent().isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, TIPOS_SOLICITUD));
+        return respuesta;
     }
 
     @Override
