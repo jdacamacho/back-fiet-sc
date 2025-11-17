@@ -40,11 +40,12 @@ public class ProcesarArchivoTiposSolicitudesImpl implements ProcesadorArchivos<T
                 String nombreTipoSolicitud = row.getCell(0) != null ? row.getCell(0).toString() : "";
                 String descripcionTipoSolicitud = row.getCell(1) != null ? row.getCell(1).toString() : "";
                 String seccionTipoSolicitud = row.getCell(2) != null ? row.getCell(2).toString() : "";
-                String nombreTipoAnexo = row.getCell(3) != null ? row.getCell(3).toString() : "";
-                String descripcionTipoAnexo = row.getCell(4) != null ? row.getCell(4).toString() : "";
-                String formatoTipoAnexo = row.getCell(5) != null ? row.getCell(5).toString() : "";
-                String obligatoriedadTipoAnexo = row.getCell(6) != null ? row.getCell(6).toString() : "";
-                String uuidFuncionario = row.getCell(7) != null ? row.getCell(7).toString() : "";
+                String perfilSolicitanteTipoSolicitud = row.getCell(3) != null ? row.getCell(3).toString() : "";
+                String nombreTipoAnexo = row.getCell(4) != null ? row.getCell(4).toString() : "";
+                String descripcionTipoAnexo = row.getCell(5) != null ? row.getCell(5).toString() : "";
+                String formatoTipoAnexo = row.getCell(6) != null ? row.getCell(6).toString() : "";
+                String obligatoriedadTipoAnexo = row.getCell(7) != null ? row.getCell(7).toString() : "";
+                String uuidFuncionario = row.getCell(8) != null ? row.getCell(8).toString() : "";
 
                 TipoAnexoDTOPeticion tipoAnexoPeticion = TipoAnexoDTOPeticion.builder()
                         .nombre(nombreTipoAnexo)
@@ -57,6 +58,7 @@ public class ProcesarArchivoTiposSolicitudesImpl implements ProcesadorArchivos<T
                         .nombre(nombreTipoSolicitud)
                         .descripcion(descripcionTipoSolicitud)
                         .seccion(seccionTipoSolicitud)
+                        .perfilSolicitante(perfilSolicitanteTipoSolicitud)
                         .anexos(List.of(tipoAnexoPeticion))
                         .uuidFuncionario(uuidFuncionario)
                         .build();

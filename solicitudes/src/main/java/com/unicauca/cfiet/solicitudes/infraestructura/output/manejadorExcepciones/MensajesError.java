@@ -21,6 +21,7 @@ public class MensajesError {
     public static final String MAL_FORMATO_ANEXO = "El formato de anexo ingresado no esta soportado...";
     public static final String MAL_ASIGNACION = "Solo los usuarios creados inicialmente como funcionarios pueden tener tipos de solicitudes asignados...";
     public static final String SECCION_NO_EXISTENTE = "Sección universitaria no soportada...";
+    public static final String PERFIL_SOLICITANTE_NO_VALIDO = "Perfil solicitante no es valido...";
     public static final String NO_ACCESO = "Usuario sin acceso para acceder a la aplicación...";
     public static final String ROL_NO_HABILITADO = "Usuario con rol no habilidatado para acceder al sistema...";
     public static final String TIPO_DOCUMENTO_ERRONEO = "Tipo de documento invalido...";
