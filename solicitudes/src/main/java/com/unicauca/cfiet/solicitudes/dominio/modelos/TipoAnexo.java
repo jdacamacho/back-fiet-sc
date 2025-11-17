@@ -20,7 +20,7 @@ public class TipoAnexo {
     private TipoSolicitud objTipoSolicitud;
 
     public boolean formatoEsValido(){
-        if(!formato.toUpperCase().equals("PDF") && !formato.toUpperCase().equals("WORD"))
+        if(!formato.toUpperCase().equals("PDF") && !formato.toUpperCase().equals("DOCX"))
             return false;
         return true;
     }

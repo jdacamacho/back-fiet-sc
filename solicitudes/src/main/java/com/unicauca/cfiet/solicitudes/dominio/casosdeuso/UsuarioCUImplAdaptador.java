@@ -6,6 +6,7 @@ import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIn
 import com.unicauca.cfiet.solicitudes.aplicacion.output.PasswordEncoderGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.UsuarioGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Funcionario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
@@ -50,6 +51,11 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
         if(usuarios.isEmpty())
             formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, USUARIOS));
         return  usuarios;
+    }
+
+    @Override
+    public List<Funcionario> getFuncionarios(){
+        return gateway.getFuncionarios();
     }
 
     @Override

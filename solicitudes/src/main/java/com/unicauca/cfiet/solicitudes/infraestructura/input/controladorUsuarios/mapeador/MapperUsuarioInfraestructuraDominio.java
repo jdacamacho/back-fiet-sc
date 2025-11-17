@@ -1,5 +1,6 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.mapeador;
 
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Funcionario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
@@ -43,6 +44,10 @@ public class MapperUsuarioInfraestructuraDominio {
     }
 
     public List<UsuarioDTORespuesta> mapearModelosARespuesta(List<Usuario> modelos){
+        return mapper.map(modelos, new TypeToken<List<UsuarioLivianoDTORespuesta>>(){}.getType());
+    }
+
+    public List<UsuarioLivianoDTORespuesta> mapearModelosARespuestaFuncionario(List<Funcionario> modelos){
         return mapper.map(modelos, new TypeToken<List<UsuarioLivianoDTORespuesta>>(){}.getType());
     }
 

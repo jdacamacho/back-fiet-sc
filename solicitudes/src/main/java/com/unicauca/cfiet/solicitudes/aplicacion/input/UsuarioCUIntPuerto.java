@@ -1,6 +1,7 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.input;
 
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Funcionario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
@@ -18,6 +19,13 @@ public interface UsuarioCUIntPuerto {
      * @return la lista de usuarios en formato liviano.
      */
     List<UsuarioLiviano> getUsuarios();
+
+    /**
+     * Obtiene la lista de funcionarios..
+     *
+     * @return la lista de funcionarios.
+     */
+    List<Funcionario> getFuncionarios();
 
     /**
      * Consultar lista de usuarios.

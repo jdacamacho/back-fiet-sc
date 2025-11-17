@@ -1,10 +1,8 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.output;
 
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
-import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
-import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
-import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
-import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.*;
+
 import java.util.List;
 
 /**
@@ -14,11 +12,18 @@ import java.util.List;
  */
 public interface UsuarioGatewayIntPuerto {
     /**
-     * Obtiene la lista de usuarios de manera paginada.
+     * Obtiene la lista de usuarios.
      *
-     * @return la lista de usuarios livianos correspondientes a la página.
+     * @return la lista de usuarios livianos.
      */
     List<UsuarioLiviano> getUsuarios();
+
+    /**
+     * Obtiene la lista de funcionarios..
+     *
+     * @return la lista de funcionarios.
+     */
+    List<Funcionario> getFuncionarios();
 
     /**
      * Obtiene la lista de usuarios de manera paginada.

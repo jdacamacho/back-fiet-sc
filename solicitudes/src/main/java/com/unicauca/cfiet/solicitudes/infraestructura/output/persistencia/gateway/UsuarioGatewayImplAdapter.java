@@ -4,6 +4,7 @@ import com.unicauca.cfiet.solicitudes.aplicacion.output.UsuarioGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.*;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.*;
+import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.FuncionarioRepositorio;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.UsuarioLivianoRepositorio;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.UsuarioRepositorio;
 import org.modelmapper.ModelMapper;
@@ -25,13 +26,16 @@ import java.util.Objects;
 public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
     private final UsuarioLivianoRepositorio repositorioBasico;
     private final UsuarioRepositorio repositorio;
+    private final FuncionarioRepositorio repositorioFuncionarios;
     private final ModelMapper mapper;
 
     public UsuarioGatewayImplAdapter(UsuarioLivianoRepositorio repositorioBasico,
                                      UsuarioRepositorio repositorio,
+                                     FuncionarioRepositorio repositorioFuncionarios,
                                      @Qualifier("mapeadorSimple") ModelMapper mapper){
         this.repositorioBasico = repositorioBasico;
         this.repositorio = repositorio;
+        this.repositorioFuncionarios = repositorioFuncionarios;
         this.mapper = mapper;
     }
 
@@ -40,6 +44,14 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
         List<UsuarioLivianoEntidad> entidades = repositorioBasico.findAll();
         return entidades.stream()
                 .map(e -> mapper.map(e, UsuarioLiviano.class))
+                .toList();
+    }
+
+    @Override
+    public List<Funcionario> getFuncionarios(){
+        List<FuncionarioEntidad> entidades = repositorioFuncionarios.findAll();
+        return entidades.stream()
+                .map(e -> mapper.map(e, Funcionario.class))
                 .toList();
     }
 

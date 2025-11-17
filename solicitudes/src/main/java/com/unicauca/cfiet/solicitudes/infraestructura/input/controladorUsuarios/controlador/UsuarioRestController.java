@@ -2,6 +2,7 @@ package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.UsuarioCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Funcionario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
@@ -98,6 +99,15 @@ public class UsuarioRestController{
         List<UsuarioLiviano> usuarios = casoDeUso.getUsuarios();
         return new ResponseEntity<List<UsuarioLivianoDTORespuesta>>(
                 mapper.mapearModelosARespuestaLiviano(usuarios), HttpStatus.OK
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/funcionarios")
+    public ResponseEntity<?> getFuncionarios(){
+        List<Funcionario> funcionarios = casoDeUso.getFuncionarios();
+        return new ResponseEntity<List<UsuarioLivianoDTORespuesta>>(
+                mapper.mapearModelosARespuestaFuncionario(funcionarios), HttpStatus.OK
         );
     }
 
