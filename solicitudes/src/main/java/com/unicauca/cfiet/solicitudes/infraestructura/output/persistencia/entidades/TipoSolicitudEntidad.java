@@ -23,8 +23,10 @@ public class TipoSolicitudEntidad {
     private String nombre;
     @Column(length = 200)
     private String descripcion;
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 500)
     private String seccion;
+    @Column(nullable = false, length = 500)
+    private String perfilSolicitante;
     @OneToMany(
             fetch = FetchType.LAZY,
             mappedBy = "objTipoSolicitud",

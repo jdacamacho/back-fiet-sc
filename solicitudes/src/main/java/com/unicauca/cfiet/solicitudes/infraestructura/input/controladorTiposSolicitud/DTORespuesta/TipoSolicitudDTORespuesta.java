@@ -17,6 +17,7 @@ public class TipoSolicitudDTORespuesta {
     private String nombre;
     private String descripcion;
     private String seccion;
+    private String perfilSolicitante;
     private List<TipoAnexoDTORespuesta> anexos;
     private FuncionarioTipoSolicitudDTORespuesta objFuncionarioEncargado;
 }

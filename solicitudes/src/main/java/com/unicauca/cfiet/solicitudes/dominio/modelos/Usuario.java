@@ -78,20 +78,11 @@ public class Usuario extends UsuarioLiviano{
     public Usuario crearInstancia(String tipoUsuario){
         Usuario instancia;
         switch (tipoUsuario.toUpperCase()) {
-                case "DECANO":
-                instancia = new Decano();
-                break;
-            case "SECRETARIOGENERAL":
-                instancia = new SecretarioGeneral();
-                break;
             case "FUNCIONARIO":
                 instancia = new Funcionario();
                 break;
-            case "SECRETARIADECANATURAFIET":
-                instancia = new SecretariaFiet();
-                break;
             default:
-                return null;
+                instancia = new Usuario();
         }
 
         instancia.setUuidUsuario(this.getUuidUsuario());

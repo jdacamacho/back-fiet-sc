@@ -29,7 +29,6 @@ public class UsuarioDTOPeticion extends UsuarioLivianoDTOPeticion{
     @NotNull(message = "El teléfono no puede ser nulo")
     @NotBlank(message = "El teléfono no puede estar vacío")
     @Size(min = 7, max = 15, message = "El teléfono debe tener entre 7 y 15 caracteres")
-    @Pattern(regexp = "^\\+\\d+$", message = "El teléfono debe comenzar con '+' seguido de el número telefónico")
     private String telefono;
 
     @NotNull(message = "El correo electrónico no puede ser nulo")

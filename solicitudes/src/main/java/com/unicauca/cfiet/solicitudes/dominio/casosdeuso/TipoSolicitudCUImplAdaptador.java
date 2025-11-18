@@ -3,6 +3,7 @@ package com.unicauca.cfiet.solicitudes.dominio.casosdeuso;
 import com.unicauca.cfiet.solicitudes.aplicacion.input.LogCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.input.TipoSolicitudCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIntPuerto;
+import com.unicauca.cfiet.solicitudes.aplicacion.output.RolGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.TipoSolicitudGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.UsuarioGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
@@ -21,6 +22,7 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
     private final UsuarioGatewayIntPuerto gatewayUsuario;
     private final ExcepcionesFormateadorIntPuerto formateadorExcepciones;
     private final LogCUIntPuerto log;
+    private final RolGatewayIntPuerto rolGateway;
     /* Constantes */
     private static final String TIPOS_SOLICITUD = "tipos de solicitud";
     private static final String TIPO_SOLICITUD = "tipo de solicitud";
@@ -29,11 +31,13 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
     public TipoSolicitudCUImplAdaptador(TipoSolicitudGatewayIntPuerto gateway,
                                         UsuarioGatewayIntPuerto gatewayUsuario,
                                         ExcepcionesFormateadorIntPuerto formateadorExcepciones,
-                                        LogCUIntPuerto log){
+                                        LogCUIntPuerto log,
+                                        RolGatewayIntPuerto rolGateway){
         this.gateway = gateway;
         this.gatewayUsuario = gatewayUsuario;
         this.formateadorExcepciones = formateadorExcepciones;
         this.log = log;
+        this.rolGateway = rolGateway;
     }
 
     @Override
@@ -79,6 +83,8 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
         if(tipoSolicitud.getAnexos() != null){
             if(!tipoSolicitud.revisarSeccion())
                 formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.SECCION_NO_EXISTENTE);
+            if(!tipoSolicitud.revisarPerfilSolicitante(rolGateway.getRoles()))
+                formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.PERFIL_SOLICITANTE_NO_VALIDO);
             if(!tipoSolicitud.revisarAnexos())
                 formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.MAL_FORMATO_ANEXO);
 
@@ -111,6 +117,8 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
         tipoSolicitudObtenida.actualizarTipoSolicitud(tipoSolicitud);
         if(!tipoSolicitud.revisarSeccion())
             formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.SECCION_NO_EXISTENTE);
+        if(!tipoSolicitud.revisarPerfilSolicitante(rolGateway.getRoles()))
+            formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.PERFIL_SOLICITANTE_NO_VALIDO);
         if(!tipoSolicitud.revisarAnexos())
             formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.MAL_FORMATO_ANEXO);
         log.crearLog("Actualizar Tipo Solicitud", "Tipo de Solicitud Actualizado con exito!", token);
@@ -125,6 +133,8 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
             if(tipoSolicitud.getAnexos() != null){
                 if(!tipoSolicitud.revisarSeccion())
                     formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.SECCION_NO_EXISTENTE);
+                if(!tipoSolicitud.revisarPerfilSolicitante(rolGateway.getRoles()))
+                    formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.PERFIL_SOLICITANTE_NO_VALIDO);
                 if(!tipoSolicitud.revisarAnexos())
                     formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.MAL_FORMATO_ANEXO);
 
