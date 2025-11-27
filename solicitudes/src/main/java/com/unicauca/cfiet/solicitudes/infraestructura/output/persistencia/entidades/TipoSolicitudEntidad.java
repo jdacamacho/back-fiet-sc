@@ -38,6 +38,12 @@ public class TipoSolicitudEntidad {
     @JoinColumn(name = "uuidUsuario")
     private FuncionarioEntidad objFuncionarioEncargado;
 
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            mappedBy = "objTipoSolicitud"
+    )
+    private List<SolicitudEntidad> solicitudes;
+
     public TipoSolicitudEntidad(){
         this.anexos = new ArrayList<>();
     }

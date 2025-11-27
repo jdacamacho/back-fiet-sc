@@ -42,4 +42,11 @@ public class BeanConfiguracion {
     public TipoSolicitudCUImplAdaptador crearTipoSolicitudCU(TipoSolicitudGatewayIntPuerto gateway, UsuarioGatewayIntPuerto gatewayUsuario, ExcepcionesFormateadorIntPuerto formateadorExcepciones, LogCUIntPuerto log, RolGatewayIntPuerto rolGateway){
         return new TipoSolicitudCUImplAdaptador(gateway, gatewayUsuario, formateadorExcepciones, log, rolGateway);
     }
+
+    @Bean
+    public OrdenDelDiaCUImplAdaptador crearOrdenDelDiaCU(OrdenDelDiaGatewayIntPuerto gateway,
+                                                         ExcepcionesFormateadorIntPuerto formateadorExcepciones,
+                                                         LogCUIntPuerto log){
+        return new OrdenDelDiaCUImplAdaptador(gateway, formateadorExcepciones, log);
+    }
 }

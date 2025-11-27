@@ -20,6 +20,7 @@ public class TipoSolicitud {
     private List<TipoAnexo> anexos;
     private Funcionario objFuncionarioEncargado;
     private String uuidFuncionario;
+    private List<Solicitud> solicitudes;
 
     public TipoSolicitud(){
         this.anexos = new ArrayList<>();
