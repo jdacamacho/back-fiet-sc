@@ -1,9 +1,13 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.controlador;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.OrdenDelDiaCUIntPuerto;
+import com.unicauca.cfiet.solicitudes.aplicacion.input.SolicitudCUintPuerto;
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.OrdenDelDia;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Solicitud;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.OrdenDelDiaDTOPeticion;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.SolicitudActualizarDTOPeticion;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.SolicitudDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.mapeador.MapperSolicitudesInfraestructuraDominio;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -30,6 +34,7 @@ import java.util.Map;
 @Tag(name = "Solicitudes", description = "Operaciones relacionadas con la gestión de Solicitudes.")
 public class SolicitudesRestController {
     private final OrdenDelDiaCUIntPuerto ordenDelDiaCU;
+    private final SolicitudCUintPuerto solicitudCU;
     private final MapperSolicitudesInfraestructuraDominio mapper;
 
     @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
@@ -102,6 +107,78 @@ public class SolicitudesRestController {
 
         return ResponseEntity.ok(
                 mapper.mapearModeloARespuesta(ordenDelDia)
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/paginado")
+    public ResponseEntity<?> solicitudesPaginado(
+            @RequestParam("pagina") int pagina,
+            @RequestParam("tamanio") int tamanio) {
+        var respuesta = solicitudCU.getSolicitudes(pagina, tamanio);
+        return ResponseEntity.ok(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuestaSolicitud(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                )
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping
+    public ResponseEntity<?> solicitudesIndex(){
+        List<Solicitud> ordenesDelDia = solicitudCU.getSolicitudes();
+        return ResponseEntity.ok(
+                mapper.mapearModelosARespuestaSolicitud(ordenesDelDia)
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/{uuidSolicitud}")
+    public ResponseEntity<?> getSolicitud(@PathVariable String uuidSolicitud){
+        Solicitud solicitud = solicitudCU.getSolicitud(uuidSolicitud);
+        return ResponseEntity.ok(
+                mapper.mapearModeloARespuesta(solicitud)
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @Transactional
+    @PostMapping
+    public ResponseEntity<?> enviarSolicitud(@Valid @RequestBody SolicitudDTOPeticion peticion){
+        Solicitud solicitud;
+        try{
+            solicitud = solicitudCU.crearSolicitud(mapper.mapearPeticionAModelo(peticion));
+        } catch (DataAccessException ex){
+            Map<String, Object> response = new HashMap<>();
+            response.put("mensaje", "Error insertando en la base de datos....");
+            response.put("error", ex.getMessage() + " " + ex.getMostSpecificCause().getMessage());
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return ResponseEntity.ok(
+                mapper.mapearModeloARespuesta(solicitud)
+        );
+    }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @Transactional
+    @PutMapping("/{uuidSolicitud}")
+    public ResponseEntity<?> actualizarOrdenDelDia(@PathVariable String uuidSolicitud,
+                                                   @Valid @RequestBody SolicitudActualizarDTOPeticion peticion,
+                                                   @RequestHeader("Authorization") String token){
+        Solicitud solicitud;
+        try{
+            solicitud = solicitudCU.actualizarSolicitud(uuidSolicitud, mapper.mapearPeticionAModelo(peticion), token.substring(7));
+        } catch (DataAccessException ex){
+            Map<String, Object> response = new HashMap<>();
+            response.put("mensaje", "Error insertando en la base de datos....");
+            response.put("error", ex.getMessage() + " " + ex.getMostSpecificCause().getMessage());
+            return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return ResponseEntity.ok(
+                mapper.mapearModeloARespuesta(solicitud)
         );
     }
 }

@@ -48,6 +48,7 @@ public class ConfiguracionSeguridad {
                         .requestMatchers(baseUrl + "sesiones").permitAll()
                         .requestMatchers(baseUrl + "tipos/solicitudes/**").hasAuthority("Secretario General")
                         .requestMatchers(baseUrl + "solicitudes/orden-del-dia/**").hasAuthority("Secretario General")
+                        .requestMatchers(baseUrl + "solicitudes/**").authenticated()
                         .requestMatchers(baseUrl + "logs/**").hasAuthority("Secretario General")
                         .requestMatchers(baseUrl + "roles/**").hasAuthority("Secretario General")
                         .requestMatchers(HttpMethod.GET, baseUrl + "usuarios/**").authenticated()

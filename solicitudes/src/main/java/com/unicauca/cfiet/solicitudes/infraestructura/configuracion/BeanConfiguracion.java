@@ -49,4 +49,14 @@ public class BeanConfiguracion {
                                                          LogCUIntPuerto log){
         return new OrdenDelDiaCUImplAdaptador(gateway, formateadorExcepciones, log);
     }
+
+    @Bean
+    public SolicitudCUImplAdaptador crearSolicitudCU(SolicitudGatewayIntPuerto gateway,
+                                                     ExcepcionesFormateadorIntPuerto formateadorExcepciones,
+                                                     TipoSolicitudGatewayIntPuerto gatewayTipoSolicitud,
+                                                     OrdenDelDiaGatewayIntPuerto gatewayOrdenDelDia,
+                                                     UsuarioGatewayIntPuerto gatewayUsuario,
+                                                     LogCUIntPuerto log){
+        return new SolicitudCUImplAdaptador(gateway, formateadorExcepciones, gatewayTipoSolicitud, gatewayOrdenDelDia, gatewayUsuario, log);
+    }
 }

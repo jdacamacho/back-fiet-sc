@@ -10,14 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class OrdenDelDiaDTOPeticion {
+public class AnexoDTOPeticion {
     private String nombre;
-    private String descripcion;
-    private String ciudad;
-    private String fecha;
-    private String horaInicio;
-    private String horaFin;
-    private String lugarReunion;
-    private String numeroActa;
-    private boolean estado;
+    private String urlAnexo;
 }

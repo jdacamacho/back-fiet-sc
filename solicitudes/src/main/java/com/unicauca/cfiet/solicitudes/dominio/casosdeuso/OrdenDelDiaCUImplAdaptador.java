@@ -60,9 +60,10 @@ public class OrdenDelDiaCUImplAdaptador implements OrdenDelDiaCUIntPuerto {
 
     @Override
     public OrdenDelDia crearOrdenDelDia(OrdenDelDia ordenDelDia, String token) {
-        ordenDelDia.setUuidOrdenDelDia(UUID.randomUUID().toString());
+        String uuidOrdenDelDia = UUID.randomUUID().toString();
+        ordenDelDia.setUuidOrdenDelDia(uuidOrdenDelDia);
         ordenDelDia.setEstado(true);
-        ordenDelDia.setSolicitudes(new ArrayList<>());
+        log.crearLog("Crear Orden del Día", String.format("Orden del día con uuid %s creada: %s", uuidOrdenDelDia, ordenDelDia.getNombre()), token);
         return gateway.guardarOrdenDelDia(ordenDelDia);
     }
 
@@ -70,6 +71,7 @@ public class OrdenDelDiaCUImplAdaptador implements OrdenDelDiaCUIntPuerto {
     public OrdenDelDia actualizarOrdenDelDia(String uuidOrdenDelDia, OrdenDelDia ordenDelDia, String token) {
         OrdenDelDia ordenDelDiaActualizar = getOrdenDelDia(uuidOrdenDelDia);
         ordenDelDiaActualizar.actualizar(ordenDelDia);
+        log.crearLog("Actualizar Orden del Día", String.format("Orden del día con uuid %s actualizado: %s", uuidOrdenDelDia, ordenDelDia.getNombre()), token);
         return gateway.guardarOrdenDelDia(ordenDelDiaActualizar);
     }
 }

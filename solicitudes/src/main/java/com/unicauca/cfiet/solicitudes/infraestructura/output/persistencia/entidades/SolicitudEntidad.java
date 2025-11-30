@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -18,7 +20,7 @@ public class SolicitudEntidad {
     @Id
     @Column(length = 100)
     private String uuidSolicitud;
-    @Column(nullable = false, unique = true, length = 100)
+    @Column(nullable = false, length = 100)
     private String consecutivo;
     @Column(nullable = false, length = 100)
     private String nombre;
@@ -31,7 +33,9 @@ public class SolicitudEntidad {
     private TipoSolicitudEntidad objTipoSolicitud;
     @OneToMany(
             fetch = FetchType.LAZY,
-            mappedBy = "objSolicitud"
+            mappedBy = "objSolicitud",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
     private List<AnexoEntidad> anexos;
     @ManyToOne
@@ -40,4 +44,14 @@ public class SolicitudEntidad {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "uuidInformacionSolicitante", referencedColumnName = "uuidInformacionSolicitante")
     private InformacionSolicitanteEntidad informacionSolicitante;
+    @ManyToOne
+    @JoinColumn(name = "uuidUsuario")
+    private FuncionarioEntidad objFuncionario;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime fechaCreacion;
+
+    @PrePersist
+    protected void onCreate() {
+        this.fechaCreacion = LocalDateTime.now();
+    }
 }

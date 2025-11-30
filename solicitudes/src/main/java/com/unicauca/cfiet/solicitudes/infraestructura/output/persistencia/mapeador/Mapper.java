@@ -16,13 +16,11 @@ public class Mapper {
     public ModelMapper crearMapeadorSimple() {
         ModelMapper mapper = new ModelMapper();
 
-        // Evita el error de Hibernate PersistentBag
         mapper.getConfiguration().setCollectionsMergeEnabled(false);
         mapper.getConfiguration().setSkipNullEnabled(true);
         mapper.getConfiguration().setPropertyCondition(ctx -> true);
         mapper.getConfiguration().setAmbiguityIgnored(true);
 
-        // Mapeo de UsuarioEntidad -> Usuario
         mapper.createTypeMap(UsuarioEntidad.class, Usuario.class)
                 .addMappings(m -> {
                     m.map(UsuarioEntidad::getObjTipoUsuario, Usuario::setObjTipoUsuario);
@@ -30,15 +28,10 @@ public class Mapper {
                     m.map(UsuarioEntidad::getLogs, Usuario::setLogs);
                 });
 
-        // Evita recursividad infinita y problemas al mapear varias solicitudes con el mismo usuario
         mapper.createTypeMap(TipoUsuarioEntidad.class, TipoUsuario.class)
                 .addMappings(m -> m.skip(TipoUsuario::setUsuarios));
 
-        // Mapeo de FuncionarioEntidad -> Funcionario
-        mapper.createTypeMap(FuncionarioEntidad.class, Funcionario.class)
-                .addMappings(m -> m.skip(Funcionario::setTiposSolicitudes));
 
-        // Mapeo de TipoSolicitudEntidad -> TipoSolicitud
         mapper.createTypeMap(TipoSolicitudEntidad.class, TipoSolicitud.class)
                 .addMappings(m -> {
                     m.map(TipoSolicitudEntidad::getObjFuncionarioEncargado,
@@ -61,9 +54,30 @@ public class Mapper {
                     return dest;
                 });
 
-        // Mapeo de TipoAnexoEntidad -> TipoAnexo
         mapper.createTypeMap(TipoAnexoEntidad.class, TipoAnexo.class)
                 .addMappings(m -> m.skip(TipoAnexo::setObjTipoSolicitud));
+
+
+        // Mapeo de Solicitud -> SolicitudEntidad
+        mapper.createTypeMap(Solicitud.class, SolicitudEntidad.class)
+                .addMappings(m -> {
+                    m.map(Solicitud::getObjFuncionario, SolicitudEntidad::setObjFuncionario);
+                    m.map(Solicitud::getObjOrdenDelDia, SolicitudEntidad::setObjOrdenDelDia);
+                    m.map(Solicitud::getAnexos, SolicitudEntidad::setAnexos);
+                    m.map(Solicitud::getObjTipoSolicitud, SolicitudEntidad::setObjTipoSolicitud);
+                    m.map(Solicitud::getInformacionSolicitante, SolicitudEntidad::setInformacionSolicitante);
+                });
+
+        // Mapeo de SolicitudEntidad -> Solicitud
+        mapper.createTypeMap(SolicitudEntidad.class, Solicitud.class)
+                .addMappings(m -> {
+                    m.map(SolicitudEntidad::getObjFuncionario, Solicitud::setObjFuncionario);
+                    m.map(SolicitudEntidad::getObjOrdenDelDia, Solicitud::setObjOrdenDelDia);
+                    m.map(SolicitudEntidad::getAnexos, Solicitud::setAnexos);
+                    m.map(SolicitudEntidad::getObjTipoSolicitud, Solicitud::setObjTipoSolicitud);
+                    m.map(SolicitudEntidad::getInformacionSolicitante, Solicitud::setInformacionSolicitante);
+                });
+
 
         return mapper;
     }

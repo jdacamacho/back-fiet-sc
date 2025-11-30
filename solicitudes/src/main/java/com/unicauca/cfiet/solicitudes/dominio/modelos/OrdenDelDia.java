@@ -23,7 +23,6 @@ public class OrdenDelDia {
     private String lugarReunion;
     private String numeroActa;
     private boolean estado;
-    private List<Solicitud> solicitudes;
 
     public void actualizar(OrdenDelDia other) {
         if (other == null) return;

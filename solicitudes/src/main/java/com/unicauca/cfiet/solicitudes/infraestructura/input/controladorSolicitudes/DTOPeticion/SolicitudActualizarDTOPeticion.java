@@ -10,14 +10,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class OrdenDelDiaDTOPeticion {
+public class SolicitudActualizarDTOPeticion {
+    private String consecutivo;
     private String nombre;
     private String descripcion;
-    private String ciudad;
-    private String fecha;
-    private String horaInicio;
-    private String horaFin;
-    private String lugarReunion;
-    private String numeroActa;
-    private boolean estado;
+    private String estado;
+    private String uuidFuncionario;
+    private String uuidOrdenDelDia;
 }

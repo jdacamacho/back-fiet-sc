@@ -40,11 +40,6 @@ public class OrdenDelDiaEntidad {
     private LocalDateTime fechaCreacion;
     @Column(nullable = false)
     private boolean estado;
-    @OneToMany(
-            fetch = FetchType.LAZY,
-            mappedBy = "objOrdenDelDia"
-    )
-    private List<SolicitudEntidad> solicitudes;
 
     @PrePersist
     protected void onCreate() {

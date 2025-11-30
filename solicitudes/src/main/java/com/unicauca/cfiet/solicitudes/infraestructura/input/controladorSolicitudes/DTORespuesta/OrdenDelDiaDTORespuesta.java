@@ -23,5 +23,4 @@ public class OrdenDelDiaDTORespuesta {
     private String lugarReunion;
     private String numeroActa;
     private boolean estado;
-    private List<SolicitudDTORespuesta> solicitudes;
 }

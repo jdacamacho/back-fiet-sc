@@ -1,8 +1,12 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.mapeador;
 
 import com.unicauca.cfiet.solicitudes.dominio.modelos.OrdenDelDia;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Solicitud;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.OrdenDelDiaDTOPeticion;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.SolicitudActualizarDTOPeticion;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.SolicitudDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTORespuesta.OrdenDelDiaDTORespuesta;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTORespuesta.SolicitudDTORespuesta;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,20 +25,32 @@ public class MapperSolicitudesInfraestructuraDominio {
         this.mapper = mapper;
     }
 
-    public OrdenDelDia mapearPeticionAModelo(OrdenDelDiaDTOPeticion peticion){
-        return mapper.map(peticion, OrdenDelDia.class);
+    public Solicitud mapearPeticionAModelo(SolicitudDTOPeticion peticion){
+        return mapper.map(peticion, Solicitud.class);
     }
 
-    public List<OrdenDelDia> mapearPeticionesAModelo(List<OrdenDelDiaDTOPeticion> peticiones){
-        return mapper.map(peticiones, new TypeToken<List<OrdenDelDia>>(){}.getType());
+    public Solicitud mapearPeticionAModelo(SolicitudActualizarDTOPeticion peticion){
+        return mapper.map(peticion, Solicitud.class);
+    }
+
+    public OrdenDelDia mapearPeticionAModelo(OrdenDelDiaDTOPeticion peticion){
+        return mapper.map(peticion, OrdenDelDia.class);
     }
 
     public OrdenDelDiaDTORespuesta mapearModeloARespuesta(OrdenDelDia modelo){
         return mapper.map(modelo, OrdenDelDiaDTORespuesta.class);
     }
 
+    public SolicitudDTORespuesta mapearModeloARespuesta(Solicitud modelo){
+        return mapper.map(modelo, SolicitudDTORespuesta.class);
+    }
+
     public List<OrdenDelDiaDTORespuesta> mapearModelosARespuesta(List<OrdenDelDia> modelos){
         return mapper.map(modelos, new TypeToken<List<OrdenDelDiaDTORespuesta>>(){}.getType());
+    }
+
+    public List<SolicitudDTORespuesta> mapearModelosARespuestaSolicitud(List<Solicitud> modelos){
+        return mapper.map(modelos, new TypeToken<List<SolicitudDTORespuesta>>(){}.getType());
     }
 
 }

@@ -14,5 +14,5 @@ public class Anexo {
     private String uuidAnexo;
     private String nombre;
     private String urlAnexo;
-    private Solicitud solicitud;
+    private Solicitud objSolicitud;
 }
