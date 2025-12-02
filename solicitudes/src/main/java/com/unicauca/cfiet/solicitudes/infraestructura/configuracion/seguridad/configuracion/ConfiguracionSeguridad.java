@@ -46,14 +46,16 @@ public class ConfiguracionSeguridad {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authRequest -> authRequest
                         .requestMatchers(baseUrl + "sesiones").permitAll()
+                        .requestMatchers(HttpMethod.POST, baseUrl + "solicitudes/public").permitAll()
                         .requestMatchers(baseUrl + "tipos/solicitudes/**").hasAuthority("Secretario General")
                         .requestMatchers(baseUrl + "solicitudes/orden-del-dia/**").hasAuthority("Secretario General")
-                        .requestMatchers(baseUrl + "solicitudes/**").authenticated()
                         .requestMatchers(baseUrl + "logs/**").hasAuthority("Secretario General")
                         .requestMatchers(baseUrl + "roles/**").hasAuthority("Secretario General")
                         .requestMatchers(HttpMethod.GET, baseUrl + "usuarios/**").authenticated()
-                        .requestMatchers(baseUrl + "usuarios/**").hasAuthority("Secretario General")
                         .requestMatchers(HttpMethod.PATCH, baseUrl + "usuarios/**").authenticated()
+                        .requestMatchers(baseUrl + "usuarios/**").hasAuthority("Secretario General")
+                        .requestMatchers(baseUrl + "solicitudes/**").authenticated()
+                        .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
                     .authenticationEntryPoint(authEntryPoint)

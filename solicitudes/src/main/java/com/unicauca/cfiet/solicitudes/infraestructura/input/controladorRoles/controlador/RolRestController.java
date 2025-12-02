@@ -33,7 +33,7 @@ public class RolRestController {
     private final RolCUIntPuerto casoDeUso;
     private final MapperRolInfraestructuraDominio mapper;
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping
     public ResponseEntity<List<RolDTORespuesta>> index(){
         List<Rol> roles = casoDeUso.getRoles();
@@ -42,7 +42,7 @@ public class RolRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/paginado")
     public ResponseEntity<List<RolDTORespuesta>> indexPaginado(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
         List<Rol> roles = casoDeUso.getRoles(pagina, tamanio);
@@ -51,7 +51,7 @@ public class RolRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/{uuidRol}")
     public ResponseEntity<RolDTORespuesta> getRol(@PathVariable String uuidRol){
         Rol rol = casoDeUso.getRol(uuidRol);
@@ -60,7 +60,7 @@ public class RolRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @PutMapping("/{uuidRol}")
     @Transactional
     public ResponseEntity<?> actualizarRol(@PathVariable String uuidRol, @Valid @RequestBody RolDTOPeticion rolPeticion,

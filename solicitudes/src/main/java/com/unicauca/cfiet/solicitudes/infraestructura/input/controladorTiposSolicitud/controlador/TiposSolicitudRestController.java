@@ -48,7 +48,7 @@ public class TiposSolicitudRestController {
         this.validadorPeticion = validadorPeticion;
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/paginado")
     public ResponseEntity<?> indexPaginado(
             @RequestParam("pagina") int pagina,
@@ -63,7 +63,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/filtro")
     public ResponseEntity<?> getTiposDeSolicitudFiltrado(
             @RequestParam(value = "nombreSolicitud", required = false) String nombreSolicitud,
@@ -80,7 +80,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping
     public ResponseEntity<?> index(){
         List<TipoSolicitud> tipos = casoDeUso.getTiposSolicitud();
@@ -89,7 +89,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/{uuidTipoSolicitud}")
     public ResponseEntity<?> getTipoSolicitud(@PathVariable String uuidTipoSolicitud){
         TipoSolicitud tipo = casoDeUso.getTipoSolicitud(uuidTipoSolicitud);
@@ -98,7 +98,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @Transactional
     @PostMapping
     public ResponseEntity<?> crearTipoSolicitud(@Valid @RequestBody TipoSolicitudDTOPeticion peticion,
@@ -118,7 +118,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @Transactional
     @PostMapping("/cargar/archivo")
     public ResponseEntity<?> crearTiposSolicitud(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token){
@@ -146,7 +146,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @Transactional
     @PutMapping("/{uuidTipoSolicitud}")
     public ResponseEntity<?> actualizarTipoSolicitud(@PathVariable String uuidTipoSolicitud, @Valid @RequestBody TipoSolicitudDTOPeticion peticion,
@@ -166,7 +166,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/perfil")
     public ResponseEntity<?> getTiposPorPerfil(
             @RequestParam("perfil") String perfil) {

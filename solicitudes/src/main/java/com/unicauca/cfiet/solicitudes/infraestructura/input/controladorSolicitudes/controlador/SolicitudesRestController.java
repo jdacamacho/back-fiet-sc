@@ -43,7 +43,7 @@ public class SolicitudesRestController {
     private final MapperSolicitudesInfraestructuraDominio mapper;
     private final ValidadorAnexosService validadorAnexosService;
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/orden-del-dia/paginado")
     public ResponseEntity<?> indexPaginado(
             @RequestParam("pagina") int pagina,
@@ -57,7 +57,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/orden-del-dia")
     public ResponseEntity<?> index(){
         List<OrdenDelDia> ordenesDelDia = ordenDelDiaCU.getOrdenesDelDia();
@@ -66,7 +66,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/orden-del-dia/{uuidOrdenDelDia}")
     public ResponseEntity<?> getOrdenDelDia(@PathVariable String uuidOrdenDelDia){
         OrdenDelDia ordenDelDia = ordenDelDiaCU.getOrdenDelDia(uuidOrdenDelDia);
@@ -75,7 +75,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @Transactional
     @PostMapping("/orden-del-dia")
     public ResponseEntity<?> crearOrdenDelDia(@Valid @RequestBody OrdenDelDiaDTOPeticion peticion,
@@ -95,7 +95,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @Transactional
     @PutMapping("/orden-del-dia/{uuidOrdenDelDia}")
     public ResponseEntity<?> actualizarOrdenDelDia(@PathVariable String uuidOrdenDelDia,
@@ -116,7 +116,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAnyAuthority('Secretario General', 'Funcionario')")
     @GetMapping("/paginado")
     public ResponseEntity<?> solicitudesPaginado(
             @RequestParam("pagina") int pagina,
@@ -130,7 +130,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAnyAuthority('Secretario General', 'Funcionario')")
     @GetMapping
     public ResponseEntity<?> solicitudesIndex(){
         List<Solicitud> ordenesDelDia = solicitudCU.getSolicitudes();
@@ -139,7 +139,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAnyAuthority('Secretario General', 'Funcionario')")
     @GetMapping("/{uuidSolicitud}")
     public ResponseEntity<?> getSolicitud(@PathVariable String uuidSolicitud){
         Solicitud solicitud = solicitudCU.getSolicitud(uuidSolicitud);
@@ -148,7 +148,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("isAuthenticated()")
     @Transactional
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> enviarSolicitud(@Valid @RequestPart("solicitud") SolicitudDTOPeticion peticion,
@@ -192,7 +192,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @Transactional
     @PutMapping("/{uuidSolicitud}")
     public ResponseEntity<?> actualizarOrdenDelDia(@PathVariable String uuidSolicitud,
@@ -213,7 +213,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Funcionario')")
     @GetMapping("/funcionario/{uuidFuncionario}")
     public ResponseEntity<?> getSolicitudesPorFuncionario(
             @PathVariable String uuidFuncionario,
@@ -229,7 +229,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/orden-del-dia/{uuidOrdenDelDia}/solicitudes")
     public ResponseEntity<?> getSolicitudesPorOrdenDelDia(@PathVariable String uuidOrdenDelDia) {
         List<Solicitud> lista = solicitudCU.getSolicitudesPorOrdenDelDia(uuidOrdenDelDia);
@@ -238,7 +238,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/estado")
     public ResponseEntity<?> getSolicitudesPorEstado(@RequestParam("estado") String estado) {
         List<Solicitud> lista = solicitudCU.getSolicitudesPorEstado(estado);
@@ -247,7 +247,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAnyAuthority('Secretario General', 'Funcionario')")
     @GetMapping("/buscar")
     public ResponseEntity<?> buscarSolicitudesPorNombre(
             @RequestParam("filtro") String filtro,
@@ -263,7 +263,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/orden-del-dia/buscar")
     public ResponseEntity<?> buscarOrdenDelDiaPorNumeroActa(
             @RequestParam("filtro") String filtro,
