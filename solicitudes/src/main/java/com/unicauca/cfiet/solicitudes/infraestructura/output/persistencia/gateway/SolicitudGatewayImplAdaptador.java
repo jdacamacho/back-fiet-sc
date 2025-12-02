@@ -66,4 +66,47 @@ public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto 
         SolicitudEntidad entidadGuardada = repositorio.save(entidadGuardar);
         return mapper.map(entidadGuardada, Solicitud.class);
     }
+
+    @Override
+    public PaginacionRespuestaDTO<Solicitud> getSolicitudesPorFuncionario(String uuidFuncionario, int pagina, int tamanio) {
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Page<SolicitudEntidad> page = repositorio.findByObjFuncionarioUuidUsuario(uuidFuncionario, paginado);
+
+        List<Solicitud> respuesta = page.getContent().stream()
+                .map(e -> mapper.map(e, Solicitud.class))
+                .toList();
+
+        return new PaginacionRespuestaDTO<>(respuesta, page.getTotalElements());
+    }
+
+    @Override
+    public List<Solicitud> getSolicitudesPorOrdenDelDia(String uuidOrdenDelDia) {
+        List<SolicitudEntidad> entidades = repositorio.findByObjOrdenDelDiaUuidOrdenDelDia(uuidOrdenDelDia);
+
+        return entidades.stream()
+                .map(e -> mapper.map(e, Solicitud.class))
+                .toList();
+    }
+
+    @Override
+    public List<Solicitud> getSolicitudesPorEstado(String estado) {
+        List<SolicitudEntidad> entidades = repositorio.findByEstadoIgnoreCase(estado);
+
+        return entidades.stream()
+                .map(e -> mapper.map(e, Solicitud.class))
+                .toList();
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorNombre(String filtro, int pagina, int tamanio) {
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Page<SolicitudEntidad> page = repositorio.buscarPorNombre(filtro, paginado);
+
+        List<Solicitud> respuesta = page.getContent().stream()
+                .map(s -> mapper.map(s, Solicitud.class))
+                .toList();
+
+        return new PaginacionRespuestaDTO<>(respuesta, page.getTotalElements());
+    }
+
 }

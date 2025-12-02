@@ -165,4 +165,15 @@ public class TiposSolicitudRestController {
                 mapper.mapearModeloARespuesta(tipo), HttpStatus.OK
         );
     }
+
+    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @GetMapping("/perfil")
+    public ResponseEntity<?> getTiposPorPerfil(
+            @RequestParam("perfil") String perfil) {
+        List<TipoSolicitud> lista = casoDeUso.getTiposSolicitudesPorPerfil(perfil);
+        return ResponseEntity.ok(
+                mapper.mapearModelosARespuesta(lista)
+        );
+    }
+
 }

@@ -3,6 +3,7 @@ package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitu
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
@@ -12,5 +13,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AnexoDTOPeticion {
     private String nombre;
-    private String urlAnexo;
+    private MultipartFile anexoFile;
 }

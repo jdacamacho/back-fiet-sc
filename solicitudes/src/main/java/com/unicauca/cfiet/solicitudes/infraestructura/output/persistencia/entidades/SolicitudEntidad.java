@@ -22,7 +22,7 @@ public class SolicitudEntidad {
     private String uuidSolicitud;
     @Column(nullable = false, length = 100)
     private String consecutivo;
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String nombre;
     @Column(length = 100)
     private String descripcion;
@@ -39,7 +39,7 @@ public class SolicitudEntidad {
     )
     private List<AnexoEntidad> anexos;
     @ManyToOne
-    @JoinColumn(name = "uuidOrdenDelDia", nullable = false)
+    @JoinColumn(name = "uuidOrdenDelDia")
     private OrdenDelDiaEntidad objOrdenDelDia;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "uuidInformacionSolicitante", referencedColumnName = "uuidInformacionSolicitante")

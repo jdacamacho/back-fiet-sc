@@ -74,4 +74,12 @@ public class OrdenDelDiaCUImplAdaptador implements OrdenDelDiaCUIntPuerto {
         log.crearLog("Actualizar Orden del Día", String.format("Orden del día con uuid %s actualizado: %s", uuidOrdenDelDia, ordenDelDia.getNombre()), token);
         return gateway.guardarOrdenDelDia(ordenDelDiaActualizar);
     }
+
+    @Override
+    public PaginacionRespuestaDTO<OrdenDelDia> buscarOrdenDelDiaPorNumeroActa(String nombre, int pagina, int tamanio) {
+        PaginacionRespuestaDTO<OrdenDelDia> resultado = gateway.getOrdenesDelDia(nombre, pagina, tamanio);
+        if (resultado.getContent().isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format("No existen órdenes del día cuyo nombre coincida con '%s'", nombre));
+        return resultado;
+    }
 }

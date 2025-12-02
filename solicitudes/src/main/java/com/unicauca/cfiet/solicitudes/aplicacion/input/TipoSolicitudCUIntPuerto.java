@@ -72,4 +72,6 @@ public interface TipoSolicitudCUIntPuerto {
      * @return lista con los tipos de solicitud creados.
      */
     List<TipoSolicitud> crearTiposSolicitud(List<TipoSolicitud> tiposSolicitud, String token);
+
+    List<TipoSolicitud> getTiposSolicitudesPorPerfil(String perfil);
 }

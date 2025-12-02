@@ -41,4 +41,36 @@ public interface SolicitudGatewayIntPuerto {
      * @return la solicitud guardado.
      */
     Solicitud guardarSolicitud(Solicitud solicitud);
+
+    /**
+     * Obtener las solicitudes de forma paginada pertenecientes a un funcionario.
+     *
+     * @param pagina número de la página a consultar.
+     * @param tamanio cantidad de elementos por página.
+     * @return lista de solicitudes de la página solicitada.
+     */
+    PaginacionRespuestaDTO<Solicitud> getSolicitudesPorFuncionario(String uuidFuncionario, int pagina, int tamanio);
+
+    /**
+     * Obtener todos las solicitudes pertenecientes a un orden del día.
+     *
+     * @return lista con todos las solicitudes.
+     */
+    List<Solicitud> getSolicitudesPorOrdenDelDia(String uuidOrdenDelDia);
+
+    /**
+     * Obtener todos las solicitudes de acuerdo al estado pasado por parametro.
+     *
+     * @return lista con todos las solicitudes.
+     */
+    List<Solicitud> getSolicitudesPorEstado(String estado);
+
+    /**
+     * Obtener las solicitudes de forma paginada pertenecientes a un filtro (nombre) establecido.
+     *
+     * @param pagina número de la página a consultar.
+     * @param tamanio cantidad de elementos por página.
+     * @return lista de solicitudes de la página solicitada.
+     */
+    PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorNombre(String filtro, int pagina, int tamanio);
 }

@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
@@ -28,4 +30,6 @@ public interface TipoSolicitudRepositorio extends JpaRepository<TipoSolicitudEnt
                 @Param("nombre") String nombreSolicitud,
                 @Param("funcionario") String funcionario,
                 Pageable pageable);
+
+    List<TipoSolicitudEntidad> findByPerfilSolicitanteIgnoreCase(String perfilSolicitante);
 }

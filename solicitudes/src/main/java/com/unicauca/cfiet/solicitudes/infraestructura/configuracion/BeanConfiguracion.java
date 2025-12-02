@@ -3,6 +3,7 @@ package com.unicauca.cfiet.solicitudes.infraestructura.configuracion;
 import com.unicauca.cfiet.solicitudes.aplicacion.input.LogCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.*;
 import com.unicauca.cfiet.solicitudes.dominio.casosdeuso.*;
+import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.almacenador.AlmacenadorArchivos;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -56,7 +57,10 @@ public class BeanConfiguracion {
                                                      TipoSolicitudGatewayIntPuerto gatewayTipoSolicitud,
                                                      OrdenDelDiaGatewayIntPuerto gatewayOrdenDelDia,
                                                      UsuarioGatewayIntPuerto gatewayUsuario,
-                                                     LogCUIntPuerto log){
-        return new SolicitudCUImplAdaptador(gateway, formateadorExcepciones, gatewayTipoSolicitud, gatewayOrdenDelDia, gatewayUsuario, log);
+                                                     LogCUIntPuerto log,
+                                                     SesionGatewayIntPuerto gatewaySesion,
+                                                     IJwtServicio jwtServicio,
+                                                     AlmacenadorArchivos almacenadorArchivos){
+        return new SolicitudCUImplAdaptador(gateway, formateadorExcepciones, gatewayTipoSolicitud, gatewayOrdenDelDia, gatewayUsuario, log, gatewaySesion, jwtServicio, almacenadorArchivos);
     }
 }

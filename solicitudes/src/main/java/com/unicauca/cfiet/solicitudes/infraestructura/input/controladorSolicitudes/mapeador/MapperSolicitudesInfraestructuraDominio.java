@@ -5,6 +5,7 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.Solicitud;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.OrdenDelDiaDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.SolicitudActualizarDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.SolicitudDTOPeticion;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.SolicitudPublicaDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTORespuesta.OrdenDelDiaDTORespuesta;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTORespuesta.SolicitudDTORespuesta;
 import org.modelmapper.ModelMapper;
@@ -30,6 +31,10 @@ public class MapperSolicitudesInfraestructuraDominio {
     }
 
     public Solicitud mapearPeticionAModelo(SolicitudActualizarDTOPeticion peticion){
+        return mapper.map(peticion, Solicitud.class);
+    }
+
+    public Solicitud mapearPeticionAModelo(SolicitudPublicaDTOPeticion peticion){
         return mapper.map(peticion, Solicitud.class);
     }
 

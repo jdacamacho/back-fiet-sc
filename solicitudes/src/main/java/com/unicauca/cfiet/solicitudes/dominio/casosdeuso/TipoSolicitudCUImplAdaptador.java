@@ -161,4 +161,14 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
                 formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.MAL_ASIGNACION);
         }
     }
+
+    @Override
+    public List<TipoSolicitud> getTiposSolicitudesPorPerfil(String perfil) {
+        String perfilNormalizado = perfil.replace("_", " ");
+        List<TipoSolicitud> lista = gateway.getTiposSolicitudesPorPerfil(perfilNormalizado);
+        if (lista.isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format("No existen tipos de solicitud cuyo perfil solicitante sea '%s'", perfil));
+        return lista;
+    }
+
 }

@@ -3,6 +3,7 @@ package com.unicauca.cfiet.solicitudes.dominio.modelos;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
@@ -13,6 +14,7 @@ import lombok.Setter;
 public class Anexo {
     private String uuidAnexo;
     private String nombre;
+    private MultipartFile anexoFile;
     private String urlAnexo;
     private Solicitud objSolicitud;
 }

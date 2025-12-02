@@ -64,4 +64,16 @@ public class OrdenDelDiaGatewayImplAdaptador implements OrdenDelDiaGatewayIntPue
         OrdenDelDiaEntidad entidadGuardada = repositorio.save(entidadGuardar);
         return mapper.map(entidadGuardada, OrdenDelDia.class);
     }
+
+    @Override
+    public PaginacionRespuestaDTO<OrdenDelDia> getOrdenesDelDia(String filtro, int pagina, int tamanio) {
+        Pageable paginado = PageRequest.of(pagina, tamanio);
+        var page = repositorio.findByNumeroActaContainingIgnoreCase(filtro, paginado);
+
+        List<OrdenDelDia> lista = page.getContent().stream()
+                .map(entidad -> mapper.map(entidad, OrdenDelDia.class))
+                .toList();
+
+        return new PaginacionRespuestaDTO<>(lista, page.getTotalElements());
+    }
 }

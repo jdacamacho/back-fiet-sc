@@ -84,4 +84,13 @@ public class TipoSolicitudGatewayImplAdaptador implements TipoSolicitudGatewayIn
                 .map(e -> mapper.map(e, TipoSolicitud.class))
                 .toList();
     }
+
+    @Override
+    public List<TipoSolicitud> getTiposSolicitudesPorPerfil(String perfil) {
+        List<TipoSolicitudEntidad> entidades =
+                repositorio.findByPerfilSolicitanteIgnoreCase(perfil);
+        return entidades.stream()
+                .map(e -> mapper.map(e, TipoSolicitud.class))
+                .toList();
+    }
 }

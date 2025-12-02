@@ -52,4 +52,6 @@ public interface OrdenDelDiaCUIntPuerto {
      * @return el orden del día actualizado.
      */
     OrdenDelDia actualizarOrdenDelDia(String uuidOrdenDelDia, OrdenDelDia ordenDelDia, String token);
+
+    PaginacionRespuestaDTO<OrdenDelDia> buscarOrdenDelDiaPorNumeroActa(String nombre, int pagina, int tamanio);
 }

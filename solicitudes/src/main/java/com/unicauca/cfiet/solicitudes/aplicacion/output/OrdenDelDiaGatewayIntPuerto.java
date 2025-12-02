@@ -41,4 +41,6 @@ public interface OrdenDelDiaGatewayIntPuerto {
      * @return el orden del día guardado.
      */
     OrdenDelDia guardarOrdenDelDia(OrdenDelDia ordenDelDia);
+
+    PaginacionRespuestaDTO<OrdenDelDia> getOrdenesDelDia(String filtro, int pagina, int tamanio);
 }

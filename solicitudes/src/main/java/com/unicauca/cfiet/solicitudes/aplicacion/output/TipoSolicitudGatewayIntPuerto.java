@@ -60,4 +60,6 @@ public interface TipoSolicitudGatewayIntPuerto {
      * @return lista con los tipos de solicitud guardados.
      */
     List<TipoSolicitud> guardarTiposSolicitud(List<TipoSolicitud> tiposSolicitud);
+
+    List<TipoSolicitud> getTiposSolicitudesPorPerfil(String perfil);
 }
