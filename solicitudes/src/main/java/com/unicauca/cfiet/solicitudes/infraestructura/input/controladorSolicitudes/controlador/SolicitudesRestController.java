@@ -14,7 +14,11 @@ import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitud
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.io.File;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +49,8 @@ public class SolicitudesRestController {
     private final SolicitudCUintPuerto solicitudCU;
     private final MapperSolicitudesInfraestructuraDominio mapper;
     private final ValidadorAnexosService validadorAnexosService;
+    @Value("${app.uploads.base-path}")
+    private String basePath;
 
     @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/orden-del-dia/paginado")
@@ -278,5 +287,33 @@ public class SolicitudesRestController {
         );
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/anexos/{uuidSolicitud}/{fileName:.+}")
+    public ResponseEntity<Resource> descargarAnexo(
+            @PathVariable String uuidSolicitud,
+            @PathVariable String fileName) {
 
+        try {
+            String decodedFileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8);
+            File file = new File(basePath + "/" + uuidSolicitud + "/" + decodedFileName);
+
+            if (!file.exists() || !file.isFile()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Resource resource = new UrlResource(file.toURI());
+
+            String contentType = Files.probeContentType(file.toPath());
+            if (contentType == null) contentType = "application/octet-stream";
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(contentType))
+                    .header(HttpHeaders.CONTENT_DISPOSITION,
+                            "inline; filename=\"" + file.getName() + "\"")
+                    .body(resource);
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

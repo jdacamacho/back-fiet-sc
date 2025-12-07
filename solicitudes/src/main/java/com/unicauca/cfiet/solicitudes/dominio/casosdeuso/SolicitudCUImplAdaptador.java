@@ -7,8 +7,10 @@ import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.*;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.almacenador.AlmacenadorArchivos;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.MensajesError;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +30,12 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
     private final LogCUIntPuerto log;
     private final IJwtServicio jwtServicio;
     private final AlmacenadorArchivos almacenadorArchivos;
+    @Value("${url.backend}")
+    private String urlBackend;
+
+    @Value("${url.application}")
+    private String urlApplication;
+
     /* Constantes */
     private static final String SOLICITUDES = "Solicitudes";
     private static final String SOLICITUD = "Solicitud";
@@ -98,7 +106,9 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
             if (archivo != null && !archivo.isEmpty()) {
                 try {
                     String rutaArchivo = almacenadorArchivos.guardarArchivo(uuidSolicitud, archivo, currentAnexo.getNombre());
-                    currentAnexo.setUrlAnexo(rutaArchivo);
+                    String urlAnexo = urlBackend + urlApplication + "solicitudes/anexos/"
+                            + uuidSolicitud + "/" + new File(rutaArchivo).getName();
+                    currentAnexo.setUrlAnexo(urlAnexo);
                 } catch (IOException e) {
                     throw new RuntimeException("Error guardando el archivo del anexo: " + currentAnexo.getNombre(), e);
                 }
@@ -125,7 +135,9 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
             if (archivo != null && !archivo.isEmpty()) {
                 try {
                     String rutaArchivo = almacenadorArchivos.guardarArchivo(uuidSolicitud, archivo, currentAnexo.getNombre());
-                    currentAnexo.setUrlAnexo(rutaArchivo);
+                    String urlAnexo = urlBackend + urlApplication + "solicitudes/anexos/"
+                            + uuidSolicitud + "/" + new File(rutaArchivo).getName();
+                    currentAnexo.setUrlAnexo(urlAnexo);
                 } catch (IOException e) {
                     throw new RuntimeException("Error guardando el archivo del anexo: " + currentAnexo.getNombre(), e);
                 }
@@ -138,22 +150,27 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
     @Override
     public Solicitud actualizarSolicitud(String uuidSolicitud, Solicitud solicitud, String token) {
         Solicitud solicitudOriginal = gateway.getSolicitud(uuidSolicitud);
-        if(!solicitud.getUuidFuncionario().equals(solicitudOriginal.getObjFuncionario().getUuidUsuario())){
-            Usuario usuario = gatewayUsuario.getUsuario(solicitud.getUuidFuncionario());
-            if(usuario == null)
-                formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, USUARIO, solicitud.getUuidFuncionario()));
 
-            if (!(usuario instanceof Funcionario))
-                formateadorExcepciones.lanzarMalFormato(String.format(MensajesError.TIPO_DE_USUARIO_NO_VALIDO));
-            Funcionario funcionarioNuevo = (Funcionario) usuario;
-            solicitudOriginal.setObjFuncionario(funcionarioNuevo);
+        if(solicitud.getUuidFuncionario() != null && solicitud.getUuidFuncionario().isBlank()) {
+            if (!solicitud.getUuidFuncionario().equals(solicitudOriginal.getObjFuncionario().getUuidUsuario())) {
+                Usuario usuario = gatewayUsuario.getUsuario(solicitud.getUuidFuncionario());
+                if (usuario == null)
+                    formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, USUARIO, solicitud.getUuidFuncionario()));
+
+                if (!(usuario instanceof Funcionario))
+                    formateadorExcepciones.lanzarMalFormato(String.format(MensajesError.TIPO_DE_USUARIO_NO_VALIDO));
+                Funcionario funcionarioNuevo = (Funcionario) usuario;
+                solicitudOriginal.setObjFuncionario(funcionarioNuevo);
+            }
         }
 
-        if (!solicitud.getUuidOrdenDelDia().equals(solicitudOriginal.getObjOrdenDelDia().getUuidOrdenDelDia())) {
-            OrdenDelDia ordenNuevo = gatewayOrdenDelDia.getOrdenDelDia(solicitud.getUuidOrdenDelDia());
-            if (ordenNuevo == null)
-                formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ORDEN_DEL_DIA, solicitud.getUuidOrdenDelDia()));
-            solicitudOriginal.setObjOrdenDelDia(ordenNuevo);
+        if(solicitud.getUuidOrdenDelDia() != null && solicitud.getUuidOrdenDelDia().isBlank()) {
+            if (!solicitud.getUuidOrdenDelDia().equals(solicitudOriginal.getObjOrdenDelDia().getUuidOrdenDelDia())) {
+                OrdenDelDia ordenNuevo = gatewayOrdenDelDia.getOrdenDelDia(solicitud.getUuidOrdenDelDia());
+                if (ordenNuevo == null)
+                    formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ORDEN_DEL_DIA, solicitud.getUuidOrdenDelDia()));
+                solicitudOriginal.setObjOrdenDelDia(ordenNuevo);
+            }
         }
 
         solicitudOriginal.actualizar(solicitud);

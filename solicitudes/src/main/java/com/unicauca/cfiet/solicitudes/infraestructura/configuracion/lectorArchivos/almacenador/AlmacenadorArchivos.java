@@ -39,20 +39,25 @@ public class AlmacenadorArchivos {
         // Obtener extensión del archivo original
         String extension = "";
         String originalName = archivo.getOriginalFilename();
-        if (originalName != null && originalName.contains(".")) {
+        if (originalName != null && originalName.contains("."))
             extension = originalName.substring(originalName.lastIndexOf("."));
-        }
+
+        // Normalizar el nombre del anexo: quitar espacios y caracteres problemáticos
+        String nombreSeguro = nombreAnexo.trim()
+                .replaceAll("\\s+", "_")           // reemplaza espacios por _
+                .replaceAll("[^a-zA-Z0-9_\\-]", ""); // elimina caracteres especiales
 
         // Fecha actual para el nombre
         String fecha = LocalDateTime.now().format(FORMATTER);
 
-        // Nombre del archivo = nombreAnexo_fecha.ext
-        File destino = new File(carpetaSolicitud, nombreAnexo + "_" + fecha + extension);
+        // Nombre final del archivo = nombreSeguro_fecha.ext
+        File destino = new File(carpetaSolicitud, nombreSeguro + "_" + fecha + extension);
 
         // Guardar archivo en disco
         archivo.transferTo(destino);
 
-        // Retornar ruta absoluta o relativa para guardar en DB
-        return destino.getAbsolutePath();
+        // Retornar URL pública para guardar en DB
+        String urlPublica = "/api/anexos/" + uuidSolicitud + "/" + destino.getName();
+        return urlPublica;
     }
 }
