@@ -1,8 +1,8 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.Date;
 
 /**
@@ -12,6 +12,9 @@ import java.util.Date;
 @Table(name = "logs")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class LogEntidad {
     @Id
     @Column(length = 100)

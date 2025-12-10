@@ -1,7 +1,11 @@
 package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +16,8 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@SuperBuilder
 public class Usuario extends UsuarioLiviano{
     private String tipoDocumento;
     private String numeroDocumento;
@@ -63,7 +69,7 @@ public class Usuario extends UsuarioLiviano{
         int wasFound = 0;
         for (Rol rol : roles) {
             for (Rol rolValido : rolesValidos) {
-                if (rol.equals(rolValido))
+                if (rol.getUuidRol().equals(rolValido.getUuidRol()))
                     wasFound++;
             }
         }

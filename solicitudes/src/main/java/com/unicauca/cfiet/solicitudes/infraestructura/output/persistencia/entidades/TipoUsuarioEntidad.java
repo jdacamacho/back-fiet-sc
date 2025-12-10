@@ -1,8 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,8 +10,11 @@ import java.util.List;
  */
 @Entity
 @Table(name = "tiposUsuario")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TipoUsuarioEntidad {
     @Id
     @Column(length = 100)

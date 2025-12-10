@@ -58,27 +58,6 @@ public class Mapper {
                 .addMappings(m -> m.skip(TipoAnexo::setObjTipoSolicitud));
 
 
-        // Mapeo de Solicitud -> SolicitudEntidad
-        mapper.createTypeMap(Solicitud.class, SolicitudEntidad.class)
-                .addMappings(m -> {
-                    m.map(Solicitud::getObjFuncionario, SolicitudEntidad::setObjFuncionario);
-                    m.map(Solicitud::getObjOrdenDelDia, SolicitudEntidad::setObjOrdenDelDia);
-                    m.map(Solicitud::getAnexos, SolicitudEntidad::setAnexos);
-                    m.map(Solicitud::getObjTipoSolicitud, SolicitudEntidad::setObjTipoSolicitud);
-                    m.map(Solicitud::getInformacionSolicitante, SolicitudEntidad::setInformacionSolicitante);
-                });
-
-        // Mapeo de SolicitudEntidad -> Solicitud
-        mapper.createTypeMap(SolicitudEntidad.class, Solicitud.class)
-                .addMappings(m -> {
-                    m.map(SolicitudEntidad::getObjFuncionario, Solicitud::setObjFuncionario);
-                    m.map(SolicitudEntidad::getObjOrdenDelDia, Solicitud::setObjOrdenDelDia);
-                    m.map(SolicitudEntidad::getAnexos, Solicitud::setAnexos);
-                    m.map(SolicitudEntidad::getObjTipoSolicitud, Solicitud::setObjTipoSolicitud);
-                    m.map(SolicitudEntidad::getInformacionSolicitante, Solicitud::setInformacionSolicitante);
-                });
-
-
         return mapper;
     }
 }
