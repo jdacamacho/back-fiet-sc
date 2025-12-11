@@ -1,9 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,11 +14,13 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SolicitudEntidad {
     @Id
     @Column(length = 100)
     private String uuidSolicitud;
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String consecutivo;
     @Column(length = 100)
     private String nombre;

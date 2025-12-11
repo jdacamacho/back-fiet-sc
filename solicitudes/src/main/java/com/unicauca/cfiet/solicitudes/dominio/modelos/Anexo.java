@@ -1,8 +1,6 @@
 package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -11,6 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Anexo {
     private String uuidAnexo;
     private String nombre;

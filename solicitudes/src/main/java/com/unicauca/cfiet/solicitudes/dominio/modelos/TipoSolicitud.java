@@ -1,7 +1,7 @@
 package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -11,6 +11,9 @@ import java.util.UUID;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TipoSolicitud {
     private String uuidTipoSolicitud;
     private String nombre;
@@ -20,10 +23,6 @@ public class TipoSolicitud {
     private List<TipoAnexo> anexos;
     private Funcionario objFuncionarioEncargado;
     private String uuidFuncionario;
-
-    public TipoSolicitud(){
-        this.anexos = new ArrayList<>();
-    }
 
     public boolean revisarSeccion() {
         String seccion = getSeccion();

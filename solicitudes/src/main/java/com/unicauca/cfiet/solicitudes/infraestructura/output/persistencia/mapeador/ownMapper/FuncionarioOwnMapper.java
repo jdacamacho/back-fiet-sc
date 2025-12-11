@@ -8,7 +8,6 @@ import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entida
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.RolEntidad;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +25,6 @@ public class FuncionarioOwnMapper implements OwnMapper<Funcionario, FuncionarioE
     @Override
     public Funcionario toDominio(FuncionarioEntidad source) {
         if (source == null) return null;
-
         return Funcionario.builder()
                 .uuidUsuario(source.getUuidUsuario())
                 .nombres(source.getNombres())
@@ -49,7 +47,6 @@ public class FuncionarioOwnMapper implements OwnMapper<Funcionario, FuncionarioE
     @Override
     public FuncionarioEntidad toEntidad(Funcionario source) {
         if (source == null) return null;
-
         return FuncionarioEntidad.builder()
                 .uuidUsuario(source.getUuidUsuario())
                 .nombres(source.getNombres())
@@ -95,5 +92,27 @@ public class FuncionarioOwnMapper implements OwnMapper<Funcionario, FuncionarioE
         return logs.stream()
                 .map(logMapper::toDominio)
                 .collect(Collectors.toList());
+    }
+
+    public Funcionario toDominioSinLogsNiRoles(FuncionarioEntidad source) {
+        if (source == null) return null;
+        return Funcionario.builder()
+                .uuidUsuario(source.getUuidUsuario())
+                .nombres(source.getNombres())
+                .apellidos(source.getApellidos())
+                .estado(source.getEstado())
+                .correoElectronico(source.getCorreoElectronico())
+                .build();
+    }
+
+    public FuncionarioEntidad toEntidadSinLogsNiRoles(Funcionario source) {
+        if (source == null) return null;
+        return FuncionarioEntidad.builder()
+                .uuidUsuario(source.getUuidUsuario())
+                .nombres(source.getNombres())
+                .apellidos(source.getApellidos())
+                .estado(source.getEstado())
+                .correoElectronico(source.getCorreoElectronico())
+                .build();
     }
 }

@@ -4,9 +4,9 @@ import com.unicauca.cfiet.solicitudes.aplicacion.output.OrdenDelDiaGatewayIntPue
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.OrdenDelDia;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.OrdenDelDiaEntidad;
+import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.mapeador.ownMapper.OrdenDelDiaOwnMapper;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.OrdenDelDiaRepositorio;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,60 +20,55 @@ import java.util.List;
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Service
+@RequiredArgsConstructor
 public class OrdenDelDiaGatewayImplAdaptador implements OrdenDelDiaGatewayIntPuerto {
     private final OrdenDelDiaRepositorio repositorio;
-    private final ModelMapper mapper;
-
-    public OrdenDelDiaGatewayImplAdaptador(OrdenDelDiaRepositorio repositorio,
-                                           @Qualifier("mapeadorSimple") ModelMapper mapper){
-        this.repositorio = repositorio;
-        this.mapper = mapper;
-    }
+    private final OrdenDelDiaOwnMapper mapper;
 
     @Override
     public List<OrdenDelDia> getOrdenesDelDia() {
-        List<OrdenDelDiaEntidad> entidades = repositorio.findAll(Sort.by("fechaCreacion").descending());
+        List<OrdenDelDiaEntidad> entidades =
+                repositorio.findAll(Sort.by("fechaCreacion").descending());
         return entidades.stream()
-                .map(e -> mapper.map(e, OrdenDelDia.class))
+                .map(mapper::toDominio)
                 .toList();
     }
 
     @Override
     public PaginacionRespuestaDTO<OrdenDelDia> getOrdenesDelDia(int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
-        Page<OrdenDelDiaEntidad> page = repositorio.findAll(paginado);
-        List<OrdenDelDia> respuesta = page.getContent().stream()
-                .map(e -> mapper.map(e, OrdenDelDia.class))
-                .toList();
+        Pageable paginado =
+                PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
 
-        return new PaginacionRespuestaDTO<>(respuesta, page.getTotalElements());
+        Page<OrdenDelDiaEntidad> page = repositorio.findAll(paginado);
+        List<OrdenDelDia> lista = page.getContent().stream()
+                .map(mapper::toDominio)
+                .toList();
+        return new PaginacionRespuestaDTO<>(lista, page.getTotalElements());
     }
 
     @Override
     public OrdenDelDia getOrdenDelDia(String uuidOrdenDelDia) {
-        if(repositorio.existsById(uuidOrdenDelDia)){
-            OrdenDelDiaEntidad entidad = repositorio.findById(uuidOrdenDelDia).get();
-            return mapper.map(entidad, OrdenDelDia.class);
-        }
-        return null;
+        return repositorio.findById(uuidOrdenDelDia)
+                .map(mapper::toDominio)
+                .orElse(null);
     }
 
     @Override
     public OrdenDelDia guardarOrdenDelDia(OrdenDelDia ordenDelDia) {
-        OrdenDelDiaEntidad entidadGuardar = mapper.map(ordenDelDia, OrdenDelDiaEntidad.class);
-        OrdenDelDiaEntidad entidadGuardada = repositorio.save(entidadGuardar);
-        return mapper.map(entidadGuardada, OrdenDelDia.class);
+        OrdenDelDiaEntidad entidad = mapper.toEntidad(ordenDelDia);
+        OrdenDelDiaEntidad guardada = repositorio.save(entidad);
+        return mapper.toDominio(guardada);
     }
 
     @Override
     public PaginacionRespuestaDTO<OrdenDelDia> getOrdenesDelDia(String filtro, int pagina, int tamanio) {
         Pageable paginado = PageRequest.of(pagina, tamanio);
-        var page = repositorio.findByNumeroActaContainingIgnoreCase(filtro, paginado);
+        Page<OrdenDelDiaEntidad> page =
+                repositorio.findByNumeroActaContainingIgnoreCase(filtro, paginado);
 
         List<OrdenDelDia> lista = page.getContent().stream()
-                .map(entidad -> mapper.map(entidad, OrdenDelDia.class))
+                .map(mapper::toDominio)
                 .toList();
-
         return new PaginacionRespuestaDTO<>(lista, page.getTotalElements());
     }
 }

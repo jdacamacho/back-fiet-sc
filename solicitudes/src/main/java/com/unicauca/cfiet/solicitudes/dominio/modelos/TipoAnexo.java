@@ -1,9 +1,6 @@
 package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
@@ -11,6 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TipoAnexo {
     private String uuidTipoAnexo;
     private String nombre;

@@ -1,10 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +13,9 @@ import java.util.List;
 @Table(name = "tiposSolicitudes")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TipoSolicitudEntidad {
     @Id
     private String uuidTipoSolicitud;
@@ -38,7 +38,4 @@ public class TipoSolicitudEntidad {
     @JoinColumn(name = "uuidUsuario")
     private FuncionarioEntidad objFuncionarioEncargado;
 
-    public TipoSolicitudEntidad(){
-        this.anexos = new ArrayList<>();
-    }
 }

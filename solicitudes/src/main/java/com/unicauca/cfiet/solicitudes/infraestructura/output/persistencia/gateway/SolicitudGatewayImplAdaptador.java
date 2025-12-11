@@ -4,9 +4,9 @@ import com.unicauca.cfiet.solicitudes.aplicacion.output.SolicitudGatewayIntPuert
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Solicitud;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.SolicitudEntidad;
+import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.mapeador.ownMapper.SolicitudOwnMapper;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.SolicitudRepositorio;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,22 +20,17 @@ import java.util.List;
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Service
+@RequiredArgsConstructor
 public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto {
     private final SolicitudRepositorio repositorio;
-    private final ModelMapper mapper;
-
-    public SolicitudGatewayImplAdaptador(SolicitudRepositorio repositorio,
-                                         @Qualifier("mapeadorSimple") ModelMapper mapper){
-        this.repositorio = repositorio;
-        this.mapper = mapper;
-
-    }
+    private final SolicitudOwnMapper mapper;
 
     @Override
     public List<Solicitud> getSolicitudes() {
-        List<SolicitudEntidad> entidades = repositorio.findAll(Sort.by("fechaCreacion").descending());
+        List<SolicitudEntidad> entidades =
+                repositorio.findAll(Sort.by("fechaCreacion").descending());
         return entidades.stream()
-                .map(e -> mapper.map(e, Solicitud.class))
+                .map(mapper::toDominio)
                 .toList();
     }
 
@@ -44,7 +39,7 @@ public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto 
         Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
         Page<SolicitudEntidad> page = repositorio.findAll(paginado);
         List<Solicitud> respuesta = page.getContent().stream()
-                .map(e -> mapper.map(e, Solicitud.class))
+                .map(mapper::toDominio)
                 .toList();
 
         return new PaginacionRespuestaDTO<>(respuesta, page.getTotalElements());
@@ -52,47 +47,47 @@ public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto 
 
     @Override
     public Solicitud getSolicitud(String uuidSolicitud) {
-        if(repositorio.existsById(uuidSolicitud)){
-            SolicitudEntidad entidad = repositorio.findById(uuidSolicitud).get();
-            return mapper.map(entidad, Solicitud.class);
-        }
-        return null;
+        return repositorio.findById(uuidSolicitud)
+                .map(mapper::toDominio)
+                .orElse(null);
     }
 
     @Override
     public Solicitud guardarSolicitud(Solicitud solicitud) {
-        SolicitudEntidad entidadGuardar = mapper.map(solicitud, SolicitudEntidad.class);
-        SolicitudEntidad entidadGuardada = repositorio.save(entidadGuardar);
-        return mapper.map(entidadGuardada, Solicitud.class);
+        SolicitudEntidad entidad = mapper.toEntidad(solicitud);
+        SolicitudEntidad guardada = repositorio.save(entidad);
+        return mapper.toDominio(guardada);
     }
 
     @Override
     public PaginacionRespuestaDTO<Solicitud> getSolicitudesPorFuncionario(String uuidFuncionario, int pagina, int tamanio) {
         Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
-        Page<SolicitudEntidad> page = repositorio.findByObjFuncionarioUuidUsuario(uuidFuncionario, paginado);
+        Page<SolicitudEntidad> page =
+                repositorio.findByObjFuncionarioUuidUsuario(uuidFuncionario, paginado);
 
-        List<Solicitud> respuesta = page.getContent().stream()
-                .map(e -> mapper.map(e, Solicitud.class))
+        List<Solicitud> solicitado = page.getContent().stream()
+                .map(mapper::toDominio)
                 .toList();
-
-        return new PaginacionRespuestaDTO<>(respuesta, page.getTotalElements());
+        return new PaginacionRespuestaDTO<>(solicitado, page.getTotalElements());
     }
 
     @Override
     public List<Solicitud> getSolicitudesPorOrdenDelDia(String uuidOrdenDelDia) {
-        List<SolicitudEntidad> entidades = repositorio.findByObjOrdenDelDiaUuidOrdenDelDia(uuidOrdenDelDia);
+        List<SolicitudEntidad> entidades =
+                repositorio.findByObjOrdenDelDiaUuidOrdenDelDia(uuidOrdenDelDia);
 
         return entidades.stream()
-                .map(e -> mapper.map(e, Solicitud.class))
+                .map(mapper::toDominio)
                 .toList();
     }
 
     @Override
     public List<Solicitud> getSolicitudesPorEstado(String estado) {
-        List<SolicitudEntidad> entidades = repositorio.findByEstadoIgnoreCase(estado);
+        List<SolicitudEntidad> entidades =
+                repositorio.findByEstadoIgnoreCase(estado);
 
         return entidades.stream()
-                .map(e -> mapper.map(e, Solicitud.class))
+                .map(mapper::toDominio)
                 .toList();
     }
 
@@ -101,11 +96,10 @@ public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto 
         Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
         Page<SolicitudEntidad> page = repositorio.buscarPorNombre(filtro, paginado);
 
-        List<Solicitud> respuesta = page.getContent().stream()
-                .map(s -> mapper.map(s, Solicitud.class))
+        List<Solicitud> resultado = page.getContent().stream()
+                .map(mapper::toDominio)
                 .toList();
 
-        return new PaginacionRespuestaDTO<>(respuesta, page.getTotalElements());
+        return new PaginacionRespuestaDTO<>(resultado, page.getTotalElements());
     }
-
 }

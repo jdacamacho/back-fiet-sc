@@ -63,28 +63,6 @@ public class LogOwnMapper implements OwnMapper<Log, LogEntidad> {
                 .build();
     }
 
-    public LogEntidad toEntidadConUsuario(Log log, UsuarioEntidad usuario) {
-        if (log == null) return null;
-        return LogEntidad.builder()
-                .uuidLog(log.getUuidLog())
-                .accion(log.getAccion())
-                .fecha(log.getFecha())
-                .resultado(log.getResultado())
-                .objUsuarioLog(usuario)
-                .build();
-    }
-
-    public Log toDominioConUsuario(LogEntidad logEntidad, Usuario usuario) {
-        if (logEntidad == null) return null;
-        return Log.builder()
-                .uuidLog(logEntidad.getUuidLog())
-                .accion(logEntidad.getAccion())
-                .fecha(logEntidad.getFecha())
-                .resultado(logEntidad.getResultado())
-                .objUsuarioLog(usuario)
-                .build();
-    }
-
     public Usuario toDominioSinLogsNiRoles(UsuarioEntidad source) {
         if (source == null) return null;
         return Usuario.builder()
