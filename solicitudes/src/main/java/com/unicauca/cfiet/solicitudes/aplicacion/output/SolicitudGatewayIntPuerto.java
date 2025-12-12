@@ -73,4 +73,13 @@ public interface SolicitudGatewayIntPuerto {
      * @return lista de solicitudes de la página solicitada.
      */
     PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorNombre(String filtro, int pagina, int tamanio);
+
+    /**
+     * Obtener las solicitudes de forma paginada pertenecientes a un filtro (nombre) establecido.
+     *
+     * @param pagina número de la página a consultar.
+     * @param tamanio cantidad de elementos por página.
+     * @return lista de solicitudes de la página solicitada.
+     */
+    PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorNombreYFuncionario(String uuidFuncionario, String filtro, int pagina, int tamanio);
 }

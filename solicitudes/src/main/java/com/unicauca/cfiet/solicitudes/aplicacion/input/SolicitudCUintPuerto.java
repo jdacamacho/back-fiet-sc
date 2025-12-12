@@ -97,4 +97,13 @@ public interface SolicitudCUintPuerto {
      */
     PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorNombre(String filtro, int pagina, int tamanio);
 
+    /**
+     * Buscar solicitudes por coincidencia en el nombre (contiene el texto indicado).
+     *
+     * @param filtro Texto a buscar dentro del nombre de la solicitud.
+     * @param pagina Número de página (0-indexed).
+     * @param tamanio Tamaño de cada página.
+     * @return Paginación de solicitudes que coinciden con el filtro.
+     */
+    PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorNombreYFuncionario(String uuidFuncionario, String filtro, int pagina, int tamanio);
 }

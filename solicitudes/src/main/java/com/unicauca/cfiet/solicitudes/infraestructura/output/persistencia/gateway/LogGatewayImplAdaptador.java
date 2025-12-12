@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,7 @@ public class LogGatewayImplAdaptador implements LogGatewayIntPuerto {
 
     @Override
     public PaginacionRespuestaDTO<Log> getLogs(int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
         Page<LogEntidad> page = repositorio.findAll(paginado);
 
         List<Log> logs = page.getContent().stream()
@@ -52,14 +53,15 @@ public class LogGatewayImplAdaptador implements LogGatewayIntPuerto {
 
     @Override
     public List<Log> getLogs() {
-        return repositorio.findAll().stream()
+        return repositorio.findAll(Sort.by("fechaCreacion").descending())
+                .stream()
                 .map(logMapper::toDominio)
                 .toList();
     }
 
     @Override
     public PaginacionRespuestaDTO<Log> getLogs(String responsable, String fecha, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
         Page<LogEntidad> page = repositorio.findByResponsableAndFecha(responsable, fecha, paginado);
 
         List<Log> logs = page.getContent().stream()

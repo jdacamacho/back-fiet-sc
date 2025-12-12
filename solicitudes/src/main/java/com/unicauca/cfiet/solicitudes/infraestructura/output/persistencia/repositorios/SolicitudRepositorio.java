@@ -23,6 +23,18 @@ public interface SolicitudRepositorio extends JpaRepository<SolicitudEntidad, St
             Pageable pageable
     );
 
+    @Query("""
+    SELECT s FROM SolicitudEntidad s
+    WHERE s.objFuncionario.uuidUsuario = :uuidUsuario
+    AND LOWER(s.nombre) LIKE LOWER(CONCAT('%', :filtro, '%'))
+    """)
+    Page<SolicitudEntidad> buscarPorNombreYFuncionario(
+            @Param("uuidUsuario") String uuidUsuario,
+            @Param("filtro") String filtro,
+            Pageable pageable
+    );
+
+
     List<SolicitudEntidad> findByEstadoIgnoreCase(String estado);
 
     Page<SolicitudEntidad> findByObjFuncionarioUuidUsuario(

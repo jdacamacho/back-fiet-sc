@@ -102,4 +102,16 @@ public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto 
 
         return new PaginacionRespuestaDTO<>(resultado, page.getTotalElements());
     }
+
+    @Override
+    public PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorNombreYFuncionario(String uuidFuncionario, String filtro, int pagina, int tamanio) {
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Page<SolicitudEntidad> page = repositorio.buscarPorNombreYFuncionario(uuidFuncionario, filtro, paginado);
+
+        List<Solicitud> resultado = page.getContent().stream()
+                .map(mapper::toDominio)
+                .toList();
+
+        return new PaginacionRespuestaDTO<>(resultado, page.getTotalElements());
+    }
 }

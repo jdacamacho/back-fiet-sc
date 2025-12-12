@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
@@ -35,7 +36,8 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
 
     @Override
     public List<UsuarioLiviano> getUsuarios() {
-        List<UsuarioLivianoEntidad> entidades = repositorioBasico.findAll();
+        List<UsuarioLivianoEntidad> entidades = repositorioBasico.findAll(Sort.by("fechaCreacion").descending());
+
         return entidades.stream()
                 .map(usuarioLivianoOwnMapper::toDominio)
                 .toList();
@@ -43,7 +45,7 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
 
     @Override
     public PaginacionRespuestaDTO<UsuarioLiviano> getUsuarios(int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
         Page<UsuarioLivianoEntidad> page = repositorioBasico.findAll(paginado);
 
         List<UsuarioLiviano> usuarios = page.getContent().stream()
@@ -55,7 +57,7 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
 
     @Override
     public PaginacionRespuestaDTO<UsuarioLiviano> getUsuariosByNombreCompleto(String nombreCompleto, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
         Page<UsuarioLivianoEntidad> page = repositorioBasico.findByNombreCompleto(nombreCompleto, paginado);
 
         List<UsuarioLiviano> usuarios = page.getContent().stream()

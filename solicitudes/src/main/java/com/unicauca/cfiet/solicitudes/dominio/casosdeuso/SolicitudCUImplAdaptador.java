@@ -151,7 +151,7 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
     public Solicitud actualizarSolicitud(String uuidSolicitud, Solicitud solicitud, String token) {
         Solicitud solicitudOriginal = gateway.getSolicitud(uuidSolicitud);
 
-        if(solicitud.getUuidFuncionario() != null && solicitud.getUuidFuncionario().isBlank()) {
+        if(solicitud.getUuidFuncionario() != null && !solicitud.getUuidFuncionario().isBlank()) {
             if (!solicitud.getUuidFuncionario().equals(solicitudOriginal.getObjFuncionario().getUuidUsuario())) {
                 Usuario usuario = gatewayUsuario.getUsuario(solicitud.getUuidFuncionario());
                 if (usuario == null)
@@ -164,7 +164,7 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
             }
         }
 
-        if(solicitud.getUuidOrdenDelDia() != null && solicitud.getUuidOrdenDelDia().isBlank()) {
+        if(solicitud.getUuidOrdenDelDia() != null && !solicitud.getUuidOrdenDelDia().isBlank()) {
             if (!solicitud.getUuidOrdenDelDia().equals(solicitudOriginal.getObjOrdenDelDia().getUuidOrdenDelDia())) {
                 OrdenDelDia ordenNuevo = gatewayOrdenDelDia.getOrdenDelDia(solicitud.getUuidOrdenDelDia());
                 if (ordenNuevo == null)
@@ -297,6 +297,17 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
             formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
 
         PaginacionRespuestaDTO<Solicitud> respuesta = gateway.buscarSolicitudesPorNombre(filtro, pagina, tamanio);
+        if (respuesta.getContent().isEmpty())
+            formateadorExcepciones.lanzarSinInformacion("No se encontraron solicitudes que coincidan con la búsqueda");
+        return respuesta;
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorNombreYFuncionario(String uuidFuncionario, String filtro, int pagina, int tamanio) {
+        if (pagina < 0 || tamanio < 0)
+            formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
+
+        PaginacionRespuestaDTO<Solicitud> respuesta = gateway.buscarSolicitudesPorNombreYFuncionario(uuidFuncionario, filtro, pagina, tamanio);
         if (respuesta.getContent().isEmpty())
             formateadorExcepciones.lanzarSinInformacion("No se encontraron solicitudes que coincidan con la búsqueda");
         return respuesta;

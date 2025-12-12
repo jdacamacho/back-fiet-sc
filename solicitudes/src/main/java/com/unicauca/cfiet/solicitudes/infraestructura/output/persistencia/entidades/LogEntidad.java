@@ -3,6 +3,7 @@ package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entid
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -28,4 +29,12 @@ public class LogEntidad {
     @ManyToOne
     @JoinColumn(name = "uuidUsuario", nullable = false)
     private UsuarioEntidad objUsuarioLog;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime fechaCreacion;
+
+    @PrePersist
+    protected void onCreate() {
+        this.fechaCreacion = LocalDateTime.now();
+    }
 }

@@ -272,6 +272,23 @@ public class SolicitudesRestController {
         );
     }
 
+    @PreAuthorize("hasAnyAuthority('Secretario General', 'Funcionario')")
+    @GetMapping("fun/buscar/")
+    public ResponseEntity<?> buscarSolicitudesPorNombreYFuncionario(
+            @RequestParam("uuidFuncionario") String uuidFuncionario,
+            @RequestParam("filtro") String filtro,
+            @RequestParam("pagina") int pagina,
+            @RequestParam("tamanio") int tamanio) {
+
+        var respuesta = solicitudCU.buscarSolicitudesPorNombreYFuncionario(uuidFuncionario, filtro, pagina, tamanio);
+        return ResponseEntity.ok(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuestaSolicitud(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                )
+        );
+    }
+
     @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/orden-del-dia/buscar")
     public ResponseEntity<?> buscarOrdenDelDiaPorNumeroActa(
