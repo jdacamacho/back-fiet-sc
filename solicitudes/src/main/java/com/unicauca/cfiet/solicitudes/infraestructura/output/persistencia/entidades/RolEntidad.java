@@ -18,11 +18,11 @@ import lombok.*;
 @Builder
 public class RolEntidad {
     @Id
-    @Column(length = 100)
+    @Column(length = 200)
     private String uuidRol;
-    @Column(nullable = false, unique = true, length = 45)
+    @Column(nullable = false, unique = true, length = 200)
     private String nombre;
-    @Column(length = 300)
+    @Column(length = 500)
     private String descripcion;
     @Column(nullable = false)
     private Boolean estado;

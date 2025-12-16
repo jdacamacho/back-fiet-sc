@@ -18,23 +18,23 @@ import java.util.List;
 @Builder
 public class OrdenDelDiaEntidad {
     @Id
-    @Column(length = 100)
+    @Column(length = 200)
     private String uuidOrdenDelDia;
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 200)
     private String nombre;
-    @Column(length = 300)
+    @Column(length = 500)
     private String descripcion;
-    @Column(length = 100)
+    @Column(length = 200)
     private String ciudad;
-    @Column(length = 100)
+    @Column(length = 200)
     private String fecha;
-    @Column(length = 100)
+    @Column(length = 200)
     private String horaInicio;
-    @Column(length = 100)
+    @Column(length = 200)
     private String horaFin;
-    @Column(length = 100)
+    @Column(length = 200)
     private String lugarReunion;
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 200)
     private String numeroActa;
     @Column(nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;

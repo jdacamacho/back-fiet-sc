@@ -16,11 +16,11 @@ import lombok.*;
 public class TipoAnexoEntidad {
     @Id
     private String uuidTipoAnexo;
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 200)
     private String nombre;
     @Column(length = 200)
     private String descripcion;
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 200)
     private String formato;
     @Column(nullable = false)
     private Boolean obligatoriedad;

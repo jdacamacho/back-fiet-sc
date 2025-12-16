@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 public class UsuarioLivianoEntidad {
     @Id
-    @Column(length = 100)
+    @Column(length = 200)
     private String uuidUsuario;
     @Column(nullable = false, length = 200)
     private String nombres;

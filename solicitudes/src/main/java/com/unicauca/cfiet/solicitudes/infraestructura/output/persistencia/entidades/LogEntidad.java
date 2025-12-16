@@ -18,11 +18,11 @@ import java.util.Date;
 @Builder
 public class LogEntidad {
     @Id
-    @Column(length = 100)
+    @Column(length = 200)
     private String uuidLog;
     @Column(nullable = false, length = 200)
     private String accion;
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 200)
     private String fecha;
     @Column(nullable = false, length = 200)
     private String resultado;

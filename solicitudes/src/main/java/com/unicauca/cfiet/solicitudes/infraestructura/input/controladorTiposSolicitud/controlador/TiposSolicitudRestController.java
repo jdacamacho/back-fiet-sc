@@ -166,7 +166,6 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
     @GetMapping("/perfil")
     public ResponseEntity<?> getTiposPorPerfil(
             @RequestParam("perfil") String perfil) {

@@ -47,7 +47,7 @@ public class ConfiguracionSeguridad {
                 .authorizeHttpRequests(authRequest -> authRequest
                         .requestMatchers(baseUrl + "sesiones").permitAll()
                         .requestMatchers(HttpMethod.POST, baseUrl + "solicitudes/public").permitAll()
-                        .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil").authenticated()
+                        .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil").permitAll()
                         .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil/paginado").permitAll()
                         .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil/filtro").permitAll()
                         .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/{uuidTipoSolicitud}").permitAll()

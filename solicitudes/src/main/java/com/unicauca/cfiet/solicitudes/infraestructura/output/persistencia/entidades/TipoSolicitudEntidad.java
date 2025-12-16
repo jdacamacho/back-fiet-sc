@@ -19,13 +19,13 @@ import java.util.List;
 public class TipoSolicitudEntidad {
     @Id
     private String uuidTipoSolicitud;
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 200)
     private String nombre;
-    @Column(length = 200)
+    @Column(length = 500)
     private String descripcion;
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, length = 200)
     private String seccion;
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, length = 200)
     private String perfilSolicitante;
     @OneToMany(
             fetch = FetchType.LAZY,
