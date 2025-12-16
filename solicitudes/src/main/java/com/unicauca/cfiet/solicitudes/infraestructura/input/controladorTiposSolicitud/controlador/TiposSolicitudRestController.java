@@ -89,7 +89,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{uuidTipoSolicitud}")
     public ResponseEntity<?> getTipoSolicitud(@PathVariable String uuidTipoSolicitud){
         TipoSolicitud tipo = casoDeUso.getTipoSolicitud(uuidTipoSolicitud);
@@ -173,6 +173,37 @@ public class TiposSolicitudRestController {
         List<TipoSolicitud> lista = casoDeUso.getTiposSolicitudesPorPerfil(perfil);
         return ResponseEntity.ok(
                 mapper.mapearModelosARespuesta(lista)
+        );
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/perfil/paginado")
+    public ResponseEntity<?> getTiposSolicitudesPorPerfilSolicitante(
+            @RequestParam("perfil") String perfil,
+            @RequestParam("pagina") int pagina,
+            @RequestParam("tamanio") int tamanio) {
+
+        var respuesta = casoDeUso.getTiposSolicitudesPorPerfilSolicitante(perfil, pagina, tamanio);
+
+        return new ResponseEntity<>(
+                new PaginacionRespuestaDTO<>(mapper.mapearModelosARespuesta(respuesta.getContent()), respuesta.getTotalElements()),
+                HttpStatus.OK
+        );
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/perfil/filtro")
+    public ResponseEntity<?> getTiposSolicitudesPorNombreYPerfilSolicitante(
+            @RequestParam(value = "nombre", required = false) String nombre,
+            @RequestParam("perfil") String perfil,
+            @RequestParam("pagina") int pagina,
+            @RequestParam("tamanio") int tamanio) {
+
+        var respuesta = casoDeUso.getTiposSolicitudesPorNombreYPerfilSolicitante(nombre, perfil, pagina, tamanio);
+
+        return new ResponseEntity<>(
+                new PaginacionRespuestaDTO<>(mapper.mapearModelosARespuesta(respuesta.getContent()), respuesta.getTotalElements()),
+                HttpStatus.OK
         );
     }
 

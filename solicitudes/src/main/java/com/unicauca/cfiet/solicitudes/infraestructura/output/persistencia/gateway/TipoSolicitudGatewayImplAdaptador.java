@@ -94,4 +94,28 @@ public class TipoSolicitudGatewayImplAdaptador implements TipoSolicitudGatewayIn
                 .map(mapper::toDominio)
                 .toList();
     }
+
+    @Override
+    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorPerfilSolicitante(String perfil, int pagina, int tamanio) {
+        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Page<TipoSolicitudEntidad> page = repositorio.findByPerfilSolicitanteIgnoreCase(perfil, paginado);
+
+        List<TipoSolicitud> tipos = page.getContent().stream()
+                .map(mapper::toDominio)
+                .toList();
+
+        return new PaginacionRespuestaDTO<>(tipos, page.getTotalElements());
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorNombreYPerfilSolicitante(String nombre, String perfil, int pagina, int tamanio) {
+        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Page<TipoSolicitudEntidad> page = repositorio.findByPerfilSolicitanteAndNombre(perfil, nombre, paginado);
+
+        List<TipoSolicitud> tipos = page.getContent().stream()
+                .map(mapper::toDominio)
+                .toList();
+
+        return new PaginacionRespuestaDTO<>(tipos, page.getTotalElements());
+    }
 }

@@ -17,6 +17,8 @@ public interface OrdenDelDiaCUIntPuerto {
      */
     List<OrdenDelDia> getOrdenesDelDia();
 
+    List<OrdenDelDia> getOrdenesDelDiaPorEstado(boolean estado);
+
     /**
      * Consultar lista de ordendes del día.
      *

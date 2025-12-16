@@ -164,11 +164,34 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
 
     @Override
     public List<TipoSolicitud> getTiposSolicitudesPorPerfil(String perfil) {
-        String perfilNormalizado = perfil.replace("_", " ");
-        List<TipoSolicitud> lista = gateway.getTiposSolicitudesPorPerfil(perfilNormalizado);
+        List<TipoSolicitud> lista = gateway.getTiposSolicitudesPorPerfil(perfil);
         if (lista.isEmpty())
             formateadorExcepciones.lanzarSinInformacion(String.format("No existen tipos de solicitud cuyo perfil solicitante sea '%s'", perfil));
         return lista;
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorPerfilSolicitante(String perfil, int pagina, int tamanio) {
+        if (pagina < 0 || tamanio < 0)
+            formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
+
+        PaginacionRespuestaDTO<TipoSolicitud> respuesta = gateway.getTiposSolicitudesPorPerfilSolicitante(perfil, pagina, tamanio);
+        if (respuesta.getContent().isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, TIPOS_SOLICITUD));
+
+        return respuesta;
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorNombreYPerfilSolicitante(String nombre, String perfil, int pagina, int tamanio) {
+        if (pagina < 0 || tamanio < 0)
+            formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
+
+        PaginacionRespuestaDTO<TipoSolicitud> respuesta = gateway.getTiposSolicitudesPorNombreYPerfilSolicitante(nombre, perfil, pagina, tamanio);
+        if (respuesta.getContent().isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, TIPOS_SOLICITUD));
+
+        return respuesta;
     }
 
 }

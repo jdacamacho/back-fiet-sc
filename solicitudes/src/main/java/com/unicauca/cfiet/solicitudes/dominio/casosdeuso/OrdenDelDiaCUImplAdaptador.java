@@ -41,6 +41,14 @@ public class OrdenDelDiaCUImplAdaptador implements OrdenDelDiaCUIntPuerto {
     }
 
     @Override
+    public List<OrdenDelDia> getOrdenesDelDiaPorEstado(boolean estado) {
+        List<OrdenDelDia> respuesta = gateway.getOrdenesDelDiaPorEstado(estado);
+        if(respuesta.isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, ORDENES_DEL_DIA));
+        return respuesta;
+    }
+
+    @Override
     public PaginacionRespuestaDTO<OrdenDelDia> getOrdenesDelDia(int pagina, int tamanio) {
         if (pagina < 0 || tamanio < 0)
             formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);

@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
@@ -18,4 +20,6 @@ public interface OrdenDelDiaRepositorio extends JpaRepository<OrdenDelDiaEntidad
         WHERE LOWER(o.numeroActa) LIKE LOWER(CONCAT('%', :filtro, '%'))
     """)
     Page<OrdenDelDiaEntidad> findByNumeroActaContainingIgnoreCase(@Param("filtro") String filtro, Pageable pageable);
+
+    List<OrdenDelDiaEntidad> findByEstado(boolean estado);
 }

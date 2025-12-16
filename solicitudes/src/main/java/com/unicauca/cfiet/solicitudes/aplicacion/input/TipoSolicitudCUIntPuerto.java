@@ -74,4 +74,8 @@ public interface TipoSolicitudCUIntPuerto {
     List<TipoSolicitud> crearTiposSolicitud(List<TipoSolicitud> tiposSolicitud, String token);
 
     List<TipoSolicitud> getTiposSolicitudesPorPerfil(String perfil);
+
+    PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorPerfilSolicitante(String perfil, int pagina, int tamanio);
+
+    PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorNombreYPerfilSolicitante(String nombre, String perfil, int pagina, int tamanio);
 }

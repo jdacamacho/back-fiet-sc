@@ -47,7 +47,12 @@ public class ConfiguracionSeguridad {
                 .authorizeHttpRequests(authRequest -> authRequest
                         .requestMatchers(baseUrl + "sesiones").permitAll()
                         .requestMatchers(HttpMethod.POST, baseUrl + "solicitudes/public").permitAll()
+                        .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil").authenticated()
+                        .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil/paginado").permitAll()
+                        .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil/filtro").permitAll()
+                        .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/{uuidTipoSolicitud}").permitAll()
                         .requestMatchers(baseUrl + "tipos/solicitudes/**").hasAuthority("Secretario General")
+                        .requestMatchers(HttpMethod.GET, baseUrl + "solicitudes/orden-del-dia/estado").authenticated()
                         .requestMatchers(baseUrl + "solicitudes/orden-del-dia/**").hasAuthority("Secretario General")
                         .requestMatchers(baseUrl + "logs/**").hasAuthority("Secretario General")
                         .requestMatchers(baseUrl + "roles/**").hasAuthority("Secretario General")

@@ -34,7 +34,7 @@ public class OrdenDelDiaEntidad {
     private String horaFin;
     @Column(length = 100)
     private String lugarReunion;
-    @Column(length = 100)
+    @Column(nullable = false, length = 100)
     private String numeroActa;
     @Column(nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;

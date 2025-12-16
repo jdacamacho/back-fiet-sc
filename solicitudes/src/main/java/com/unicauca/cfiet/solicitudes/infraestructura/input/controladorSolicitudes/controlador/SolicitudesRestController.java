@@ -333,4 +333,13 @@ public class SolicitudesRestController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/orden-del-dia/estado")
+    public ResponseEntity<?> getOrdenesDelDiaPorEstado(@RequestParam("estado") boolean estado) {
+        List<OrdenDelDia> ordenesDelDia = ordenDelDiaCU.getOrdenesDelDiaPorEstado(estado);
+        return ResponseEntity.ok(
+                mapper.mapearModelosARespuesta(ordenesDelDia)
+        );
+    }
 }

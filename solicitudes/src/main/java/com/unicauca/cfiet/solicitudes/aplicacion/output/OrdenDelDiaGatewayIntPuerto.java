@@ -18,6 +18,13 @@ public interface OrdenDelDiaGatewayIntPuerto {
     List<OrdenDelDia> getOrdenesDelDia();
 
     /**
+     * Obtener todos los ordenes del día almacenados.
+     *
+     * @return lista con todos los ordenes del día.
+     */
+    List<OrdenDelDia> getOrdenesDelDiaPorEstado(boolean estado);
+
+    /**
      * Obtener los ordenes del día de forma paginada.
      *
      * @param pagina número de la página a consultar.

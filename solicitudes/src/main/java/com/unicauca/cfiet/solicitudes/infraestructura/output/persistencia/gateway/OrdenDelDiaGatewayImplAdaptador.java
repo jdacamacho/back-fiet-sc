@@ -35,6 +35,14 @@ public class OrdenDelDiaGatewayImplAdaptador implements OrdenDelDiaGatewayIntPue
     }
 
     @Override
+    public List<OrdenDelDia> getOrdenesDelDiaPorEstado(boolean estado) {
+        List<OrdenDelDiaEntidad> entidades = repositorio.findByEstado(estado);
+        return entidades.stream()
+                .map(mapper::toDominio)
+                .toList();
+    }
+
+    @Override
     public PaginacionRespuestaDTO<OrdenDelDia> getOrdenesDelDia(int pagina, int tamanio) {
         Pageable paginado =
                 PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
