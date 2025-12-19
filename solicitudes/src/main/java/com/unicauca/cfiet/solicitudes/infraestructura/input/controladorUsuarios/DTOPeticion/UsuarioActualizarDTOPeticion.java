@@ -15,28 +15,28 @@ import java.util.List;
 public class UsuarioActualizarDTOPeticion extends UsuarioLivianoDTOPeticion {
     @NotNull(message = "El tipo de documento no puede ser nulo")
     @NotBlank(message = "El tipo de documento no puede estar vacío")
-    @Size(min = 2, max = 40, message = "El tipo de documento debe tener entre 2 y 40 caracteres")
+    @Size(min = 5, max = 200, message = "El tipo de documento debe tener entre 5 y 200 caracteres")
     private String tipoDocumento;
 
     @NotNull(message = "El número de documento no puede ser nulo")
     @NotBlank(message = "El número de documento no puede estar vacío")
-    @Size(min = 5, max = 40, message = "El número de documento debe tener entre 5 y 40 caracteres")
+    @Size(min = 5, max = 200, message = "El número de documento debe tener entre 5 y 200 caracteres")
     private String numeroDocumento;
 
     @NotNull(message = "El teléfono no puede ser nulo")
     @NotBlank(message = "El teléfono no puede estar vacío")
-    @Size(min = 7, max = 15, message = "El teléfono debe tener entre 7 y 15 caracteres")
+    @Size(min = 5, max = 200, message = "El teléfono debe tener entre 5 y 200 caracteres")
     private String telefono;
 
     @NotNull(message = "El correo electrónico no puede ser nulo")
     @NotBlank(message = "El correo electrónico no puede estar vacío")
     @Email(message = "El correo electrónico debe tener un formato válido")
-    @Size(min = 5, max = 100, message = "El correo electrónico debe tener entre 5 y 100 caracteres")
+    @Size(min = 5, max = 200, message = "El correo electrónico debe tener entre 5 y 200 caracteres")
     private String correoElectronico;
 
     @NotNull(message = "El nombre de usuario no puede ser nulo")
     @NotBlank(message = "El nombre de usuario no puede estar vacío")
-    @Size(min = 3, max = 20, message = "El nombre de usuario debe tener entre 3 y 20 caracteres")
+    @Size(min = 5, max = 200, message = "El nombre de usuario debe tener entre 5 y 200 caracteres")
     private String username;
 
     @Valid

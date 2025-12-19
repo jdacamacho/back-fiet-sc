@@ -104,8 +104,6 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
         if(tipoSolicitudObtenida == null)
             formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, TIPO_SOLICITUD, uuidTipoSolicitud));
         if(tipoSolicitudObtenida.getObjFuncionarioEncargado() != null && (tipoSolicitud.getUuidFuncionario() == null ||  tipoSolicitud.getUuidFuncionario().isBlank())){
-            Funcionario funcionarioAnterior = tipoSolicitudObtenida.getObjFuncionarioEncargado();
-            funcionarioAnterior.getTiposSolicitudes().remove(tipoSolicitudObtenida);
             tipoSolicitudObtenida.setObjFuncionarioEncargado(null);
         }
         if(tipoSolicitudObtenida.getObjFuncionarioEncargado() == null && tipoSolicitud.getUuidFuncionario() != null && !tipoSolicitud.getUuidFuncionario().isBlank())
@@ -159,9 +157,41 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
             if(usuario instanceof  Funcionario) {
                 Funcionario funcionario = (Funcionario) usuario;
                 tipoSolicitud.setObjFuncionarioEncargado(funcionario);
-                funcionario.getTiposSolicitudes().add(tipoSolicitud);
             } else
                 formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.MAL_ASIGNACION);
         }
     }
+
+    @Override
+    public List<TipoSolicitud> getTiposSolicitudesPorPerfil(String perfil) {
+        List<TipoSolicitud> lista = gateway.getTiposSolicitudesPorPerfil(perfil);
+        if (lista.isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format("No existen tipos de solicitud cuyo perfil solicitante sea '%s'", perfil));
+        return lista;
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorPerfilSolicitante(String perfil, int pagina, int tamanio) {
+        if (pagina < 0 || tamanio < 0)
+            formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
+
+        PaginacionRespuestaDTO<TipoSolicitud> respuesta = gateway.getTiposSolicitudesPorPerfilSolicitante(perfil, pagina, tamanio);
+        if (respuesta.getContent().isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, TIPOS_SOLICITUD));
+
+        return respuesta;
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorNombreYPerfilSolicitante(String nombre, String perfil, int pagina, int tamanio) {
+        if (pagina < 0 || tamanio < 0)
+            formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
+
+        PaginacionRespuestaDTO<TipoSolicitud> respuesta = gateway.getTiposSolicitudesPorNombreYPerfilSolicitante(nombre, perfil, pagina, tamanio);
+        if (respuesta.getContent().isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, TIPOS_SOLICITUD));
+
+        return respuesta;
+    }
+
 }

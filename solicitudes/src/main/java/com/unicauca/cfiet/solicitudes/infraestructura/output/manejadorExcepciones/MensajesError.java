@@ -13,6 +13,7 @@ public class MensajesError {
     public static final String ATRIBUTO_UNICO_YA_EXISTE = "%s con %s: %s existe en el sistema...";
     public static final String ENTIDAD_NO_ENCONTRADA_FILTRO = "%s con %s: %s no fue encontrado en el sistema...";
     public static final String INSTANCIA_NO_VALIDA = "Se intentó crear una instancia de %s no permitida...";
+    public static final String TIPO_DE_USUARIO_NO_VALIDO = "Tipo de usuario no valido..";
     public static final String ROLES_DUPLICADOS_USUARIO = "El usuario tiene roles duplicados...";
     public static final String ROLES_NO_VALIDOS = "Los roles ingresados no son validos...";
     public static final String CONTRASEÑA_INCORRECTA = "Contraseña incorrecta...";

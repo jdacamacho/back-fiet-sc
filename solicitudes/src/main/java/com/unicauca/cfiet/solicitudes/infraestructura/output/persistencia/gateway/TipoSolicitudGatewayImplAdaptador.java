@@ -4,12 +4,13 @@ import com.unicauca.cfiet.solicitudes.aplicacion.output.TipoSolicitudGatewayIntP
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoSolicitud;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.TipoSolicitudEntidad;
+import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.mapeador.ownMapper.TipoSolicitudOwnMapper;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.TipoSolicitudRepositorio;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,68 +21,102 @@ import java.util.List;
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Service
+@RequiredArgsConstructor
 public class TipoSolicitudGatewayImplAdaptador implements TipoSolicitudGatewayIntPuerto {
     private final TipoSolicitudRepositorio repositorio;
-    private final ModelMapper mapper;
-
-    public TipoSolicitudGatewayImplAdaptador(TipoSolicitudRepositorio repositorio,
-                                     @Qualifier("mapeadorSimple") ModelMapper mapper){
-        this.repositorio = repositorio;
-        this.mapper = mapper;
-    }
+    private final TipoSolicitudOwnMapper mapper;
 
     @Override
     public List<TipoSolicitud> getTiposSolicitudes() {
-        List<TipoSolicitudEntidad> entidades = repositorio.findAll();
+        List<TipoSolicitudEntidad> entidades = repositorio.findAll(Sort.by("fechaCreacion").descending());
+
         return entidades.stream()
-                .map(e -> mapper.map(e, TipoSolicitud.class))
+                .map(mapper::toDominio)
                 .toList();
     }
 
     @Override
     public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudes(int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
         Page<TipoSolicitudEntidad> page = repositorio.findAll(paginado);
+
         List<TipoSolicitud> tipos = page.getContent().stream()
-                .map(e -> mapper.map(e, TipoSolicitud.class))
+                .map(mapper::toDominio)
                 .toList();
+
         return new PaginacionRespuestaDTO<>(tipos, page.getTotalElements());
     }
 
     @Override
-    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudes(String nombreSolicitud, String funcionario, int pagina, int tamanio){
-        Pageable paginado = PageRequest.of(pagina, tamanio);
-        Page<TipoSolicitudEntidad> page = repositorio.findByNombreAndFuncionario(nombreSolicitud, funcionario, paginado);
+    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudes(String nombreSolicitud, String funcionario, int pagina, int tamanio) {
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Page<TipoSolicitudEntidad> page =
+                repositorio.findByNombreAndFuncionario(nombreSolicitud, funcionario, paginado);
+
         List<TipoSolicitud> tipos = page.getContent().stream()
-                .map(e -> mapper.map(e, TipoSolicitud.class))
+                .map(mapper::toDominio)
                 .toList();
+
         return new PaginacionRespuestaDTO<>(tipos, page.getTotalElements());
     }
 
     @Override
     public TipoSolicitud getTipoSolicitud(String uuidTipoSolicitud) {
-        if(repositorio.existsById(uuidTipoSolicitud)){
-            TipoSolicitudEntidad entidad = repositorio.findById(uuidTipoSolicitud).get();
-            return mapper.map(entidad, TipoSolicitud.class);
-        }
-        return null;
+        return repositorio.findById(uuidTipoSolicitud)
+                .map(mapper::toDominio)
+                .orElse(null);
     }
 
     @Override
     public TipoSolicitud guardarTipoSolicitud(TipoSolicitud tipoSolicitud) {
-        TipoSolicitudEntidad entidad = mapper.map(tipoSolicitud, TipoSolicitudEntidad.class);
-        TipoSolicitudEntidad entidadGuardada = repositorio.save(entidad);
-        return mapper.map(entidadGuardada, TipoSolicitud.class);
+        TipoSolicitudEntidad entidad = mapper.toEntidad(tipoSolicitud);
+        TipoSolicitudEntidad guardada = repositorio.save(entidad);
+        return mapper.toDominio(guardada);
     }
 
     @Override
     public List<TipoSolicitud> guardarTiposSolicitud(List<TipoSolicitud> tiposSolicitud) {
         List<TipoSolicitudEntidad> entidades = tiposSolicitud.stream()
-                .map(ts -> mapper.map(ts, TipoSolicitudEntidad.class))
+                .map(mapper::toEntidad)
                 .toList();
-        List<TipoSolicitudEntidad> guardados = repositorio.saveAll(entidades);
-        return guardados.stream()
-                .map(e -> mapper.map(e, TipoSolicitud.class))
+
+        List<TipoSolicitudEntidad> guardadas = repositorio.saveAll(entidades);
+        return guardadas.stream()
+                .map(mapper::toDominio)
                 .toList();
+    }
+
+    @Override
+    public List<TipoSolicitud> getTiposSolicitudesPorPerfil(String perfil) {
+        List<TipoSolicitudEntidad> entidades =
+                repositorio.findByPerfilSolicitanteIgnoreCase(perfil);
+
+        return entidades.stream()
+                .map(mapper::toDominio)
+                .toList();
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorPerfilSolicitante(String perfil, int pagina, int tamanio) {
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Page<TipoSolicitudEntidad> page = repositorio.findByPerfilSolicitanteIgnoreCase(perfil, paginado);
+
+        List<TipoSolicitud> tipos = page.getContent().stream()
+                .map(mapper::toDominio)
+                .toList();
+
+        return new PaginacionRespuestaDTO<>(tipos, page.getTotalElements());
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorNombreYPerfilSolicitante(String nombre, String perfil, int pagina, int tamanio) {
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Page<TipoSolicitudEntidad> page = repositorio.findByPerfilSolicitanteAndNombre(perfil, nombre, paginado);
+
+        List<TipoSolicitud> tipos = page.getContent().stream()
+                .map(mapper::toDominio)
+                .toList();
+
+        return new PaginacionRespuestaDTO<>(tipos, page.getTotalElements());
     }
 }

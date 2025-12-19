@@ -2,6 +2,7 @@ package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorLog.cont
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.LogCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
+import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorLog.DTORespuesta.LogDTORespuesta;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorLog.mapeador.MapperLogInfraestructuraDominio;
@@ -29,7 +30,7 @@ public class LogRestController {
     private final LogCUIntPuerto casoDeUso;
     private final MapperLogInfraestructuraDominio mapper;
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping
     public ResponseEntity<List<LogDTORespuesta>> index(){
         List<Log> logs = casoDeUso.getLogs();
@@ -38,7 +39,7 @@ public class LogRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/paginado")
     public ResponseEntity<?> indexPaginado(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
         var respuesta = casoDeUso.getLogs(pagina, tamanio);
@@ -51,7 +52,7 @@ public class LogRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/filtro")
     public ResponseEntity<?> filtrarLogs(
             @RequestParam(value = "responsable", required = false) String responsable,
@@ -68,7 +69,7 @@ public class LogRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/total")
     public ResponseEntity<Long> getTotalLogs() {
         long totalLogs = casoDeUso.countLogs();

@@ -3,6 +3,7 @@ package com.unicauca.cfiet.solicitudes.infraestructura.configuracion;
 import com.unicauca.cfiet.solicitudes.aplicacion.input.LogCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.*;
 import com.unicauca.cfiet.solicitudes.dominio.casosdeuso.*;
+import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.almacenador.AlmacenadorArchivos;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -41,5 +42,25 @@ public class BeanConfiguracion {
     @Bean
     public TipoSolicitudCUImplAdaptador crearTipoSolicitudCU(TipoSolicitudGatewayIntPuerto gateway, UsuarioGatewayIntPuerto gatewayUsuario, ExcepcionesFormateadorIntPuerto formateadorExcepciones, LogCUIntPuerto log, RolGatewayIntPuerto rolGateway){
         return new TipoSolicitudCUImplAdaptador(gateway, gatewayUsuario, formateadorExcepciones, log, rolGateway);
+    }
+
+    @Bean
+    public OrdenDelDiaCUImplAdaptador crearOrdenDelDiaCU(OrdenDelDiaGatewayIntPuerto gateway,
+                                                         ExcepcionesFormateadorIntPuerto formateadorExcepciones,
+                                                         LogCUIntPuerto log){
+        return new OrdenDelDiaCUImplAdaptador(gateway, formateadorExcepciones, log);
+    }
+
+    @Bean
+    public SolicitudCUImplAdaptador crearSolicitudCU(SolicitudGatewayIntPuerto gateway,
+                                                     ExcepcionesFormateadorIntPuerto formateadorExcepciones,
+                                                     TipoSolicitudGatewayIntPuerto gatewayTipoSolicitud,
+                                                     OrdenDelDiaGatewayIntPuerto gatewayOrdenDelDia,
+                                                     UsuarioGatewayIntPuerto gatewayUsuario,
+                                                     LogCUIntPuerto log,
+                                                     SesionGatewayIntPuerto gatewaySesion,
+                                                     IJwtServicio jwtServicio,
+                                                     AlmacenadorArchivos almacenadorArchivos){
+        return new SolicitudCUImplAdaptador(gateway, formateadorExcepciones, gatewayTipoSolicitud, gatewayOrdenDelDia, gatewayUsuario, log, gatewaySesion, jwtServicio, almacenadorArchivos);
     }
 }

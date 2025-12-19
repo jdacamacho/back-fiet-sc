@@ -1,14 +1,17 @@
 package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.util.List;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TipoUsuario {
     private String uuidTipoUsuario;
     private String nombre;

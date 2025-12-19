@@ -1,10 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
@@ -14,14 +11,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TipoAnexoEntidad {
     @Id
     private String uuidTipoAnexo;
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 200)
     private String nombre;
     @Column(length = 200)
     private String descripcion;
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 200)
     private String formato;
     @Column(nullable = false)
     private Boolean obligatoriedad;

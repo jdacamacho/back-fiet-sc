@@ -1,9 +1,7 @@
 package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
+import lombok.*;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
@@ -11,6 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TipoAnexo {
     private String uuidTipoAnexo;
     private String nombre;
@@ -20,7 +20,9 @@ public class TipoAnexo {
     private TipoSolicitud objTipoSolicitud;
 
     public boolean formatoEsValido(){
-        if(!formato.toUpperCase().equals("PDF") && !formato.toUpperCase().equals("DOCX"))
+        if(!formato.toUpperCase().equals(ApplicationConstantes.FORMATO_PDF)
+                && !formato.toUpperCase().equals(ApplicationConstantes.FORMATO_DOCX)
+                && !formato.toUpperCase().equals(ApplicationConstantes.FORMATO_XLSX))
             return false;
         return true;
     }

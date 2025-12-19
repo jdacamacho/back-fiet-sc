@@ -1,7 +1,12 @@
 package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
+import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +17,8 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@AllArgsConstructor
+@SuperBuilder
 public class Usuario extends UsuarioLiviano{
     private String tipoDocumento;
     private String numeroDocumento;
@@ -32,26 +39,14 @@ public class Usuario extends UsuarioLiviano{
     public boolean revisarTipoDocumento() {
         String tipoDocumento = getTipoDocumento();
         switch (tipoDocumento.trim().toLowerCase()) {
-            case "cédula de ciudadanía":
-                setTipoDocumento("Cédula de ciudadanía");
+            case ApplicationConstantes.CEDULA_CIUDADANIA_LOWER:
+                setTipoDocumento(ApplicationConstantes.CEDULA_CIUDADANIA);
                 return true;
-            case "tarjeta de identidad":
-                setTipoDocumento("Tarjeta de identidad");
+            case ApplicationConstantes.TARJETA_IDENTIDAD_LOWER:
+                setTipoDocumento(ApplicationConstantes.TARJETA_IDENTIDAD);
                 return true;
-            case "cédula de extranjería":
-                setTipoDocumento("Cédula de extranjería");
-                return true;
-            case "pasaporte":
-                setTipoDocumento("Pasaporte");
-                return true;
-            case "registro civil de nacimiento":
-                setTipoDocumento("Registro civil de nacimiento");
-                return true;
-            case "permiso especial de permanencia":
-                setTipoDocumento("Permiso especial de permanencia");
-                return true;
-            case "carné diplomático":
-                setTipoDocumento("Carné diplomático");
+            case ApplicationConstantes.CEDULA_EXTRANJERIA_LOWER:
+                setTipoDocumento(ApplicationConstantes.CEDULA_EXTRANJERIA);
                 return true;
             default:
                 return false;
@@ -63,7 +58,7 @@ public class Usuario extends UsuarioLiviano{
         int wasFound = 0;
         for (Rol rol : roles) {
             for (Rol rolValido : rolesValidos) {
-                if (rol.equals(rolValido))
+                if (rol.getUuidRol().equals(rolValido.getUuidRol()))
                     wasFound++;
             }
         }
@@ -78,7 +73,7 @@ public class Usuario extends UsuarioLiviano{
     public Usuario crearInstancia(String tipoUsuario){
         Usuario instancia;
         switch (tipoUsuario.toUpperCase()) {
-            case "FUNCIONARIO":
+            case ApplicationConstantes.FUNCIONARIO:
                 instancia = new Funcionario();
                 break;
             default:

@@ -23,11 +23,6 @@ import java.util.List;
  */
 @Service("archivos-tipos-solicitudes")
 public class ProcesarArchivoTiposSolicitudesImpl implements ProcesadorArchivos<TipoSolicitudDTOPeticion>{
-    private final ModelMapper mapper;
-
-    public ProcesarArchivoTiposSolicitudesImpl(@Qualifier("mapeadorSimple") ModelMapper mapper){
-        this.mapper = mapper;
-    }
 
     @Override
     public List<TipoSolicitudDTOPeticion> procesarArchivo(MultipartFile file) {

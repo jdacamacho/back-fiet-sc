@@ -2,20 +2,17 @@ package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Getter
 @Setter
+@SuperBuilder
 public class Funcionario extends Usuario{
-    private List<TipoSolicitud> tiposSolicitudes;
 
     public Funcionario(){
         super();
-        this.tiposSolicitudes = new ArrayList<>();
     }
 }

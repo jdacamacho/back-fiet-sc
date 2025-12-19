@@ -1,11 +1,9 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,16 +14,19 @@ import java.util.List;
 @Table(name = "tiposSolicitudes")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TipoSolicitudEntidad {
     @Id
     private String uuidTipoSolicitud;
-    @Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 200)
     private String nombre;
-    @Column(length = 200)
+    @Column(length = 500)
     private String descripcion;
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, length = 200)
     private String seccion;
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, length = 200)
     private String perfilSolicitante;
     @OneToMany(
             fetch = FetchType.LAZY,
@@ -37,8 +38,12 @@ public class TipoSolicitudEntidad {
     @ManyToOne
     @JoinColumn(name = "uuidUsuario")
     private FuncionarioEntidad objFuncionarioEncargado;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime fechaCreacion;
 
-    public TipoSolicitudEntidad(){
-        this.anexos = new ArrayList<>();
+    @PrePersist
+    protected void onCreate() {
+        this.fechaCreacion = LocalDateTime.now();
     }
+
 }

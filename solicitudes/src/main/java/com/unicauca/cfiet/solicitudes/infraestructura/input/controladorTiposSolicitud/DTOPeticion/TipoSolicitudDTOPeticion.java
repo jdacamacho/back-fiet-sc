@@ -19,7 +19,7 @@ import java.util.List;
 public class TipoSolicitudDTOPeticion {
     @NotNull(message = "El nombre no puede ser nulo")
     @NotBlank(message = "El nombre no puede estar vacío")
-    @Size(min = 3, max = 150, message = "El nombre debe tener entre 3 y 150 caracteres")
+    @Size(min = 5, max = 200, message = "El nombre debe tener entre 5 y 200 caracteres")
     private String nombre;
 
     @Size(max = 200, message = "La descripción no puede exceder los 200 caracteres")
@@ -27,12 +27,12 @@ public class TipoSolicitudDTOPeticion {
 
     @NotNull(message = "La sección no puede ser nula")
     @NotBlank(message = "La sección no puede estar vacía")
-    @Size(min = 3, max = 400, message = "La sección debe tener entre 3 y 400 caracteres")
+    @Size(min = 5, max = 200, message = "La sección debe tener entre 5 y 200 caracteres")
     private String seccion;
 
     @NotNull(message = "El perfil de solicitante no puede ser nulo")
     @NotBlank(message = "El perfil de solicitante no puede estar vacio")
-    @Size(min = 3, max = 400, message = "El perfil de solicitante debe tener entre 3 y 400 caracteres")
+    @Size(min = 5, max = 200, message = "El perfil de solicitante debe tener entre 5 y 200 caracteres")
     private String perfilSolicitante;
 
     @Valid
@@ -40,5 +40,7 @@ public class TipoSolicitudDTOPeticion {
     @Size(min = 1, message = "Debe asignar al menos un anexo")
     private List<TipoAnexoDTOPeticion> anexos;
 
+    @NotNull(message = "La uuid del funcionario no puede ser nula")
+    @NotBlank(message = "La uuid del funcionario no puede estar vacia")
     private String uuidFuncionario;
 }
