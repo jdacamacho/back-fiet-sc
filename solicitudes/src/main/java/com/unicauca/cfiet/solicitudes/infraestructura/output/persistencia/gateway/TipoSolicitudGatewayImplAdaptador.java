@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class TipoSolicitudGatewayImplAdaptador implements TipoSolicitudGatewayIn
 
     @Override
     public List<TipoSolicitud> getTiposSolicitudes() {
-        List<TipoSolicitudEntidad> entidades = repositorio.findAll();
+        List<TipoSolicitudEntidad> entidades = repositorio.findAll(Sort.by("fechaCreacion").descending());
 
         return entidades.stream()
                 .map(mapper::toDominio)
@@ -36,7 +37,7 @@ public class TipoSolicitudGatewayImplAdaptador implements TipoSolicitudGatewayIn
 
     @Override
     public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudes(int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
         Page<TipoSolicitudEntidad> page = repositorio.findAll(paginado);
 
         List<TipoSolicitud> tipos = page.getContent().stream()
@@ -48,7 +49,7 @@ public class TipoSolicitudGatewayImplAdaptador implements TipoSolicitudGatewayIn
 
     @Override
     public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudes(String nombreSolicitud, String funcionario, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
         Page<TipoSolicitudEntidad> page =
                 repositorio.findByNombreAndFuncionario(nombreSolicitud, funcionario, paginado);
 
@@ -97,7 +98,7 @@ public class TipoSolicitudGatewayImplAdaptador implements TipoSolicitudGatewayIn
 
     @Override
     public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorPerfilSolicitante(String perfil, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
         Page<TipoSolicitudEntidad> page = repositorio.findByPerfilSolicitanteIgnoreCase(perfil, paginado);
 
         List<TipoSolicitud> tipos = page.getContent().stream()
@@ -109,7 +110,7 @@ public class TipoSolicitudGatewayImplAdaptador implements TipoSolicitudGatewayIn
 
     @Override
     public PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorNombreYPerfilSolicitante(String nombre, String perfil, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
         Page<TipoSolicitudEntidad> page = repositorio.findByPerfilSolicitanteAndNombre(perfil, nombre, paginado);
 
         List<TipoSolicitud> tipos = page.getContent().stream()

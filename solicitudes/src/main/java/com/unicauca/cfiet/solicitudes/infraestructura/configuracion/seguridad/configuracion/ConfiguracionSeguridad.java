@@ -1,5 +1,6 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.configuracion.seguridad.configuracion;
 
+import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.seguridad.jwt.JwtFiltroAutenticacion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,14 +52,14 @@ public class ConfiguracionSeguridad {
                         .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil/paginado").permitAll()
                         .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil/filtro").permitAll()
                         .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/{uuidTipoSolicitud}").permitAll()
-                        .requestMatchers(baseUrl + "tipos/solicitudes/**").hasAuthority("Secretario General")
+                        .requestMatchers(baseUrl + "tipos/solicitudes/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
                         .requestMatchers(HttpMethod.GET, baseUrl + "solicitudes/orden-del-dia/estado").authenticated()
-                        .requestMatchers(baseUrl + "solicitudes/orden-del-dia/**").hasAuthority("Secretario General")
-                        .requestMatchers(baseUrl + "logs/**").hasAuthority("Secretario General")
-                        .requestMatchers(baseUrl + "roles/**").hasAuthority("Secretario General")
+                        .requestMatchers(baseUrl + "solicitudes/orden-del-dia/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
+                        .requestMatchers(baseUrl + "logs/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
+                        .requestMatchers(baseUrl + "roles/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
                         .requestMatchers(HttpMethod.GET, baseUrl + "usuarios/**").authenticated()
                         .requestMatchers(HttpMethod.PATCH, baseUrl + "usuarios/**").authenticated()
-                        .requestMatchers(baseUrl + "usuarios/**").hasAuthority("Secretario General")
+                        .requestMatchers(baseUrl + "usuarios/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
                         .requestMatchers(baseUrl + "solicitudes/**").authenticated()
                         .anyRequest().authenticated()
                 )

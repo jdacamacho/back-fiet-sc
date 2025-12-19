@@ -39,7 +39,7 @@ public class OrdenDelDiaDTOPeticion {
 
     @NotNull(message = "El número de acta no puede ser nulo")
     @NotBlank(message = "El número de acta no puede estar vacío")
-    @Size(min = 5, max = 200, message = "El número de acta debe tener entre 5 y 200 caracteres")
+    @Size(min = 2, max = 200, message = "El número de acta debe tener entre 2 y 200 caracteres")
     private String numeroActa;
 
     @NotNull(message = "El estado es obligatorio")

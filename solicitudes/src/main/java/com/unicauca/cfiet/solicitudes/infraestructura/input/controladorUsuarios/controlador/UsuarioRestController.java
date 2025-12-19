@@ -2,6 +2,7 @@ package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.UsuarioCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
+import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Funcionario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
@@ -54,7 +55,7 @@ public class UsuarioRestController{
         this.validadorPeticion = validadorPeticion;
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/tipos")
     public ResponseEntity<?> getTiposUsuarios(){
         List<TipoUsuario> tiposUsuario = casoDeUso.getTiposUsuario();
@@ -63,7 +64,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/paginado")
     public ResponseEntity<?> indexPaginado(@RequestParam("pagina") int pagina,
                                            @RequestParam("tamanio") int tamanio) {
@@ -77,7 +78,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/filtro")
     public ResponseEntity<?> getUsuariosByNombresApellidos(
             @RequestParam(value = "nombreCompleto", required = false) String nombreCompleto,
@@ -93,7 +94,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping
     public ResponseEntity<?> index(){
         List<UsuarioLiviano> usuarios = casoDeUso.getUsuarios();
@@ -102,7 +103,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/funcionarios")
     public ResponseEntity<?> getFuncionarios(){
         List<Funcionario> funcionarios = casoDeUso.getFuncionarios();
@@ -119,7 +120,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @Transactional
     @PostMapping
     public ResponseEntity<?> crearUsuario(@Valid @RequestBody UsuarioDTOPeticion peticion, @RequestParam String tipoUsuario,
@@ -139,7 +140,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @Transactional
     @PostMapping("/cargar/archivo")
     public ResponseEntity<?> crearUsuarios(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token){
@@ -167,7 +168,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @Transactional
     @PutMapping("/{uuidUsuario}")
     public ResponseEntity<?> actualizarUsuario(@PathVariable String uuidUsuario, @Valid @RequestBody UsuarioActualizarDTOPeticion peticion,
@@ -203,7 +204,7 @@ public class UsuarioRestController{
         return ResponseEntity.ok().build();
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/total")
     public ResponseEntity<Long> getTotalUsuarios() {
         long totalUsuarios = casoDeUso.countUsuarios();

@@ -26,12 +26,12 @@ public class InformacionSolicitanteDTOPeticion {
 
     @NotNull(message = "Los nombres no pueden ser nulos")
     @NotBlank(message = "Los nombres no pueden estar vacíos")
-    @Size(min = 5, max = 200, message = "Los nombres deben tener entre 5 y 200 caracteres")
+    @Size(min = 2, max = 200, message = "Los nombres deben tener entre 2 y 200 caracteres")
     private String nombres;
 
     @NotNull(message = "Los apellidos no pueden ser nulos")
     @NotBlank(message = "Los apellidos no pueden estar vacíos")
-    @Size(min = 5, max = 200, message = "Los apellidos deben tener entre 5 y 200 caracteres")
+    @Size(min = 2, max = 200, message = "Los apellidos deben tener entre 2 y 200 caracteres")
     private String apellidos;
 
     @NotNull(message = "El teléfono no puede ser nulo")

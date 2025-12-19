@@ -1,6 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.controlador;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.RolCUIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTOPeticion.RolDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTORespuesta.RolDTORespuesta;
@@ -33,7 +34,7 @@ public class RolRestController {
     private final RolCUIntPuerto casoDeUso;
     private final MapperRolInfraestructuraDominio mapper;
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping
     public ResponseEntity<List<RolDTORespuesta>> index(){
         List<Rol> roles = casoDeUso.getRoles();
@@ -42,7 +43,7 @@ public class RolRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/paginado")
     public ResponseEntity<List<RolDTORespuesta>> indexPaginado(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
         List<Rol> roles = casoDeUso.getRoles(pagina, tamanio);
@@ -51,7 +52,7 @@ public class RolRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/{uuidRol}")
     public ResponseEntity<RolDTORespuesta> getRol(@PathVariable String uuidRol){
         Rol rol = casoDeUso.getRol(uuidRol);
@@ -60,7 +61,7 @@ public class RolRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @PutMapping("/{uuidRol}")
     @Transactional
     public ResponseEntity<?> actualizarRol(@PathVariable String uuidRol, @Valid @RequestBody RolDTOPeticion rolPeticion,

@@ -1,6 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorTiposSolicitud.controlador;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.TipoSolicitudCUIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoSolicitud;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.ProcesadorArchivos;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.validadoresArchivos.ValidadorPeticionesExcel;
@@ -48,7 +49,7 @@ public class TiposSolicitudRestController {
         this.validadorPeticion = validadorPeticion;
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/paginado")
     public ResponseEntity<?> indexPaginado(
             @RequestParam("pagina") int pagina,
@@ -63,7 +64,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/filtro")
     public ResponseEntity<?> getTiposDeSolicitudFiltrado(
             @RequestParam(value = "nombreSolicitud", required = false) String nombreSolicitud,
@@ -80,7 +81,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping
     public ResponseEntity<?> index(){
         List<TipoSolicitud> tipos = casoDeUso.getTiposSolicitud();
@@ -89,7 +90,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize(ApplicationConstantes.AUTHENTICATED)
     @GetMapping("/{uuidTipoSolicitud}")
     public ResponseEntity<?> getTipoSolicitud(@PathVariable String uuidTipoSolicitud){
         TipoSolicitud tipo = casoDeUso.getTipoSolicitud(uuidTipoSolicitud);
@@ -98,7 +99,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @Transactional
     @PostMapping
     public ResponseEntity<?> crearTipoSolicitud(@Valid @RequestBody TipoSolicitudDTOPeticion peticion,
@@ -118,7 +119,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @Transactional
     @PostMapping("/cargar/archivo")
     public ResponseEntity<?> crearTiposSolicitud(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token){
@@ -146,7 +147,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority('Secretario General')")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @Transactional
     @PutMapping("/{uuidTipoSolicitud}")
     public ResponseEntity<?> actualizarTipoSolicitud(@PathVariable String uuidTipoSolicitud, @Valid @RequestBody TipoSolicitudDTOPeticion peticion,
@@ -175,7 +176,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize(ApplicationConstantes.AUTHENTICATED)
     @GetMapping("/perfil/paginado")
     public ResponseEntity<?> getTiposSolicitudesPorPerfilSolicitante(
             @RequestParam("perfil") String perfil,
@@ -190,7 +191,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize(ApplicationConstantes.AUTHENTICATED)
     @GetMapping("/perfil/filtro")
     public ResponseEntity<?> getTiposSolicitudesPorNombreYPerfilSolicitante(
             @RequestParam(value = "nombre", required = false) String nombre,

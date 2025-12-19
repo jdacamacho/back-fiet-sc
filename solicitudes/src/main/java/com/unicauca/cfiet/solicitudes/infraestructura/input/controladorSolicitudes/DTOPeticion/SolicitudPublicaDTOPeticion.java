@@ -22,7 +22,7 @@ public class SolicitudPublicaDTOPeticion {
     @Size(min = 5, max = 200, message = "El nombre debe tener entre 5 y 200 caracteres")
     private String nombre;
 
-    @Size(min = 5, max = 500, message = "La descripción debe tener entre 5 y 500 caracteres")
+    @Size(max = 500, message = "La descripción debe tener maximo 500 caracteres")
     private String descripcion;
 
     @NotNull(message = "El tipo de solicitud es obligatorio")

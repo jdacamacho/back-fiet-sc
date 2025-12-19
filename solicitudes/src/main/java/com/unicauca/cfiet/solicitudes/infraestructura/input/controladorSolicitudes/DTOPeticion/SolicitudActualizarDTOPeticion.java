@@ -22,7 +22,7 @@ public class SolicitudActualizarDTOPeticion {
     @Size(min = 5, max = 200, message = "El nombre debe tener entre 5 y 200 caracteres")
     private String nombre;
 
-    @Size(min = 5, max = 500, message = "La descripción debe tener entre 5 y 500 caracteres")
+    @Size(max = 500, message = "La descripción debe tener maximo 500 caracteres")
     private String descripcion;
 
     @NotNull(message = "El estado no puede ser nulo")
@@ -30,13 +30,7 @@ public class SolicitudActualizarDTOPeticion {
     @Size(min = 5, max = 200, message = "El estado debe tener entre 5 y 200 caracteres")
     private String estado;
 
-    @NotNull(message = "El funcionario es obligatorio")
-    @NotBlank(message = "El funcionario no puede estar vacío")
-    @Size(min = 5, max = 200, message = "El funcionario debe tener entre 5 y 200 caracteres")
     private String uuidFuncionario;
 
-    @NotNull(message = "La orden del día es obligatoria")
-    @NotBlank(message = "La orden del día no puede estar vacía")
-    @Size(min = 5, max = 200, message = "La orden del día debe tener entre 5 y 200 caracteres")
     private String uuidOrdenDelDia;
 }

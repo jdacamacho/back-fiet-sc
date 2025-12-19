@@ -40,5 +40,7 @@ public class TipoSolicitudDTOPeticion {
     @Size(min = 1, message = "Debe asignar al menos un anexo")
     private List<TipoAnexoDTOPeticion> anexos;
 
+    @NotNull(message = "La uuid del funcionario no puede ser nula")
+    @NotBlank(message = "La uuid del funcionario no puede estar vacia")
     private String uuidFuncionario;
 }

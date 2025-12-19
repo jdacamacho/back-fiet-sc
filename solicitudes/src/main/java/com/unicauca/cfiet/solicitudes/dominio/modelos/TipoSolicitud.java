@@ -1,5 +1,6 @@
 package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
+import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -28,14 +29,14 @@ public class TipoSolicitud {
         String seccion = getSeccion();
         if (seccion == null) return false;
         switch (seccion.trim().toLowerCase()) {
-            case "asuntos decano":
-            case "asuntos pregrado":
-            case "asuntos posgrados":
-            case "asuntos delegados en decano":
-            case "solicitud comisión académica al interior del país":
-            case "solicitud comisión académica al exterior al país":
-            case "informe de comisión académica":
-            case "asuntos varios":
+            case ApplicationConstantes.ASUNTOS_DECANO:
+            case ApplicationConstantes.ASUNTOS_PREGRADO:
+            case ApplicationConstantes.ASUNTOS_POSGRADOS:
+            case ApplicationConstantes.ASUNTOS_DELEGADOS_EN_DECANO:
+            case ApplicationConstantes.SOLICITUD_COMISION_ACADEMICA_INTERIOR_PAIS:
+            case ApplicationConstantes.SOLICITUD_COMISION_ACADEMICA_EXTERIOR_PAIS:
+            case ApplicationConstantes.INFORME_COMISION_ACADEMICA:
+            case ApplicationConstantes.ASUNTOS_VARIOS:
                 setSeccion(seccion.trim());
                 return true;
             default:
