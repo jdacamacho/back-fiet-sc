@@ -361,6 +361,20 @@ public class SolicitudesRestController {
                 .body(resource);
     }
 
+    @GetMapping("/exportar")
+    public ResponseEntity<byte[]> exportarOrden(@RequestParam String uuidOrden) {
+
+        byte[] archivo = ordenDelDiaCU.generarOrdenDelDia(uuidOrden);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"Orden_Del_Dia.docx\"")
+                .contentType(
+                        MediaType.parseMediaType(
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
+                .body(archivo);
+    }
+
     @PreAuthorize(ApplicationConstantes.AUTHENTICATED)
     @GetMapping("/orden-del-dia/estado")
     public ResponseEntity<?> getOrdenesDelDiaPorEstado(@RequestParam("estado") boolean estado) {

@@ -46,9 +46,11 @@ public class BeanConfiguracion {
 
     @Bean
     public OrdenDelDiaCUImplAdaptador crearOrdenDelDiaCU(OrdenDelDiaGatewayIntPuerto gateway,
+                                                         SolicitudGatewayIntPuerto gatewaySolicitud,
                                                          ExcepcionesFormateadorIntPuerto formateadorExcepciones,
-                                                         LogCUIntPuerto log){
-        return new OrdenDelDiaCUImplAdaptador(gateway, formateadorExcepciones, log);
+                                                         LogCUIntPuerto log,
+                                                         OrdenDelDiaExportador exportador){
+        return new OrdenDelDiaCUImplAdaptador(gateway, gatewaySolicitud,formateadorExcepciones, log, exportador);
     }
 
     @Bean

@@ -389,6 +389,4 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
         if (name == null) return "SinNombre";
         return name.replaceAll("[^a-zA-Z0-9-_\\.]", "_").replaceAll("_+", "_");
     }
-
-
 }

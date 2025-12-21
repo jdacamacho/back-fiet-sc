@@ -56,4 +56,6 @@ public interface OrdenDelDiaCUIntPuerto {
     OrdenDelDia actualizarOrdenDelDia(String uuidOrdenDelDia, OrdenDelDia ordenDelDia, String token);
 
     PaginacionRespuestaDTO<OrdenDelDia> buscarOrdenDelDiaPorNumeroActa(String nombre, int pagina, int tamanio);
+
+    byte[] generarOrdenDelDia(String uuidOrden);
 }
