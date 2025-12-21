@@ -83,10 +83,10 @@ public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto 
 
     @Override
     public List<Solicitud> getSolicitudesPorEstado(String estado) {
-        List<SolicitudEntidad> entidades =
-                repositorio.findByEstadoIgnoreCase(estado);
+        List<SolicitudEntidad> entidades = repositorio.findByEstadoIgnoreCase(estado);
 
         return entidades.stream()
+                .filter(e -> e.getObjOrdenDelDia() == null)
                 .map(mapper::toDominio)
                 .toList();
     }

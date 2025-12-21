@@ -17,6 +17,9 @@ public final class ApplicationConstantes {
     public static final String SOLICITUD_COMISION_ACADEMICA_EXTERIOR_PAIS = "solicitud comisión académica al exterior al país";
     public static final String INFORME_COMISION_ACADEMICA = "informe de comisión académica";
     public static final String ASUNTOS_VARIOS = "asuntos varios";
+    /*Estados de solicitudes*/
+    public static final String AGREGADO_EN_EL_ORDEN_DEL_DIA = "AGREGADO EN EL ORDEN DEL DÍA";
+    public static final String SIN_RESPONDER = "SIN RESPONDER";
     /*Formatos de Anexos*/
     public static final String FORMATO_PDF = "PDF";
     public static final String FORMATO_DOCX = "DOCX";

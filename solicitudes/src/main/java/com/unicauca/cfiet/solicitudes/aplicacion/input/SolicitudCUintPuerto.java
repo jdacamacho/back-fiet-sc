@@ -106,4 +106,6 @@ public interface SolicitudCUintPuerto {
      * @return Paginación de solicitudes que coinciden con el filtro.
      */
     PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorNombreYFuncionario(String uuidFuncionario, String filtro, int pagina, int tamanio);
+
+    byte[] generarZipAnexosPorOrdenDelDia(String uuidOrden, String basePath);
 }

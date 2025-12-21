@@ -14,7 +14,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SolicitudActualizarDTOPeticion {
-    @Size(min = 5, max = 200, message = "El consecutivo debe tener entre 5 y 200 caracteres")
     private String consecutivo;
 
     @NotNull(message = "El nombre no puede ser nulo")

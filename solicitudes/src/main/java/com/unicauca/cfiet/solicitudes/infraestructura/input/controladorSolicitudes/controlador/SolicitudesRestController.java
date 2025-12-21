@@ -4,18 +4,22 @@ import com.unicauca.cfiet.solicitudes.aplicacion.input.OrdenDelDiaCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.input.SolicitudCUintPuerto;
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Anexo;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.OrdenDelDia;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Solicitud;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.OrdenDelDiaDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.SolicitudActualizarDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.SolicitudDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.SolicitudPublicaDTOPeticion;
+import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTORespuesta.SolicitudDTORespuesta;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.ValidadorAnexosService;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.mapeador.MapperSolicitudesInfraestructuraDominio;
+import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.excepcionesPropias.ErrorNoInformacionExcepcion;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.dao.DataAccessException;
@@ -28,13 +32,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.*;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.io.File;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
@@ -334,6 +342,23 @@ public class SolicitudesRestController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @GetMapping("/anexos/download")
+    public ResponseEntity<?> descargarAnexos(
+            @RequestParam String uuidOrden,
+            @RequestParam String nombreOrden) {
+        byte[] zipBytes = solicitudCU.generarZipAnexosPorOrdenDelDia(uuidOrden, basePath);
+        String nombreArchivo = nombreOrden.replaceAll("[^a-zA-Z0-9-_\\.]", "_").replaceAll("_+", "_") + ".zip";
+
+        ByteArrayResource resource = new ByteArrayResource(zipBytes);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + nombreArchivo + "\"")
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(resource.contentLength())
+                .body(resource);
     }
 
     @PreAuthorize(ApplicationConstantes.AUTHENTICATED)

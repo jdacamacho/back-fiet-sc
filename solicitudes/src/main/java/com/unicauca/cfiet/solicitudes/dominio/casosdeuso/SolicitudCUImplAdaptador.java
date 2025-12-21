@@ -4,16 +4,20 @@ import com.unicauca.cfiet.solicitudes.aplicacion.input.LogCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.input.SolicitudCUintPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.*;
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
+import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.*;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.almacenador.AlmacenadorArchivos;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.MensajesError;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * Implementación de la interfaz de los casos de uso para la gestión de solicitudes.
@@ -94,7 +98,7 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
         checkSolicitud(solicitud, token);
         String uuidSolicitud = UUID.randomUUID().toString();
         solicitud.setUuidSolicitud(uuidSolicitud);
-        solicitud.setEstado("AGREGADO EN EL ORDEN DEL DÍA");
+        solicitud.setEstado(ApplicationConstantes.AGREGADO_EN_EL_ORDEN_DEL_DIA);
         solicitud.getInformacionSolicitante().setUuidInformacionSolicitante(UUID.randomUUID().toString());
         solicitud.getInformacionSolicitante().setSolicitud(solicitud);
 
@@ -123,7 +127,7 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
         checkSolicitudPublica(solicitud);
         String uuidSolicitud = UUID.randomUUID().toString();
         solicitud.setUuidSolicitud(uuidSolicitud);
-        solicitud.setEstado("SIN RESPONDER");
+        solicitud.setEstado(ApplicationConstantes.SIN_RESPONDER);
         solicitud.getInformacionSolicitante().setUuidInformacionSolicitante(UUID.randomUUID().toString());
         solicitud.getInformacionSolicitante().setSolicitud(solicitud);
 
@@ -164,11 +168,18 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
             }
         }
 
-        if(solicitud.getUuidOrdenDelDia() != null && !solicitud.getUuidOrdenDelDia().isBlank()) {
-            if (!solicitud.getUuidOrdenDelDia().equals(solicitudOriginal.getObjOrdenDelDia().getUuidOrdenDelDia())) {
+        if (solicitud.getUuidOrdenDelDia() == null || solicitud.getUuidOrdenDelDia().isBlank())
+            solicitudOriginal.setObjOrdenDelDia(null);
+        else {
+            boolean actualizarOrden = solicitudOriginal.getObjOrdenDelDia() == null ||
+                    !solicitud.getUuidOrdenDelDia().equals(solicitudOriginal.getObjOrdenDelDia().getUuidOrdenDelDia());
+
+            if (actualizarOrden) {
                 OrdenDelDia ordenNuevo = gatewayOrdenDelDia.getOrdenDelDia(solicitud.getUuidOrdenDelDia());
                 if (ordenNuevo == null)
-                    formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ORDEN_DEL_DIA, solicitud.getUuidOrdenDelDia()));
+                    formateadorExcepciones.lanzarEntidadNoExiste(
+                            String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ORDEN_DEL_DIA, solicitud.getUuidOrdenDelDia())
+                    );
                 solicitudOriginal.setObjOrdenDelDia(ordenNuevo);
             }
         }
@@ -312,5 +323,72 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
             formateadorExcepciones.lanzarSinInformacion("No se encontraron solicitudes que coincidan con la búsqueda");
         return respuesta;
     }
+
+    @Override
+    public byte[] generarZipAnexosPorOrdenDelDia(String uuidOrden, String basePath) {
+        List<Solicitud> solicitudes = gateway.getSolicitudesPorOrdenDelDia(uuidOrden);
+        if (solicitudes.isEmpty())
+            formateadorExcepciones.lanzarSinInformacion("No existen solicitudes asociadas a este Orden del Día");
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        try (ZipOutputStream zos = new ZipOutputStream(baos)) {
+
+            Map<String, List<Solicitud>> solicitudesPorSeccion = new HashMap<>();
+            for (Solicitud s : solicitudes) {
+                String seccion = s.getObjTipoSolicitud().getSeccion();
+                solicitudesPorSeccion.computeIfAbsent(seccion, k -> new ArrayList<>()).add(s);
+            }
+
+            for (Map.Entry<String, List<Solicitud>> entrySeccion : solicitudesPorSeccion.entrySet()) {
+                String seccionName = sanitizeFileName(entrySeccion.getKey());
+
+                for (Solicitud solicitud : entrySeccion.getValue()) {
+                    String solicitudName = sanitizeFileName(solicitud.getNombre());
+                    File solicitudFolder = new File(basePath, solicitud.getUuidSolicitud());
+
+                    if (!solicitudFolder.exists() || !solicitudFolder.isDirectory()) continue;
+
+                    int contadorAnexos = 1;
+                    for (Anexo anexo : solicitud.getAnexos()) {
+                        String url = anexo.getUrlAnexo();
+                        String realFileName = url.substring(url.lastIndexOf("/") + 1);
+                        File file = new File(solicitudFolder, realFileName);
+
+                        if (!file.exists() || !file.isFile()) continue;
+
+                        String zipEntryPath = String.format("%s/%s/%d_%s",
+                                seccionName,
+                                solicitudName,
+                                contadorAnexos,
+                                sanitizeFileName(file.getName())
+                        );
+
+                        zos.putNextEntry(new ZipEntry(zipEntryPath));
+
+                        try (FileInputStream fis = new FileInputStream(file)) {
+                            byte[] buffer = new byte[4096];
+                            int len;
+                            while ((len = fis.read(buffer)) > 0)
+                                zos.write(buffer, 0, len);
+                        }
+
+                        zos.closeEntry();
+                        contadorAnexos++;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return baos.toByteArray();
+    }
+
+    private String sanitizeFileName(String name) {
+        if (name == null) return "SinNombre";
+        return name.replaceAll("[^a-zA-Z0-9-_\\.]", "_").replaceAll("_+", "_");
+    }
+
 
 }
