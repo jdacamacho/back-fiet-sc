@@ -4,7 +4,6 @@ import com.unicauca.cfiet.solicitudes.aplicacion.output.OrdenDelDiaExportador;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Servicio para exportar la información de una Orden del Día a un documento Word
+ * utilizando una plantilla predefinida.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Service

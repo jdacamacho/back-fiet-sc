@@ -2,10 +2,11 @@ package com.unicauca.cfiet.solicitudes.infraestructura.output.JWT;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.output.IJwtServicio;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.seguridad.jwt.JwtServicio;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 /**
+ * Servicio adaptador para exponer funcionalidades de JWT a la aplicación.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Service

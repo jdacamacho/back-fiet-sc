@@ -1,63 +1,66 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.output;
 
 /**
- *  Interfaz para manejar excepciones
+ * Interfaz para manejar excepciones.
+ * Permite lanzar diferentes tipos de errores de manera uniforme.
  *
- * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
+ * @author Julian David Camacho Erazo {@literal <jdacamacho@unicauca.edu.co>}
  */
 public interface ExcepcionesFormateadorIntPuerto {
+
     /**
-     * Método para devolver un mensaje de error cuando ocurre un error generico.
+     * Devuelve un mensaje de error genérico.
      *
-     * @param mensaje Mensaje descriptivo del error.
+     * @param mensaje mensaje descriptivo del error
      */
     void lanzarErrorGenerico(String mensaje);
+
     /**
-     * Método para devolver un mensaje de error cuando no existe la entidad.
+     * Devuelve un mensaje de error cuando no existe la entidad.
      *
-     * @param mensaje Mensaje descriptivo del error.
+     * @param mensaje mensaje descriptivo del error
      */
     void lanzarEntidadNoExiste(String mensaje);
 
     /**
-     * Método para devolver un mensaje de error cuando la entidad esta duplicada.
+     * Devuelve un mensaje de error cuando la entidad ya existe.
      *
-     * @param mensaje Mensaje descriptivo del error.
+     * @param mensaje mensaje descriptivo del error
      */
     void lanzarEntidadExiste(String mensaje);
 
     /**
-     * Método para devolver un mensaje de error cuando una regla de negocio fue violada.
+     * Devuelve un mensaje de error cuando se viola una regla de negocio.
      *
-     * @param mensaje Mensaje descriptivo del error.
+     * @param mensaje mensaje descriptivo del error
      */
     void lanzarReglaNegocioViolada(String mensaje);
 
     /**
-     * Método para devolver un mensaje de error cuando fallo la autenticación del usuario.
+     * Devuelve un mensaje de error cuando falló la autenticación del usuario.
      *
-     * @param mensaje Mensaje descriptivo del error.
+     * @param mensaje mensaje descriptivo del error
      */
     void lanzarCredencialesErroneas(String mensaje);
 
     /**
-     * Método para devolver un mensaje de error cuando un formato es erroneo.
+     * Devuelve un mensaje de error cuando un formato es incorrecto.
      *
-     * @param mensaje Mensaje descriptivo del error.
+     * @param mensaje mensaje descriptivo del error
      */
     void lanzarMalFormato(String mensaje);
 
     /**
-     * Método para devolver un mensaje de error cuando una consulta no obtuvo información.
+     * Devuelve un mensaje de error cuando una consulta no obtuvo información.
      *
-     * @param mensaje Mensaje descriptivo del error.
+     * @param mensaje mensaje descriptivo del error
      */
     void lanzarSinInformacion(String mensaje);
 
     /**
-     * Método para devolver un mensaje de error cuando no se tiene acceso a una acción.
+     * Devuelve un mensaje de error cuando no se tiene acceso a una acción.
      *
-     * @param mensaje Mensaje descriptivo del error.
+     * @param mensaje mensaje descriptivo del error
      */
     void lanzarSinAcceso(String mensaje);
 }

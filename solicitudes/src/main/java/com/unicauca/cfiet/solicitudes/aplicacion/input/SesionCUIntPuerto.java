@@ -10,11 +10,11 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioTokenizado;
 public interface SesionCUIntPuerto {
 
     /**
-     * Iniciar sesión en el sistema.
+     * Inicia sesión en el sistema.
      *
-     * @param username el nombre de usuario.
-     * @param contraseña la contraseña del usuario.
-     * @return el token de usuario generado si las credenciales son correctas.
+     * @param username nombre de usuario
+     * @param contraseña contraseña del usuario
+     * @return token de usuario generado si las credenciales son correctas
      */
     UsuarioTokenizado login(String username, String contraseña);
 }

@@ -10,8 +10,6 @@ import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.mapead
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.mapeador.ownMapper.UsuarioOwnMapper;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.LogRepositorio;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -69,11 +67,6 @@ public class LogGatewayImplAdaptador implements LogGatewayIntPuerto {
                 .toList();
 
         return new PaginacionRespuestaDTO<>(logs, page.getTotalElements());
-    }
-
-    @Override
-    public long countLogs() {
-        return repositorio.countLogs();
     }
 
     @Override

@@ -5,6 +5,8 @@ import lombok.*;
 import java.util.List;
 
 /**
+ * Representa una solicitud registrada en el sistema.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Getter
@@ -27,6 +29,11 @@ public class Solicitud {
     private Funcionario objFuncionario;
     private String uuidFuncionario;
 
+    /**
+     * Actualiza los campos básicos de la solicitud con los valores de otra instancia.
+     *
+     * @param other otra instancia de Solicitud cuyos valores se copiarán
+     */
     public void actualizar(Solicitud other){
         if (other == null) return;
         this.consecutivo = other.consecutivo;

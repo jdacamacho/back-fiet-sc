@@ -2,7 +2,6 @@ package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entid
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 

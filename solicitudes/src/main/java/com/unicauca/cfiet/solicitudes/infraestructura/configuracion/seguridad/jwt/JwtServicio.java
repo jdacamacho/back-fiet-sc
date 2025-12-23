@@ -13,9 +13,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
-
 /**
- * Configuración del servicio jwt
+ * Servicio para la generación y validación de tokens JWT.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
@@ -34,7 +33,7 @@ public class JwtServicio {
                 .setClaims(extraClaim)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 3 * 60 * 60 * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                 .signWith(getKey(),SignatureAlgorithm.HS256)
                 .compact();
     }

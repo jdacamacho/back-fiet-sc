@@ -3,6 +3,8 @@ package com.unicauca.cfiet.solicitudes.dominio.modelos;
 import lombok.*;
 
 /**
+ * Representa la información personal del solicitante publcio de una solicitud.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Getter

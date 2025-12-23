@@ -11,8 +11,11 @@ import org.springframework.stereotype.Component;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.estructura.Error;
 
 /**
+ * Punto de entrada personalizado para manejar intentos de acceso no autenticado.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
+
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 

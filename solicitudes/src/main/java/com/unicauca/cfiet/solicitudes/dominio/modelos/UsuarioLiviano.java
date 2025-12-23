@@ -4,6 +4,9 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /**
+ * Representa un usuario con información mínima.
+ * Puede ser utilizado como base para otras clases de usuario.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Getter

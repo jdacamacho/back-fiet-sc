@@ -10,7 +10,6 @@ import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchiv
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.MensajesError;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,6 +40,7 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
     private String urlApplication;
 
     /* Constantes */
+    private static final String SOLICITUD_CONTROLLER_URL = "solicitudes/anexos/";
     private static final String SOLICITUDES = "Solicitudes";
     private static final String SOLICITUD = "Solicitud";
     private static final String ORDEN_DEL_DIA = "Orden del Día";
@@ -110,7 +110,7 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
             if (archivo != null && !archivo.isEmpty()) {
                 try {
                     String rutaArchivo = almacenadorArchivos.guardarArchivo(uuidSolicitud, archivo, currentAnexo.getNombre());
-                    String urlAnexo = urlBackend + urlApplication + "solicitudes/anexos/"
+                    String urlAnexo = urlBackend + urlApplication + SOLICITUD_CONTROLLER_URL
                             + uuidSolicitud + "/" + new File(rutaArchivo).getName();
                     currentAnexo.setUrlAnexo(urlAnexo);
                 } catch (IOException e) {
@@ -119,11 +119,12 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
             }
         }
 
+        log.crearLog("Solicitud Creada", String.format("Se realizó una solicitud  %s" , solicitud.getNombre()), token);
         return gateway.guardarSolicitud(solicitud);
     }
 
     @Override
-    public Solicitud crearSolicitudPublica(Solicitud solicitud) {
+    public Solicitud crearSolicitudPublica(Solicitud solicitud, String token) {
         checkSolicitudPublica(solicitud);
         String uuidSolicitud = UUID.randomUUID().toString();
         solicitud.setUuidSolicitud(uuidSolicitud);
@@ -139,7 +140,7 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
             if (archivo != null && !archivo.isEmpty()) {
                 try {
                     String rutaArchivo = almacenadorArchivos.guardarArchivo(uuidSolicitud, archivo, currentAnexo.getNombre());
-                    String urlAnexo = urlBackend + urlApplication + "solicitudes/anexos/"
+                    String urlAnexo = urlBackend + urlApplication + SOLICITUD_CONTROLLER_URL
                             + uuidSolicitud + "/" + new File(rutaArchivo).getName();
                     currentAnexo.setUrlAnexo(urlAnexo);
                 } catch (IOException e) {
@@ -148,6 +149,7 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
             }
         }
 
+        log.crearLog("Solicitud Publica Creada", String.format("Se realizó una solicitud publica %s" , solicitud.getNombre()), token);
         return gateway.guardarSolicitud(solicitud);
     }
 
@@ -187,87 +189,6 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
         solicitudOriginal.actualizar(solicitud);
         log.crearLog("Solicitud modificada", String.format("Se modifico la información de la solicitud %s" , solicitudOriginal.getNombre()), token);
         return gateway.guardarSolicitud(solicitudOriginal);
-    }
-
-    private void checkSolicitud(Solicitud solicitud, String token){
-        TipoSolicitud tipoSolicitud = gatewayTipoSolicitud.getTipoSolicitud(solicitud.getUuidTipoSolicitud());
-        if(tipoSolicitud == null)
-            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, TIPOS_SOLICITUD, solicitud.getUuidTipoSolicitud()));
-
-        solicitud.setObjTipoSolicitud(tipoSolicitud);
-
-        List<Anexo> anexosSolicitud = solicitud.getAnexos();
-        List<TipoAnexo> tiposAnexo = tipoSolicitud.getAnexos();
-
-        for (TipoAnexo tipo : tiposAnexo) {
-            Anexo anexoEncontrado = anexosSolicitud.stream()
-                    .filter(a -> a.getNombre().equalsIgnoreCase(tipo.getNombre()))
-                    .findFirst()
-                    .orElse(null);
-
-            if (tipo.getObligatoriedad() && anexoEncontrado == null)
-                formateadorExcepciones.lanzarMalFormato(String.format("El anexo %s es obligatorio", tipo.getNombre()));
-
-            if (anexoEncontrado != null){
-                MultipartFile archivo = anexoEncontrado.getAnexoFile();
-                if (tipo.getObligatoriedad() && (archivo == null || archivo.isEmpty()))
-                    formateadorExcepciones.lanzarMalFormato(String.format("El anexo %s debe contener un archivo", tipo.getNombre()));
-
-                if (archivo != null && !archivo.isEmpty()){
-                    String nombreArchivo = archivo.getOriginalFilename();
-                    String extension = obtenerExtension(nombreArchivo).toLowerCase();
-
-                    if (!extension.equalsIgnoreCase(tipo.getFormato()))
-                        formateadorExcepciones.lanzarMalFormato(String.format("El anexo %s debe ser un archivo %sytg", tipo.getNombre(), tipo.getFormato()));
-                }
-            }
-
-        }
-
-        OrdenDelDia ordenDelDia = gatewayOrdenDelDia.getOrdenDelDia(solicitud.getUuidOrdenDelDia());
-        if(ordenDelDia == null)
-            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ORDEN_DEL_DIA, solicitud.getUuidOrdenDelDia()));
-
-        solicitud.setObjOrdenDelDia(ordenDelDia);
-
-        Funcionario funcionario = tipoSolicitud.getObjFuncionarioEncargado();
-        if(funcionario != null)
-            solicitud.setObjFuncionario(funcionario);
-
-        String username = jwtServicio.getUsername(token);
-        if(username == null || username.isBlank())
-            formateadorExcepciones.lanzarErrorGenerico(MensajesError.USERNAME_TOKEN);
-
-        Usuario usuario = gatewaySesion.getUsuario(username);
-        if(usuario != null){
-            InformacionSolicitante solicitante = new InformacionSolicitante();
-            solicitante.setTipoDocumento(usuario.getTipoDocumento());
-            solicitante.setNumeroDocumento(usuario.getNumeroDocumento());
-            solicitante.setNombres(usuario.getNombres());
-            solicitante.setApellidos(usuario.getApellidos());
-            solicitante.setTelefono(usuario.getTelefono());
-            solicitante.setCorreoElectronico(usuario.getCorreoElectronico());
-            solicitud.setInformacionSolicitante(solicitante);
-        }
-    }
-
-    private String obtenerExtension(String archivo) {
-        if (archivo == null || !archivo.contains(".")) {
-            return "";
-        }
-        return archivo.substring(archivo.lastIndexOf(".") + 1);
-    }
-
-    private void checkSolicitudPublica(Solicitud solicitud){
-        TipoSolicitud tipoSolicitud = gatewayTipoSolicitud.getTipoSolicitud(solicitud.getUuidTipoSolicitud());
-        if(tipoSolicitud == null)
-            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, TIPOS_SOLICITUD, solicitud.getUuidTipoSolicitud()));
-
-        solicitud.setObjTipoSolicitud(tipoSolicitud);
-
-        Funcionario funcionario = tipoSolicitud.getObjFuncionarioEncargado();
-        if(funcionario != null)
-            solicitud.setObjFuncionario(funcionario);;
     }
 
     @Override
@@ -385,6 +306,110 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
         return baos.toByteArray();
     }
 
+    /**
+     * Verifica la validez de una solicitud y completa su información antes de crearla.
+     *
+     * @param solicitud la solicitud a validar.
+     * @param token el token del usuario que realiza la acción.
+     */
+    private void checkSolicitud(Solicitud solicitud, String token){
+        TipoSolicitud tipoSolicitud = gatewayTipoSolicitud.getTipoSolicitud(solicitud.getUuidTipoSolicitud());
+        if(tipoSolicitud == null)
+            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, TIPOS_SOLICITUD, solicitud.getUuidTipoSolicitud()));
+
+        solicitud.setObjTipoSolicitud(tipoSolicitud);
+
+        List<Anexo> anexosSolicitud = solicitud.getAnexos();
+        List<TipoAnexo> tiposAnexo = tipoSolicitud.getAnexos();
+
+        for (TipoAnexo tipo : tiposAnexo) {
+            Anexo anexoEncontrado = anexosSolicitud.stream()
+                    .filter(a -> a.getNombre().equalsIgnoreCase(tipo.getNombre()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (tipo.getObligatoriedad() && anexoEncontrado == null)
+                formateadorExcepciones.lanzarMalFormato(String.format("El anexo %s es obligatorio", tipo.getNombre()));
+
+            if (anexoEncontrado != null){
+                MultipartFile archivo = anexoEncontrado.getAnexoFile();
+                if (tipo.getObligatoriedad() && (archivo == null || archivo.isEmpty()))
+                    formateadorExcepciones.lanzarMalFormato(String.format("El anexo %s debe contener un archivo", tipo.getNombre()));
+
+                if (archivo != null && !archivo.isEmpty()){
+                    String nombreArchivo = archivo.getOriginalFilename();
+                    String extension = obtenerExtension(nombreArchivo).toLowerCase();
+
+                    if (!extension.equalsIgnoreCase(tipo.getFormato()))
+                        formateadorExcepciones.lanzarMalFormato(String.format("El anexo %s debe ser un archivo %sytg", tipo.getNombre(), tipo.getFormato()));
+                }
+            }
+
+        }
+
+        OrdenDelDia ordenDelDia = gatewayOrdenDelDia.getOrdenDelDia(solicitud.getUuidOrdenDelDia());
+        if(ordenDelDia == null)
+            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ORDEN_DEL_DIA, solicitud.getUuidOrdenDelDia()));
+
+        solicitud.setObjOrdenDelDia(ordenDelDia);
+
+        Funcionario funcionario = tipoSolicitud.getObjFuncionarioEncargado();
+        if(funcionario != null)
+            solicitud.setObjFuncionario(funcionario);
+
+        String username = jwtServicio.getUsername(token);
+        if(username == null || username.isBlank())
+            formateadorExcepciones.lanzarErrorGenerico(MensajesError.USERNAME_TOKEN);
+
+        Usuario usuario = gatewaySesion.getUsuario(username);
+        if(usuario != null){
+            InformacionSolicitante solicitante = new InformacionSolicitante();
+            solicitante.setTipoDocumento(usuario.getTipoDocumento());
+            solicitante.setNumeroDocumento(usuario.getNumeroDocumento());
+            solicitante.setNombres(usuario.getNombres());
+            solicitante.setApellidos(usuario.getApellidos());
+            solicitante.setTelefono(usuario.getTelefono());
+            solicitante.setCorreoElectronico(usuario.getCorreoElectronico());
+            solicitud.setInformacionSolicitante(solicitante);
+        }
+    }
+
+    /**
+     * Verifica la validez de una solicitud pública y completa su información antes de crearla.
+     *
+     * @param solicitud la solicitud pública a validar.
+     */
+    private void checkSolicitudPublica(Solicitud solicitud){
+        TipoSolicitud tipoSolicitud = gatewayTipoSolicitud.getTipoSolicitud(solicitud.getUuidTipoSolicitud());
+        if(tipoSolicitud == null)
+            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, TIPOS_SOLICITUD, solicitud.getUuidTipoSolicitud()));
+
+        solicitud.setObjTipoSolicitud(tipoSolicitud);
+
+        Funcionario funcionario = tipoSolicitud.getObjFuncionarioEncargado();
+        if(funcionario != null)
+            solicitud.setObjFuncionario(funcionario);;
+    }
+
+    /**
+     * Obtiene la extensión de un archivo a partir de su nombre.
+     *
+     * @param archivo el nombre del archivo.
+     * @return la extensión del archivo en minúsculas, o una cadena vacía si no tiene extensión.
+     */
+    private String obtenerExtension(String archivo) {
+        if (archivo == null || !archivo.contains(".")) {
+            return "";
+        }
+        return archivo.substring(archivo.lastIndexOf(".") + 1);
+    }
+
+    /**
+     * Sanitiza un nombre de archivo eliminando caracteres inválidos y reemplazándolos por guiones bajos.
+     *
+     * @param name el nombre original del archivo.
+     * @return el nombre de archivo sanitizado.
+     */
     private String sanitizeFileName(String name) {
         if (name == null) return "SinNombre";
         return name.replaceAll("[^a-zA-Z0-9-_\\.]", "_").replaceAll("_+", "_");

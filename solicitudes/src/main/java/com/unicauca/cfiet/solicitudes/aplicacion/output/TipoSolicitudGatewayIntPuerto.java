@@ -5,65 +5,89 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoSolicitud;
 import java.util.List;
 
 /**
- * Interfaz que actua como fachada con la capa de persistencia para la gestión de Tipos de Solicitudes.
+ * Interfaz que actúa como fachada hacia la capa de persistencia para la gestión de Tipos de Solicitudes.
  *
- * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
+ * author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 public interface TipoSolicitudGatewayIntPuerto {
 
     /**
-     * Obtener todos los tipos de solicitud almacenados.
+     * Obtiene todos los tipos de solicitud almacenados.
      *
-     * @return lista con todos los tipos de solicitud.
+     * @return lista de tipos de solicitud
      */
     List<TipoSolicitud> getTiposSolicitudes();
 
     /**
-     * Obtener los tipos de solicitud de forma paginada.
+     * Obtiene tipos de solicitud paginados.
      *
-     * @param pagina número de la página a consultar.
-     * @param tamanio cantidad de elementos por página.
-     * @return lista con los tipos de solicitud de la página solicitada.
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de tipos de solicitud
      */
     PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudes(int pagina, int tamanio);
 
     /**
-     * Obtener los tipos de solicitud filtrados de forma paginada.
-     * @param nombreSolicitud nombre del Tipo de Solicitud.
-     * @param funcionario nombre del funcionario (nombres o apellidos).
-     * @param pagina número de la página a consultar.
-     * @param tamanio cantidad de elementos por página.
-     * @return lista con los tipos de solicitud de la página solicitada.
+     * Obtiene tipos de solicitud filtrados por nombre y funcionario de forma paginada.
+     *
+     * @param nombreSolicitud nombre del tipo de solicitud
+     * @param funcionario nombre del funcionario (nombres o apellidos)
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de tipos de solicitud que coinciden con los filtros
      */
     PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudes(String nombreSolicitud, String funcionario, int pagina, int tamanio);
 
     /**
-     * Buscar un tipo de solicitud por su identificador único.
+     * Obtiene un tipo de solicitud por su identificador único.
      *
-     * @param uuidTipoSolicitud identificador del tipo de solicitud.
-     * @return el tipo de solicitud correspondiente.
+     * @param uuidTipoSolicitud identificador del tipo de solicitud
+     * @return tipo de solicitud correspondiente
      */
     TipoSolicitud getTipoSolicitud(String uuidTipoSolicitud);
 
     /**
-     * Guardar un nuevo tipo de solicitud o actualizar uno existente.
+     * Guarda un nuevo tipo de solicitud o actualiza uno existente.
      *
-     * @param tipoSolicitud objeto con la información del tipo de solicitud.
-     * @return el tipo de solicitud guardado.
+     * @param tipoSolicitud tipo de solicitud a guardar
+     * @return tipo de solicitud guardado
      */
     TipoSolicitud guardarTipoSolicitud(TipoSolicitud tipoSolicitud);
 
     /**
-     * Guardar varios tipos de solicitud en una sola operación.
+     * Guarda varios tipos de solicitud en una sola operación.
      *
-     * @param tiposSolicitud lista con los tipos de solicitud a guardar.
-     * @return lista con los tipos de solicitud guardados.
+     * @param tiposSolicitud lista de tipos de solicitud a guardar
+     * @return lista de tipos de solicitud guardados
      */
     List<TipoSolicitud> guardarTiposSolicitud(List<TipoSolicitud> tiposSolicitud);
 
+    /**
+     * Obtiene tipos de solicitud asociados a un perfil específico.
+     *
+     * @param perfil nombre del perfil
+     * @return lista de tipos de solicitud del perfil
+     */
     List<TipoSolicitud> getTiposSolicitudesPorPerfil(String perfil);
 
+    /**
+     * Obtiene tipos de solicitud paginados asociados a un perfil de solicitante.
+     *
+     * @param perfil nombre del perfil
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de tipos de solicitud del perfil
+     */
     PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorPerfilSolicitante(String perfil, int pagina, int tamanio);
 
+    /**
+     * Obtiene tipos de solicitud filtrados por nombre y perfil de solicitante de forma paginada.
+     *
+     * @param nombre nombre del tipo de solicitud
+     * @param perfil perfil del solicitante
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de tipos de solicitud que coinciden con los filtros
+     */
     PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorNombreYPerfilSolicitante(String nombre, String perfil, int pagina, int tamanio);
 }

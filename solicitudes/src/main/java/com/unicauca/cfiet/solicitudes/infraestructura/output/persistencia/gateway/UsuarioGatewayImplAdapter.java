@@ -158,9 +158,4 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
                 .map(rolMapper::toDominio)
                 .toList();
     }
-
-    @Override
-    public long countUsuarios() {
-        return repositorioBasico.countUsuarios();
-    }
 }

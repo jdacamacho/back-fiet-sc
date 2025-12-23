@@ -7,8 +7,6 @@ import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entida
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.mapeador.ownMapper.UsuarioOwnMapper;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.UsuarioRepositorio;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

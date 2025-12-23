@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.estructura.Error;
 
 /**
+ * Manejador personalizado para denegación de acceso en Spring Security.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Component

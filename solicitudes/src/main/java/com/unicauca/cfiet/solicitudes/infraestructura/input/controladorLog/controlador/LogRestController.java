@@ -8,13 +8,11 @@ import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorLog.DTORe
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorLog.mapeador.MapperLogInfraestructuraDominio;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 /**
@@ -67,12 +65,5 @@ public class LogRestController {
                 ),
                 HttpStatus.OK
         );
-    }
-
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
-    @GetMapping("/total")
-    public ResponseEntity<Long> getTotalLogs() {
-        long totalLogs = casoDeUso.countLogs();
-        return ResponseEntity.ok(totalLogs);
     }
 }

@@ -23,6 +23,7 @@ public class LogCUImplAdaptador implements LogCUIntPuerto {
     private final LogGatewayIntPuerto gateway;
     private final ExcepcionesFormateadorIntPuerto formateadorExcepciones;
     private final IJwtServicio jwtServicio;
+    /*Constantes*/
     private static final String LOGS = "logs";
     private static final String USUARIO = "Usuario";
     private static final String USERNAME = "username";
@@ -101,11 +102,6 @@ public class LogCUImplAdaptador implements LogCUIntPuerto {
         if(pagina < 0 || tamanio < 0)
             formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
         return gateway.getLogs(responsable, fecha, pagina, tamanio);
-    }
-
-    @Override
-    public long countLogs() {
-        return gateway.countLogs();
     }
 
     @Override
