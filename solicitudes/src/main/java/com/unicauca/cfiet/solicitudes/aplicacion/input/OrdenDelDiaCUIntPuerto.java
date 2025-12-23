@@ -10,52 +10,73 @@ import java.util.List;
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 public interface OrdenDelDiaCUIntPuerto {
+
     /**
-     * Consultar lista de ordendes del día.
+     * Obtiene todas las órdenes del día.
      *
-     * @return la lista de ordenes del día.
+     * @return lista completa de órdenes del día
      */
     List<OrdenDelDia> getOrdenesDelDia();
 
+    /**
+     * Obtiene las órdenes del día filtradas por estado.
+     *
+     * @param estado estado de las órdenes
+     * @return lista de órdenes del día filtradas
+     */
     List<OrdenDelDia> getOrdenesDelDiaPorEstado(boolean estado);
 
     /**
-     * Consultar lista de ordendes del día.
+     * Obtiene órdenes del día paginadas.
      *
-     * @param pagina el número de página.
-     * @param tamanio el tamaño de la página.
-     * @return la lista de ordenes del día.
+     * @param pagina número de página
+     * @param tamanio tamaño de la página
+     * @return lista de órdenes del día correspondientes a la página
      */
     PaginacionRespuestaDTO<OrdenDelDia> getOrdenesDelDia(int pagina, int tamanio);
 
     /**
-     * Consultar un orden del día por su identificador.
+     * Obtiene un orden del día por su identificador.
      *
-     * @param uuidOrdenDelDia identificador único del orden del día.
-     * @return la información del orden del día.
+     * @param uuidOrdenDelDia identificador único del orden del día
+     * @return orden del día correspondiente
      */
     OrdenDelDia getOrdenDelDia(String uuidOrdenDelDia);
 
     /**
-     * Crear un nuevo orden del día.
+     * Crea un nuevo orden del día.
      *
-     * @param ordenDelDia orden del día a crear.
+     * @param ordenDelDia orden del día a crear
      * @param token token de autorización
-     * @return el orden del día creado.
+     * @return orden del día creado
      */
     OrdenDelDia crearOrdenDelDia(OrdenDelDia ordenDelDia, String token);
 
     /**
-     * Actualizar un orden del día existente.
+     * Actualiza un orden del día existente.
      *
-     * @param uuidOrdenDelDia el identificador único del orden del día a actualizar.
-     * @param ordenDelDia la información actualizada del orden del día.
-     *  @param token token de autorización
-     * @return el orden del día actualizado.
+     * @param uuidOrdenDelDia identificador único del orden del día
+     * @param ordenDelDia información actualizada del orden del día
+     * @param token token de autorización
+     * @return orden del día actualizado
      */
     OrdenDelDia actualizarOrdenDelDia(String uuidOrdenDelDia, OrdenDelDia ordenDelDia, String token);
 
+    /**
+     * Busca órdenes del día por número de acta con paginación.
+     *
+     * @param nombre número de acta o nombre asociado
+     * @param pagina número de página
+     * @param tamanio tamaño de la página
+     * @return lista de órdenes del día correspondientes a la búsqueda
+     */
     PaginacionRespuestaDTO<OrdenDelDia> buscarOrdenDelDiaPorNumeroActa(String nombre, int pagina, int tamanio);
 
+    /**
+     * Genera el documento de un orden del día.
+     *
+     * @param uuidOrden identificador del orden del día
+     * @return contenido del documento en bytes
+     */
     byte[] generarOrdenDelDia(String uuidOrden);
 }

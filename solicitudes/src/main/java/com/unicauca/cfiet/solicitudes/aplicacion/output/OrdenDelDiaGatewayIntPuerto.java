@@ -5,49 +5,59 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.OrdenDelDia;
 import java.util.List;
 
 /**
- * Interfaz que actua como fachada con la capa de persistencia para la gestión del Orden del Día.
+ * Interfaz que actúa como fachada hacia la capa de persistencia para la gestión del Orden del Día.
  *
- * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
+ * author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 public interface OrdenDelDiaGatewayIntPuerto {
+
     /**
-     * Obtener todos los ordenes del día almacenados.
+     * Obtiene todos los órdenes del día almacenados.
      *
-     * @return lista con todos los ordenes del día.
+     * @return lista de órdenes del día
      */
     List<OrdenDelDia> getOrdenesDelDia();
 
     /**
-     * Obtener todos los ordenes del día almacenados.
+     * Obtiene los órdenes del día filtrados por estado.
      *
-     * @return lista con todos los ordenes del día.
+     * @param estado estado de los órdenes
+     * @return lista de órdenes del día correspondientes al estado
      */
     List<OrdenDelDia> getOrdenesDelDiaPorEstado(boolean estado);
 
     /**
-     * Obtener los ordenes del día de forma paginada.
+     * Obtiene órdenes del día paginados.
      *
-     * @param pagina número de la página a consultar.
-     * @param tamanio cantidad de elementos por página.
-     * @return lista con los ordenes del día de la página solicitada.
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de órdenes del día
      */
     PaginacionRespuestaDTO<OrdenDelDia> getOrdenesDelDia(int pagina, int tamanio);
 
     /**
-     * Buscar un orden del día por su identificador único.
+     * Obtiene un orden del día por su identificador.
      *
-     * @param uuidOrdenDelDia identificador del orden del día.
-     * @return el orden del día correspondiente.
+     * @param uuidOrdenDelDia identificador único del orden del día
+     * @return orden del día correspondiente
      */
     OrdenDelDia getOrdenDelDia(String uuidOrdenDelDia);
 
     /**
-     * Guardar un nuevo orden del día o actualizar uno existente.
+     * Guarda un nuevo orden del día o actualiza uno existente.
      *
-     * @param ordenDelDia objeto con la información del orden del día.
-     * @return el orden del día guardado.
+     * @param ordenDelDia orden del día a guardar
+     * @return orden del día guardado
      */
     OrdenDelDia guardarOrdenDelDia(OrdenDelDia ordenDelDia);
 
+    /**
+     * Obtiene órdenes del día filtrados por un texto y de forma paginada.
+     *
+     * @param filtro texto de búsqueda
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de órdenes del día que coinciden con el filtro
+     */
     PaginacionRespuestaDTO<OrdenDelDia> getOrdenesDelDia(String filtro, int pagina, int tamanio);
 }

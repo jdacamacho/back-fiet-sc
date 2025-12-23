@@ -3,6 +3,8 @@ package com.unicauca.cfiet.solicitudes.dominio.modelos;
 import lombok.*;
 
 /**
+ * Representa un registro de actividad o evento en el sistema.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Getter

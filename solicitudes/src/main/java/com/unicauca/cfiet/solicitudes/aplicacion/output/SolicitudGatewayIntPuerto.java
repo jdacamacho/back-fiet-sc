@@ -5,81 +5,88 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.Solicitud;
 import java.util.List;
 
 /**
- * Interfaz que actua como fachada con la capa de persistencia para la gestión de solicitudes.
+ * Interfaz que actúa como fachada hacia la capa de persistencia para la gestión de solicitudes.
  *
- * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
+ * author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 public interface SolicitudGatewayIntPuerto {
+
     /**
-     * Obtener todos las solicitudes almacenados.
+     * Obtiene todas las solicitudes almacenadas.
      *
-     * @return lista con todos las solicitudes.
+     * @return lista de solicitudes
      */
     List<Solicitud> getSolicitudes();
 
     /**
-     * Obtener las solicitudes de forma paginada.
+     * Obtiene solicitudes paginadas.
      *
-     * @param pagina número de la página a consultar.
-     * @param tamanio cantidad de elementos por página.
-     * @return lista de solicitudes de la página solicitada.
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de solicitudes
      */
     PaginacionRespuestaDTO<Solicitud> getSolicitudes(int pagina, int tamanio);
 
     /**
-     * Buscar una solicitud por su identificador único.
+     * Obtiene una solicitud por su identificador único.
      *
-     * @param uuidSolicitud identificador de la solicitud.
-     * @return la solicitud correspondiente.
+     * @param uuidSolicitud identificador de la solicitud
+     * @return solicitud correspondiente
      */
     Solicitud getSolicitud(String uuidSolicitud);
 
     /**
-     * Guardar una solicitud o actualizar uno existente.
+     * Guarda una solicitud nueva o actualiza una existente.
      *
-     * @param solicitud objeto con la información de la solicitud.
-     * @return la solicitud guardado.
+     * @param solicitud solicitud a guardar
+     * @return solicitud guardada
      */
     Solicitud guardarSolicitud(Solicitud solicitud);
 
     /**
-     * Obtener las solicitudes de forma paginada pertenecientes a un funcionario.
+     * Obtiene solicitudes de un funcionario específico de forma paginada.
      *
-     * @param pagina número de la página a consultar.
-     * @param tamanio cantidad de elementos por página.
-     * @return lista de solicitudes de la página solicitada.
+     * @param uuidFuncionario identificador del funcionario
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de solicitudes del funcionario
      */
     PaginacionRespuestaDTO<Solicitud> getSolicitudesPorFuncionario(String uuidFuncionario, int pagina, int tamanio);
 
     /**
-     * Obtener todos las solicitudes pertenecientes a un orden del día.
+     * Obtiene todas las solicitudes pertenecientes a un Orden del Día.
      *
-     * @return lista con todos las solicitudes.
+     * @param uuidOrdenDelDia identificador del Orden del Día
+     * @return lista de solicitudes correspondientes
      */
     List<Solicitud> getSolicitudesPorOrdenDelDia(String uuidOrdenDelDia);
 
     /**
-     * Obtener todos las solicitudes de acuerdo al estado pasado por parametro.
+     * Obtiene todas las solicitudes con un estado específico.
      *
-     * @return lista con todos las solicitudes.
+     * @param estado estado de las solicitudes
+     * @return lista de solicitudes con el estado indicado
      */
     List<Solicitud> getSolicitudesPorEstado(String estado);
 
     /**
-     * Obtener las solicitudes de forma paginada pertenecientes a un filtro (nombre) establecido.
+     * Busca solicitudes por nombre de forma paginada.
      *
-     * @param pagina número de la página a consultar.
-     * @param tamanio cantidad de elementos por página.
-     * @return lista de solicitudes de la página solicitada.
+     * @param filtro texto de búsqueda
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de solicitudes que coinciden con el filtro
      */
     PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorNombre(String filtro, int pagina, int tamanio);
 
     /**
-     * Obtener las solicitudes de forma paginada pertenecientes a un filtro (nombre) establecido.
+     * Busca solicitudes por nombre y funcionario de forma paginada.
      *
-     * @param pagina número de la página a consultar.
-     * @param tamanio cantidad de elementos por página.
-     * @return lista de solicitudes de la página solicitada.
+     * @param uuidFuncionario identificador del funcionario
+     * @param filtro texto de búsqueda
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de solicitudes que coinciden con el filtro y funcionario
      */
     PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorNombreYFuncionario(String uuidFuncionario, String filtro, int pagina, int tamanio);
 }

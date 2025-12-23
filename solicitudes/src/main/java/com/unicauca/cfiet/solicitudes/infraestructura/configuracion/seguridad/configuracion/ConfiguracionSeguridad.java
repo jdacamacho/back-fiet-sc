@@ -21,7 +21,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.List;
 
 /**
- *  Configuración de Seguridad (Acceso en endpoints)
+ *  Configuración de Acceso en endpoints.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */

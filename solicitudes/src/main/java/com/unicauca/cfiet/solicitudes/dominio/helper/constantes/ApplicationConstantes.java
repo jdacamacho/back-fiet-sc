@@ -1,6 +1,9 @@
 package com.unicauca.cfiet.solicitudes.dominio.helper.constantes;
 
 /**
+ * Clase que tiene las variables de configuración del sistema.
+ * Se usa esta clase para evitar hardcodear Strings en metodos de la aplicación.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 public final class ApplicationConstantes {

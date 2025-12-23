@@ -4,17 +4,14 @@ import com.unicauca.cfiet.solicitudes.aplicacion.input.OrdenDelDiaCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.input.SolicitudCUintPuerto;
 import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
-import com.unicauca.cfiet.solicitudes.dominio.modelos.Anexo;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.OrdenDelDia;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Solicitud;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.OrdenDelDiaDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.SolicitudActualizarDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.SolicitudDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTOPeticion.SolicitudPublicaDTOPeticion;
-import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.DTORespuesta.SolicitudDTORespuesta;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.ValidadorAnexosService;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorSolicitudes.mapeador.MapperSolicitudesInfraestructuraDominio;
-import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.excepcionesPropias.ErrorNoInformacionExcepcion;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,17 +29,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.*;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
@@ -193,12 +186,13 @@ public class SolicitudesRestController {
     @Transactional
     @PostMapping(value = "/public", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> enviarSolicitudPublica(@Valid @RequestPart("solicitud") SolicitudPublicaDTOPeticion peticion,
-                                                    @RequestPart("archivos") List<MultipartFile> archivos){
+                                                    @RequestPart("archivos") List<MultipartFile> archivos,
+                                                    @RequestHeader("Authorization") String token){
 
         validadorAnexosService.validarYAsignarArchivos(peticion.getAnexos(), archivos);
         Solicitud solicitud;
         try{
-            solicitud = solicitudCU.crearSolicitudPublica(mapper.mapearPeticionAModelo(peticion));
+            solicitud = solicitudCU.crearSolicitudPublica(mapper.mapearPeticionAModelo(peticion), token);
         } catch (DataAccessException ex){
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Error insertando en la base de datos....");

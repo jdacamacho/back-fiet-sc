@@ -18,7 +18,4 @@ public interface UsuarioLivianoRepositorio extends JpaRepository<UsuarioLivianoE
         WHERE LOWER(CONCAT(u.nombres, ' ', u.apellidos)) LIKE LOWER(CONCAT('%', :filtro, '%'))
     """)
     Page<UsuarioLivianoEntidad> findByNombreCompleto(@Param("filtro") String filtro, Pageable pageable);
-
-    @Query("SELECT COUNT(u) FROM UsuarioLivianoEntidad u")
-    long countUsuarios();
 }

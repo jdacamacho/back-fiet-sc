@@ -5,6 +5,9 @@ import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepcione
 import org.springframework.stereotype.Service;
 
 /**
+ * Servicio encargado de lanzar excepciones específicas según el tipo de error
+ * ocurrido en la aplicación.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Service

@@ -2,9 +2,9 @@ package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
 import lombok.*;
 
-import java.util.List;
-
 /**
+ * Representa un Orden del Día, que incluye información sobre la reunión.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Getter
@@ -24,6 +24,12 @@ public class OrdenDelDia {
     private String numeroActa;
     private boolean estado;
 
+    /**
+     * Actualiza los campos de esta instancia con los valores de otra instancia
+     * de OrdenDelDia. No modifica la instancia si el objeto proporcionado es null.
+     *
+     * @param other la instancia de OrdenDelDia de la cual copiar los valores
+     */
     public void actualizar(OrdenDelDia other) {
         if (other == null) return;
         this.nombre = other.nombre;

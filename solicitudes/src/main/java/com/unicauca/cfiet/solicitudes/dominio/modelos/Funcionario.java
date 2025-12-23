@@ -5,6 +5,8 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 /**
+ * Representa un usuario del sistema con rol de funcionario.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Getter

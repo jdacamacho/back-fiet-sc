@@ -3,13 +3,14 @@ package com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchi
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
+ * Servicio para almacenar archivos en el sistema.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Service
@@ -18,11 +19,6 @@ public class AlmacenadorArchivos {
     private String basePath;
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-
-
-    public String getBasePath() {
-        return basePath;
-    }
 
     /**
      * Guarda el archivo en basePath/uuidSolicitud/nombreAnexo_fecha.ext

@@ -12,70 +12,94 @@ import java.util.List;
 public interface TipoSolicitudCUIntPuerto {
 
     /**
-     * Obtener todos los tipos de solicitud registrados.
+     * Obtiene todos los tipos de solicitud.
      *
-     * @return lista con todos los tipos de solicitud.
+     * @return lista completa de tipos de solicitud
      */
     List<TipoSolicitud> getTiposSolicitud();
 
     /**
-     * Obtener los tipos de solicitud de forma paginada.
+     * Obtiene tipos de solicitud paginados.
      *
-     * @param pagina número de la página a consultar.
-     * @param tamanio cantidad de elementos por página.
-     * @return lista con los tipos de solicitud de la página solicitada.
+     * @param pagina número de página
+     * @param tamanio cantidad de elementos por página
+     * @return paginación de tipos de solicitud
      */
     PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitud(int pagina, int tamanio);
 
     /**
-     * Obtener los tipos de solicitud filtrados de forma paginada.
-     * @param nombreSolicitud nombre del Tipo de Solicitud.
-     * @param funcionario nombre del funcionario (nombres o apellidos).
-     * @param pagina número de la página a consultar.
-     * @param tamanio cantidad de elementos por página.
-     * @return lista con los tipos de solicitud de la página solicitada.
+     * Obtiene tipos de solicitud filtrados por nombre y funcionario de forma paginada.
+     *
+     * @param nombreSolicitud nombre del tipo de solicitud
+     * @param funcionario nombre del funcionario
+     * @param pagina número de página
+     * @param tamanio cantidad de elementos por página
+     * @return paginación de tipos de solicitud que coinciden con los filtros
      */
     PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitud(String nombreSolicitud, String funcionario, int pagina, int tamanio);
 
     /**
-     * Buscar un tipo de solicitud por su identificador único.
+     * Obtiene un tipo de solicitud por su identificador.
      *
-     * @param uuidTipoSolicitud identificador del tipo de solicitud.
-     * @return el tipo de solicitud correspondiente.
+     * @param uuidTipoSolicitud identificador único
+     * @return tipo de solicitud correspondiente
      */
     TipoSolicitud getTipoSolicitud(String uuidTipoSolicitud);
 
     /**
-     * Crear un nuevo tipo de solicitud.
+     * Crea un nuevo tipo de solicitud.
      *
-     * @param tipoSolicitud objeto con la información del tipo de solicitud.
-     * @param token token del usuario que realiza la acción.
-     * @return el tipo de solicitud creado.
+     * @param tipoSolicitud objeto con la información del tipo de solicitud
+     * @param token token de usuario que realiza la acción
+     * @return tipo de solicitud creado
      */
     TipoSolicitud crearTipoSolicitud(TipoSolicitud tipoSolicitud, String token);
 
     /**
-     * Actualizar un tipo de solicitud existente.
+     * Actualiza un tipo de solicitud existente.
      *
-     * @param uuidTipoSolicitud identificador del tipo de solicitud a actualizar.
-     * @param tipoSolicitud objeto con la nueva información del tipo de solicitud.
-     * @param token token del usuario que realiza la acción.
-     * @return el tipo de solicitud actualizado.
+     * @param uuidTipoSolicitud identificador del tipo de solicitud
+     * @param tipoSolicitud nueva información del tipo de solicitud
+     * @param token token de usuario que realiza la acción
+     * @return tipo de solicitud actualizado
      */
     TipoSolicitud actualizarTipoSolicitud(String uuidTipoSolicitud, TipoSolicitud tipoSolicitud, String token);
 
     /**
-     * Crear varios tipos de solicitud en una sola operación.
+     * Crea varios tipos de solicitud en una sola operación.
      *
-     * @param tiposSolicitud lista con los tipos de solicitud a crear.
-     * @param token token del usuario que realiza la acción.
-     * @return lista con los tipos de solicitud creados.
+     * @param tiposSolicitud lista de tipos de solicitud a crear
+     * @param token token de usuario que realiza la acción
+     * @return lista de tipos de solicitud creados
      */
     List<TipoSolicitud> crearTiposSolicitud(List<TipoSolicitud> tiposSolicitud, String token);
 
+    /**
+     * Obtiene tipos de solicitud por perfil.
+     *
+     * @param perfil perfil del solicitante
+     * @return lista de tipos de solicitud correspondientes al perfil
+     */
     List<TipoSolicitud> getTiposSolicitudesPorPerfil(String perfil);
 
+    /**
+     * Obtiene tipos de solicitud por perfil de solicitante de forma paginada.
+     *
+     * @param perfil perfil del solicitante
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de tipos de solicitud
+     */
     PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorPerfilSolicitante(String perfil, int pagina, int tamanio);
 
+    /**
+     * Obtiene tipos de solicitud por nombre y perfil de solicitante de forma paginada.
+     *
+     * @param nombre nombre del tipo de solicitud
+     * @param perfil perfil del solicitante
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de tipos de solicitud que coinciden con los filtros
+     */
     PaginacionRespuestaDTO<TipoSolicitud> getTiposSolicitudesPorNombreYPerfilSolicitante(String nombre, String perfil, int pagina, int tamanio);
 }

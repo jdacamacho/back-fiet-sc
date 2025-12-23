@@ -34,7 +34,4 @@ public interface LogRepositorio extends JpaRepository<LogEntidad, String> {
             @Param("responsable") String responsable,
             @Param("fecha") String fecha,
             Pageable pageable);
-
-    @Query("SELECT COUNT(l) FROM LogEntidad l")
-    long countLogs();
 }

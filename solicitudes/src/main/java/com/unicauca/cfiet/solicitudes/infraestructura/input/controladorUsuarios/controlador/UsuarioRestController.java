@@ -203,11 +203,4 @@ public class UsuarioRestController{
 
         return ResponseEntity.ok().build();
     }
-
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
-    @GetMapping("/total")
-    public ResponseEntity<Long> getTotalUsuarios() {
-        long totalUsuarios = casoDeUso.countUsuarios();
-        return ResponseEntity.ok(totalUsuarios);
-    }
 }

@@ -4,6 +4,8 @@ import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
+ * Representa un anexo asociado a una solicitud.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Getter

@@ -2,12 +2,13 @@ package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
 import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
 import lombok.*;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 /**
+ * Representa un tipo de solicitud dentro del sistema, incluyendo su sección, perfil solicitante
+ * y los anexos asociados.
+ *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Getter
@@ -25,6 +26,12 @@ public class TipoSolicitud {
     private Funcionario objFuncionarioEncargado;
     private String uuidFuncionario;
 
+    /**
+     * Verifica que la sección de la solicitud sea una de las secciones válidas definidas
+     * en la aplicación.
+     *
+     * @return true si la sección es válida; false en caso contrario
+     */
     public boolean revisarSeccion() {
         String seccion = getSeccion();
         if (seccion == null) return false;
@@ -44,11 +51,22 @@ public class TipoSolicitud {
         }
     }
 
+    /**
+     * Verifica si el perfil solicitante es válido según la lista de roles disponibles.
+     *
+     * @param roles lista de roles existentes en el sistema
+     * @return true si el perfil es válido; false en caso contrario
+     */
     public boolean revisarPerfilSolicitante(List<Rol> roles) {
         return roles != null && roles.stream()
                 .anyMatch(rol -> perfilSolicitante.equals(rol.getNombre()));
     }
 
+    /**
+     * Verifica que todos los anexos del tipo de solicitud tengan un formato válido.
+     *
+     * @return true si todos los anexos son válidos; false en caso contrario
+     */
     public boolean revisarAnexos(){
         for(TipoAnexo anexo: anexos){
             if(!anexo.formatoEsValido())
@@ -57,6 +75,12 @@ public class TipoSolicitud {
         return true;
     }
 
+    /**
+     * Actualiza los campos de la instancia actual con los valores proporcionados
+     * en otro TipoSolicitud.
+     *
+     * @param tipoSolicitud instancia con los datos actualizados
+     */
     public void actualizarTipoSolicitud(TipoSolicitud tipoSolicitud) {
         if (tipoSolicitud.getNombre() != null && !tipoSolicitud.getNombre().isBlank())
             this.nombre = tipoSolicitud.getNombre();

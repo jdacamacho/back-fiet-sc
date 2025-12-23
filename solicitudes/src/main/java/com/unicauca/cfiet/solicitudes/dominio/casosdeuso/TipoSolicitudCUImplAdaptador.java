@@ -149,19 +149,6 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
         return guardados;
     }
 
-    private void asignarFuncionario(TipoSolicitud tipoSolicitud, String uuidFuncionario){
-        if(uuidFuncionario != null && !uuidFuncionario.isBlank()) {
-            Usuario usuario = gatewayUsuario.getUsuario(uuidFuncionario);
-            if (usuario == null)
-                formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, USUARIO, uuidFuncionario));
-            if(usuario instanceof  Funcionario) {
-                Funcionario funcionario = (Funcionario) usuario;
-                tipoSolicitud.setObjFuncionarioEncargado(funcionario);
-            } else
-                formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.MAL_ASIGNACION);
-        }
-    }
-
     @Override
     public List<TipoSolicitud> getTiposSolicitudesPorPerfil(String perfil) {
         List<TipoSolicitud> lista = gateway.getTiposSolicitudesPorPerfil(perfil);
@@ -192,6 +179,25 @@ public class TipoSolicitudCUImplAdaptador implements TipoSolicitudCUIntPuerto {
             formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, TIPOS_SOLICITUD));
 
         return respuesta;
+    }
+
+    /**
+     * Asigna un funcionario a un tipo de solicitud basado en el UUID proporcionado.
+     *
+     * @param tipoSolicitud el tipo de solicitud al que se asignará el funcionario.
+     * @param uuidFuncionario el UUID del funcionario a asignar.
+     */
+    private void asignarFuncionario(TipoSolicitud tipoSolicitud, String uuidFuncionario){
+        if(uuidFuncionario != null && !uuidFuncionario.isBlank()) {
+            Usuario usuario = gatewayUsuario.getUsuario(uuidFuncionario);
+            if (usuario == null)
+                formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, USUARIO, uuidFuncionario));
+            if(usuario instanceof  Funcionario) {
+                Funcionario funcionario = (Funcionario) usuario;
+                tipoSolicitud.setObjFuncionarioEncargado(funcionario);
+            } else
+                formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.MAL_ASIGNACION);
+        }
     }
 
 }

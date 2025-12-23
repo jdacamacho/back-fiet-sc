@@ -79,11 +79,6 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
     }
 
     @Override
-    public long countUsuarios() {
-        return gateway.countUsuarios();
-    }
-
-    @Override
     public Usuario getUsuario(String uuidUsuario) {
         Usuario usuario = gateway.getUsuario(uuidUsuario);
         if(usuario == null)
