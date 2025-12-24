@@ -192,7 +192,7 @@ public class SolicitudesRestController {
         validadorAnexosService.validarYAsignarArchivos(peticion.getAnexos(), archivos);
         Solicitud solicitud;
         try{
-            solicitud = solicitudCU.crearSolicitudPublica(mapper.mapearPeticionAModelo(peticion), token);
+            solicitud = solicitudCU.crearSolicitudPublica(mapper.mapearPeticionAModelo(peticion), token.substring(7));
         } catch (DataAccessException ex){
             Map<String, Object> response = new HashMap<>();
             response.put("mensaje", "Error insertando en la base de datos....");
