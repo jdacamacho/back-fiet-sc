@@ -38,4 +38,7 @@ public final class ApplicationConstantes {
     public static final String SECRETARIO_ACCESO = "hasAuthority('" + SECRETARIO_GENERAL + "')";
     public static final String AUTHENTICATED = "isAuthenticated()";
     public static final String SECRETARIO_O_FUNCIONARIO_ACCESO = "hasAnyAuthority('" + SECRETARIO_GENERAL + "', '" + FUNCIONARIO_ROL + "')";
+    /*Tipos de Respuesta*/
+    public static final String OFICIO = "Oficio";
+    public static final String RESOLUCION = "Resolución";
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class SolicitudDTOPeticion {
-    @Size(min = 5, max = 200, message = "El consecutivo debe tener entre 5 y 200 caracteres")
+    @Size(max = 200, message = "El consecutivo debe tener maximo 200 caracteres")
     private String consecutivo;
 
     @NotNull(message = "El nombre no puede ser nulo")

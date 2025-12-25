@@ -61,6 +61,12 @@ public class ConfiguracionSeguridad {
                         .requestMatchers(HttpMethod.PATCH, baseUrl + "usuarios/**").authenticated()
                         .requestMatchers(baseUrl + "usuarios/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
                         .requestMatchers(baseUrl + "solicitudes/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, baseUrl + "respuestas/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, baseUrl + "respuestas/**")
+                        .hasAnyAuthority(
+                                ApplicationConstantes.SECRETARIO_GENERAL,
+                                ApplicationConstantes.FUNCIONARIO
+                        )
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex

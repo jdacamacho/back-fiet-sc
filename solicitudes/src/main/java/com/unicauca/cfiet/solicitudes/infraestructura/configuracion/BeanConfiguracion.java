@@ -65,4 +65,13 @@ public class BeanConfiguracion {
                                                      AlmacenadorArchivos almacenadorArchivos){
         return new SolicitudCUImplAdaptador(gateway, formateadorExcepciones, gatewayTipoSolicitud, gatewayOrdenDelDia, gatewayUsuario, log, gatewaySesion, jwtServicio, almacenadorArchivos);
     }
+
+    @Bean
+    public RespuestaCUImplAdaptador crearRespuestaCU(RespuestaGatewayIntPuerto gateway,
+                                                     SolicitudGatewayIntPuerto solicitudGateway,
+                                                     ExcepcionesFormateadorIntPuerto formateadorExcepciones,
+                                                     LogCUIntPuerto log,
+                                                     AlmacenadorArchivos almacenadorArchivos){
+        return new RespuestaCUImplAdaptador(gateway, solicitudGateway, formateadorExcepciones, log, almacenadorArchivos);
+    }
 }

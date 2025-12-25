@@ -316,7 +316,7 @@ public class SolicitudesRestController {
 
         try {
             String decodedFileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8);
-            File file = new File(basePath + "/" + uuidSolicitud + "/" + decodedFileName);
+            File file = new File(basePath + "/anexos/" + uuidSolicitud + "/" + decodedFileName);
 
             if (!file.exists() || !file.isFile()) {
                 return ResponseEntity.notFound().build();

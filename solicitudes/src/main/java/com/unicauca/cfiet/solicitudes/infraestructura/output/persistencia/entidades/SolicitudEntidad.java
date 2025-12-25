@@ -46,6 +46,8 @@ public class SolicitudEntidad {
     @ManyToOne
     @JoinColumn(name = "uuidUsuario")
     private FuncionarioEntidad objFuncionario;
+    @OneToOne(mappedBy = "solicitud", fetch = FetchType.LAZY)
+    private RespuestaEntidad respuesta;
     @Column(nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;
 

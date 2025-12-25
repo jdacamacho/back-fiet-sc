@@ -29,7 +29,7 @@ public class AlmacenadorArchivos {
      */
     public String guardarArchivo(String uuidSolicitud, MultipartFile archivo, String nombreAnexo) throws IOException {
         // Crear carpeta de la solicitud
-        File carpetaSolicitud = new File(basePath + "/" + uuidSolicitud);
+        File carpetaSolicitud = new File(basePath +  "/anexos/" + uuidSolicitud);
         if (!carpetaSolicitud.exists()) carpetaSolicitud.mkdirs();
 
         // Obtener extensión del archivo original
@@ -55,5 +55,40 @@ public class AlmacenadorArchivos {
         // Retornar URL pública para guardar en DB
         String urlPublica = "/api/anexos/" + uuidSolicitud + "/" + destino.getName();
         return urlPublica;
+    }
+
+    /**
+     * Guarda el archivo de respuesta en basePath/respuestas/uuidRespuesta/nombreRespuesta_fecha.ext
+     * @param uuidRespuesta UUID de la respuesta
+     * @param archivo MultipartFile de la respuesta
+     * @return URL pública del archivo guardado
+     */
+    public String guardarArchivoRespuesta(String uuidRespuesta, MultipartFile archivo) throws IOException {
+        // Crear carpeta respuestas/uuidSolicitud
+        File carpetaRespuesta = new File(basePath + "/respuestas/" + uuidRespuesta);
+        if (!carpetaRespuesta.exists()) carpetaRespuesta.mkdirs();
+
+        // Obtener extensión
+        String extension = "";
+        String originalName = archivo.getOriginalFilename();
+        if (originalName != null && originalName.contains("."))
+            extension = originalName.substring(originalName.lastIndexOf("."));
+
+        // Normalizar nombre
+        String nombreSeguro = uuidRespuesta.trim()
+                .replaceAll("\\s+", "_")
+                .replaceAll("[^a-zA-Z0-9_\\-]", "");
+
+        // Fecha
+        String fecha = LocalDateTime.now().format(FORMATTER);
+
+        // Archivo destino
+        File destino = new File(carpetaRespuesta, nombreSeguro + "_" + fecha + extension);
+
+        // Guardar
+        archivo.transferTo(destino);
+
+        // URL pública
+        return "/api/respuestas/" + uuidRespuesta + "/" + destino.getName();
     }
 }

@@ -1,7 +1,6 @@
 package com.unicauca.cfiet.solicitudes.dominio.modelos;
 
 import lombok.*;
-
 import java.util.List;
 
 /**
@@ -28,6 +27,7 @@ public class Solicitud {
     private InformacionSolicitante informacionSolicitante;
     private Funcionario objFuncionario;
     private String uuidFuncionario;
+    private Respuesta respuesta;
 
     /**
      * Actualiza los campos básicos de la solicitud con los valores de otra instancia.
