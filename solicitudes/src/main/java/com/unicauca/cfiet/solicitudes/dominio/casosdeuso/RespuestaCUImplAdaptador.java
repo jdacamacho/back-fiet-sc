@@ -188,4 +188,27 @@ public class RespuestaCUImplAdaptador implements RespuestaCUIntPuerto {
         return gateway.guardarRespuesta(respuestaOriginal);
     }
 
+    @Override
+    public Respuesta eliminarArchivoRespuesta(String uuidRespuesta, String token) {
+        Respuesta respuesta = getRespuesta(uuidRespuesta);
+
+        if (respuesta.getUrlRespuesta() == null || respuesta.getUrlRespuesta().isBlank())
+            formateadorExcepciones.lanzarReglaNegocioViolada("La respuesta no tiene un archivo asociado para eliminar");
+
+        try {
+            String nombreArchivo = new File(respuesta.getUrlRespuesta()).getName();
+            File archivo = new File(basePath + "/respuestas/" + uuidRespuesta + "/" + nombreArchivo);
+
+            if (archivo.exists())
+                archivo.delete();
+
+            respuesta.setUrlRespuesta(null);
+        } catch (Exception e) {
+            throw new RuntimeException(String.format("Error eliminando el archivo de la respuesta: %s", e.getMessage()), e);
+        }
+
+        log.crearLog("Eliminar archivo de respuesta", String.format("Se eliminó el archivo de la respuesta con uuid: %s", uuidRespuesta), token);
+        return gateway.guardarRespuesta(respuesta);
+    }
+
 }

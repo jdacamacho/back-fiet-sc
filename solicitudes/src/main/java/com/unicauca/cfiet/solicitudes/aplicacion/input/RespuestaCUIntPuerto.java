@@ -86,4 +86,13 @@ public interface RespuestaCUIntPuerto {
      * @return respuesta actualizada
      */
     Respuesta responderSolicitud(String uuidRespuesta, MultipartFile respuesta, String token);
+
+    /**
+     * Elimina el archivo asociado a la respuesta si existe.
+     *
+     * @param uuidRespuesta identificador de la respuesta
+     * @param token token de autorización
+     * @return respuesta
+     */
+    Respuesta eliminarArchivoRespuesta(String uuidRespuesta, String token);
 }

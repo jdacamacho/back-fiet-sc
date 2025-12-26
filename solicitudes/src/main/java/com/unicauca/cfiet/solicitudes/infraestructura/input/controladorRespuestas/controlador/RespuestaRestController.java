@@ -164,12 +164,34 @@ public class RespuestaRestController {
         );
     }
 
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_O_FUNCIONARIO_ACCESO)
+    @Transactional
+    @PatchMapping("/{uuidRespuesta}/archivo")
+    public ResponseEntity<?> eliminarArchivoRespuesta(
+            @PathVariable String uuidRespuesta,
+            @RequestHeader("Authorization") String token) {
+
+        Respuesta respuesta;
+        try {
+            respuesta = respuestaCU.eliminarArchivoRespuesta(uuidRespuesta, token.substring(7));
+        } catch (DataAccessException ex) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("mensaje", "Error eliminando el archivo de la respuesta");
+            response.put("error", ex.getMessage() + " " + ex.getMostSpecificCause().getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(
+                mapper.mapearModeloARespuesta(respuesta),
+                HttpStatus.OK
+        );
+    }
+
     @PreAuthorize(ApplicationConstantes.AUTHENTICATED)
     @GetMapping("/{uuidRespuesta}/{fileName:.+}")
     public ResponseEntity<Resource> descargarRespuesta(
             @PathVariable String uuidRespuesta,
             @PathVariable String fileName) {
-
         try {
             String decodedFileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8);
             File file = new File(basePath + "/respuestas/" + uuidRespuesta + "/" + decodedFileName);
