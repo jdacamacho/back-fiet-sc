@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AnexoDTOPeticion {
     @NotNull(message = "El nombre no puede ser nulo")
     @NotBlank(message = "El nombre no puede estar vacio")
-    @Size(min = 5, max = 200, message = "El nombre debe tener entre 5 y 200 caracteres")
+    @Size(min = 5, max = 1000, message = "El nombre debe tener entre 5 y 1000 caracteres")
     private String nombre;
     private MultipartFile anexoFile;
 }

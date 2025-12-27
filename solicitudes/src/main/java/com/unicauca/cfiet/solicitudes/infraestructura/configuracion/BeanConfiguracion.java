@@ -49,8 +49,9 @@ public class BeanConfiguracion {
                                                          SolicitudGatewayIntPuerto gatewaySolicitud,
                                                          ExcepcionesFormateadorIntPuerto formateadorExcepciones,
                                                          LogCUIntPuerto log,
-                                                         OrdenDelDiaExportador exportador){
-        return new OrdenDelDiaCUImplAdaptador(gateway, gatewaySolicitud,formateadorExcepciones, log, exportador);
+                                                         OrdenDelDiaExportador exportador,
+                                                         RespuestaGatewayIntPuerto gatewayRespuesta){
+        return new OrdenDelDiaCUImplAdaptador(gateway, gatewaySolicitud,formateadorExcepciones, log, exportador, gatewayRespuesta);
     }
 
     @Bean
@@ -64,5 +65,14 @@ public class BeanConfiguracion {
                                                      IJwtServicio jwtServicio,
                                                      AlmacenadorArchivos almacenadorArchivos){
         return new SolicitudCUImplAdaptador(gateway, formateadorExcepciones, gatewayTipoSolicitud, gatewayOrdenDelDia, gatewayUsuario, log, gatewaySesion, jwtServicio, almacenadorArchivos);
+    }
+
+    @Bean
+    public RespuestaCUImplAdaptador crearRespuestaCU(RespuestaGatewayIntPuerto gateway,
+                                                     SolicitudGatewayIntPuerto solicitudGateway,
+                                                     ExcepcionesFormateadorIntPuerto formateadorExcepciones,
+                                                     LogCUIntPuerto log,
+                                                     AlmacenadorArchivos almacenadorArchivos){
+        return new RespuestaCUImplAdaptador(gateway, solicitudGateway, formateadorExcepciones, log, almacenadorArchivos);
     }
 }

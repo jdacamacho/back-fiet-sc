@@ -2,42 +2,38 @@ package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entid
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
 /**
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Entity
-@Table(name = "ordenesDelDia")
+@Table(name = "respuestas")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrdenDelDiaEntidad {
+public class RespuestaEntidad {
     @Id
     @Column(length = 150)
-    private String uuidOrdenDelDia;
+    private String uuidRespuesta;
     @Column(nullable = false, length = 1000)
-    private String nombre;
-    @Column(length = 1500)
-    private String descripcion;
-    @Column(length = 1000)
-    private String ciudad;
-    @Column(length = 1000)
-    private String fecha;
-    @Column(length = 1000)
-    private String horaInicio;
-    @Column(length = 1000)
-    private String horaFin;
-    @Column(length = 1000)
-    private String lugarReunion;
+    private String tipoRespuesta;
     @Column(nullable = false, length = 1000)
-    private String numeroActa;
+    private String consecutivoFiet;
+    @Column(nullable = false, length = 5000)
+    private String respuestaConsejo;
+    @Column(length = 5000)
+    private String indicaciones;
+    @OneToOne
+    @JoinColumn(name = "uuidSolicitud", nullable = false, unique = true)
+    private SolicitudEntidad solicitud;
+    @Column(length = 3000)
+    private String urlRespuesta;
     @Column(nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;
-    @Column(nullable = false)
-    private boolean estado;
 
     @PrePersist
     protected void onCreate() {

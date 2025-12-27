@@ -16,15 +16,15 @@ import lombok.Setter;
 public class TipoAnexoDTOPeticion {
     @NotNull(message = "El nombre del anexo no puede ser nulo")
     @NotBlank(message = "El nombre del anexo no puede estar vacío")
-    @Size(min = 5, max = 200, message = "El nombre del anexo debe tener entre 5 y 200 caracteres")
+    @Size(min = 5, max = 1000, message = "El nombre del anexo debe tener entre 5 y 1000 caracteres")
     private String nombre;
 
-    @Size(max = 200, message = "La descripción del anexo no puede exceder los 200 caracteres")
+    @Size(max = 1500, message = "La descripción del anexo no puede exceder los 1500 caracteres")
     private String descripcion;
 
     @NotNull(message = "El formato del anexo no puede ser nulo")
     @NotBlank(message = "El formato del anexo no puede estar vacío")
-    @Size(max = 200, message = "El formato del anexo no puede exceder los 200 caracteres")
+    @Size(max = 1000, message = "El formato del anexo no puede exceder los 1000 caracteres")
     private String formato;
 
     @NotNull(message = "La obligatoriedad del anexo debe ser especificada")

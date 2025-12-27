@@ -79,4 +79,20 @@ public interface OrdenDelDiaCUIntPuerto {
      * @return contenido del documento en bytes
      */
     byte[] generarOrdenDelDia(String uuidOrden);
+
+    /**
+     * Genera el documento de un orden del día con respuestas.
+     *
+     * @param uuidOrden identificador del orden del día
+     * @return contenido del documento en bytes
+     */
+    byte[] generarOrdenDelDiaConRespuestas(String uuidOrden);
+
+    /**
+     * Genera el documento de un orden del día con respuestas en la sección de desarrollo de la reunión.
+     *
+     * @param uuidOrden identificador del orden del día
+     * @return contenido del documento en bytes
+     */
+    byte[] generarOrdenDelDiaMerge(String uuidOrden);
 }

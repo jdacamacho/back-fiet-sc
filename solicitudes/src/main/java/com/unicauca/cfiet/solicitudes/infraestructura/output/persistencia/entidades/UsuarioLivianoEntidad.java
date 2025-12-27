@@ -21,11 +21,11 @@ import java.time.LocalDateTime;
 @SuperBuilder
 public class UsuarioLivianoEntidad {
     @Id
-    @Column(length = 200)
+    @Column(length = 150)
     private String uuidUsuario;
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String nombres;
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String apellidos;
     @Column(nullable = false)
     private Boolean estado;

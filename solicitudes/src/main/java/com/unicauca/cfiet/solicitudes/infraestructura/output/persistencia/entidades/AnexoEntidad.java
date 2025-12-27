@@ -15,11 +15,11 @@ import lombok.*;
 @Builder
 public class AnexoEntidad {
     @Id
-    @Column(length = 200)
+    @Column(length = 150)
     private String uuidAnexo;
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String nombre;
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, length = 3000)
     private String urlAnexo;
     @ManyToOne
     @JoinColumn(name = "uuidSolicitud", nullable = false)

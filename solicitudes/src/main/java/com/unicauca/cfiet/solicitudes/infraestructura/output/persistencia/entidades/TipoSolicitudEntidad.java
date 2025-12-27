@@ -17,14 +17,15 @@ import java.util.List;
 @Builder
 public class TipoSolicitudEntidad {
     @Id
+    @Column(length = 150)
     private String uuidTipoSolicitud;
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String nombre;
-    @Column(length = 500)
+    @Column(length = 1500)
     private String descripcion;
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String seccion;
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String perfilSolicitante;
     @OneToMany(
             fetch = FetchType.LAZY,

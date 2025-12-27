@@ -26,4 +26,6 @@ public class MensajesError {
     public static final String NO_ACCESO = "Usuario sin acceso para acceder a la aplicación...";
     public static final String ROL_NO_HABILITADO = "Usuario con rol no habilidatado para acceder al sistema...";
     public static final String TIPO_DOCUMENTO_ERRONEO = "Tipo de documento invalido...";
+    public static final String TIPO_RESPUESTA_NO_VALIDO = "Tipo de respuesta %s no es valido";
+    public static final String FORMATO_RESPUESTA_NO_VALIDO = "Tipo de archivo de respuesta no es valido";
 }

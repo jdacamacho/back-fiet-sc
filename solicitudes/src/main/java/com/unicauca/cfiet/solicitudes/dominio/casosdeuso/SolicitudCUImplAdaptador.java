@@ -110,7 +110,7 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
             if (archivo != null && !archivo.isEmpty()) {
                 try {
                     String rutaArchivo = almacenadorArchivos.guardarArchivo(uuidSolicitud, archivo, currentAnexo.getNombre());
-                    String urlAnexo = urlBackend + urlApplication + SOLICITUD_CONTROLLER_URL
+                    String urlAnexo =  urlApplication + SOLICITUD_CONTROLLER_URL
                             + uuidSolicitud + "/" + new File(rutaArchivo).getName();
                     currentAnexo.setUrlAnexo(urlAnexo);
                 } catch (IOException e) {
@@ -140,7 +140,7 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
             if (archivo != null && !archivo.isEmpty()) {
                 try {
                     String rutaArchivo = almacenadorArchivos.guardarArchivo(uuidSolicitud, archivo, currentAnexo.getNombre());
-                    String urlAnexo = urlBackend + urlApplication + SOLICITUD_CONTROLLER_URL
+                    String urlAnexo =  urlApplication + SOLICITUD_CONTROLLER_URL
                             + uuidSolicitud + "/" + new File(rutaArchivo).getName();
                     currentAnexo.setUrlAnexo(urlAnexo);
                 } catch (IOException e) {
