@@ -31,6 +31,7 @@ public class RespuestaCUImplAdaptador implements RespuestaCUIntPuerto {
     /* Constantes */
     private static final String RESPUESTAS = "respuestas";
     private static final String RESPUESTA = "Respuesta";
+    private static final String SOLICITUD = "Solicitud";
 
     @Value("${url.backend}")
     private String urlBackend;
@@ -119,12 +120,16 @@ public class RespuestaCUImplAdaptador implements RespuestaCUIntPuerto {
 
     @Override
     public Respuesta registrarRespuesta(String uuidSolicitud, Respuesta respuesta, String token) {
+        Solicitud solicitud = solicitudGateway.getSolicitud(uuidSolicitud);
+        if(solicitud == null)
+            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, SOLICITUD, uuidSolicitud));
+
         if(!gateway.solicitudTieneRespuesta(uuidSolicitud)){
             // Creamos la respuesta
             if(!respuesta.esValidoTipoRespuesta())
                 formateadorExcepciones.lanzarReglaNegocioViolada(String.format(MensajesError.TIPO_RESPUESTA_NO_VALIDO,  respuesta.getTipoRespuesta()));
 
-            Solicitud solicitud = solicitudGateway.getSolicitud(uuidSolicitud);
+            solicitud = solicitudGateway.getSolicitud(uuidSolicitud);
 
             String uuidRespuesta = UUID.randomUUID().toString();
 
