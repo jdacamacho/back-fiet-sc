@@ -17,20 +17,20 @@ import java.time.LocalDateTime;
 @Builder
 public class RespuestaEntidad {
     @Id
-    @Column(length = 200)
+    @Column(length = 150)
     private String uuidRespuesta;
-    @Column(nullable = false, length = 200)
-    private String tipoRespuesta;
-    @Column(nullable = false, length = 200)
-    private String consecutivoFiet;
     @Column(nullable = false, length = 1000)
+    private String tipoRespuesta;
+    @Column(nullable = false, length = 1000)
+    private String consecutivoFiet;
+    @Column(nullable = false, length = 5000)
     private String respuestaConsejo;
-    @Column(length = 1000)
+    @Column(length = 5000)
     private String indicaciones;
     @OneToOne
     @JoinColumn(name = "uuidSolicitud", nullable = false, unique = true)
     private SolicitudEntidad solicitud;
-    @Column(length = 1000)
+    @Column(length = 3000)
     private String urlRespuesta;
     @Column(nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;

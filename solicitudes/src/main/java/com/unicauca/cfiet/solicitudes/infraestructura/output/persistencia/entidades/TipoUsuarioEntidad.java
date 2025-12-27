@@ -16,9 +16,9 @@ import java.util.List;
 @Builder
 public class TipoUsuarioEntidad {
     @Id
-    @Column(length = 200)
+    @Column(length = 150)
     private String uuidTipoUsuario;
-    @Column(nullable = false, unique = true, length = 200)
+    @Column(nullable = false, unique = true, length = 1000)
     private String nombre;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "objTipoUsuario")
     private List<UsuarioEntidad> usuarios;

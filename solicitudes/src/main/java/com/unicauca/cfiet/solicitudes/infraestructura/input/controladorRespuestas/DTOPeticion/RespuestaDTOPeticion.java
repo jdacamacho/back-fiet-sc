@@ -16,20 +16,20 @@ import lombok.*;
 public class RespuestaDTOPeticion {
     @NotNull(message = "El tipo de respuesta no puede ser nulo")
     @NotBlank(message = "El tipo de respuesta no puede estar vacío")
-    @Size(min = 5, max = 200, message = "El tipo de respuesta debe tener entre 5 y 200 caracteres")
+    @Size(min = 5, max = 1000, message = "El tipo de respuesta debe tener entre 5 y 1000 caracteres")
     private String tipoRespuesta;
 
     @NotNull(message = "El consecutivo FIET no puede ser nulo")
     @NotBlank(message = "El consecutivo FIET no puede estar vacío")
-    @Size(min = 5, max = 200, message = "El consecutivo FIET debe tener entre 5 y 200 caracteres")
+    @Size(min = 5, max = 1000, message = "El consecutivo FIET debe tener entre 5 y 1000 caracteres")
     private String consecutivoFiet;
 
     @NotNull(message = "La respuesta del consejo no puede ser nula")
     @NotBlank(message = "La respuesta del consejo no puede estar vacía")
-    @Size(min = 5, max = 1000, message = "La respuesta del consejo debe tener entre 5 y 1000 caracteres")
+    @Size(min = 5, max = 5000, message = "La respuesta del consejo debe tener entre 5 y 5000 caracteres")
     private String respuestaConsejo;
 
-    @Size(max = 1000, message = "Las indicaciones no pueden exceder 1000 caracteres")
+    @Size(max = 5000, message = "Las indicaciones no pueden exceder 5000 caracteres")
     private String indicaciones;
 
 }

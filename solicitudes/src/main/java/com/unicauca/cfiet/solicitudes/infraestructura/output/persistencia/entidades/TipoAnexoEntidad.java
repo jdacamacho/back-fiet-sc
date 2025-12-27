@@ -15,12 +15,13 @@ import lombok.*;
 @Builder
 public class TipoAnexoEntidad {
     @Id
+    @Column(length = 150)
     private String uuidTipoAnexo;
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String nombre;
-    @Column(length = 200)
+    @Column(length = 1500)
     private String descripcion;
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String formato;
     @Column(nullable = false)
     private Boolean obligatoriedad;

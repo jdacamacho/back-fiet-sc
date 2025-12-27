@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class RolDTOPeticion {
     @NotNull(message = "La descripción no puede ser nula")
     @NotBlank(message = "La descripción no puede estar vacía")
-    @Size(min = 5, max = 500, message = "La descripción debe tener entre 10 y 150 caracteres")
+    @Size(min = 5, max = 1500, message = "La descripción debe tener entre 5 y 1500 caracteres")
     private String descripcion;
 
     @NotNull(message = "El estado no puede ser nulo")

@@ -19,20 +19,20 @@ import java.util.List;
 public class TipoSolicitudDTOPeticion {
     @NotNull(message = "El nombre no puede ser nulo")
     @NotBlank(message = "El nombre no puede estar vacío")
-    @Size(min = 5, max = 200, message = "El nombre debe tener entre 5 y 200 caracteres")
+    @Size(min = 5, max = 1000, message = "El nombre debe tener entre 5 y 1000 caracteres")
     private String nombre;
 
-    @Size(max = 200, message = "La descripción no puede exceder los 200 caracteres")
+    @Size(max = 1500, message = "La descripción no puede exceder los 1500 caracteres")
     private String descripcion;
 
     @NotNull(message = "La sección no puede ser nula")
     @NotBlank(message = "La sección no puede estar vacía")
-    @Size(min = 5, max = 200, message = "La sección debe tener entre 5 y 200 caracteres")
+    @Size(min = 5, max = 1000, message = "La sección debe tener entre 5 y 1000 caracteres")
     private String seccion;
 
     @NotNull(message = "El perfil de solicitante no puede ser nulo")
     @NotBlank(message = "El perfil de solicitante no puede estar vacio")
-    @Size(min = 5, max = 200, message = "El perfil de solicitante debe tener entre 5 y 200 caracteres")
+    @Size(min = 5, max = 1000, message = "El perfil de solicitante debe tener entre 5 y 1000 caracteres")
     private String perfilSolicitante;
 
     @Valid

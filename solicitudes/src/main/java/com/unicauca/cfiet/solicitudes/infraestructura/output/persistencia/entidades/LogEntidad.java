@@ -16,13 +16,13 @@ import java.time.LocalDateTime;
 @Builder
 public class LogEntidad {
     @Id
-    @Column(length = 200)
+    @Column(length = 150)
     private String uuidLog;
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String accion;
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String fecha;
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String resultado;
     @ManyToOne
     @JoinColumn(name = "uuidUsuario", nullable = false)

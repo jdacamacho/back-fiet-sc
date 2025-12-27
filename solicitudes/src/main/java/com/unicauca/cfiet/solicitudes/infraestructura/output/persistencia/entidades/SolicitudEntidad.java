@@ -17,15 +17,15 @@ import java.util.List;
 @Builder
 public class SolicitudEntidad {
     @Id
-    @Column(length = 200)
+    @Column(length = 150)
     private String uuidSolicitud;
-    @Column(length = 200)
+    @Column(length = 1000)
     private String consecutivo;
-    @Column(length = 200)
+    @Column(length = 1000)
     private String nombre;
-    @Column(length = 500)
+    @Column(length = 1500)
     private String descripcion;
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String estado;
     @ManyToOne
     @JoinColumn(name = "uuidTipoSolicitud", nullable = false)
