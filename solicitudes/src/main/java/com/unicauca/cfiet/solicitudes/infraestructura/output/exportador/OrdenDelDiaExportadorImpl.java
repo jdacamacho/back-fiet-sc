@@ -18,12 +18,11 @@ import java.util.Map;
  */
 @Service
 public class OrdenDelDiaExportadorImpl implements OrdenDelDiaExportador {
-    private static final String PLANTILLA = "templates/orden_del_dia_info.docx";
 
     @Override
-    public byte[] exportarOrdenDelDia(HashMap<String, String> data) {
+    public byte[] exportarOrdenDelDia(HashMap<String, String> data, String plantilla) {
         try (
-                InputStream is = new ClassPathResource(PLANTILLA).getInputStream();
+                InputStream is = new ClassPathResource(plantilla).getInputStream();
                 XWPFDocument document = new XWPFDocument(is);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream()
         ) {

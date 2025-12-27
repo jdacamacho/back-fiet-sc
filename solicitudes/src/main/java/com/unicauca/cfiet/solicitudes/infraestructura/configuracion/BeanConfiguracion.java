@@ -49,8 +49,9 @@ public class BeanConfiguracion {
                                                          SolicitudGatewayIntPuerto gatewaySolicitud,
                                                          ExcepcionesFormateadorIntPuerto formateadorExcepciones,
                                                          LogCUIntPuerto log,
-                                                         OrdenDelDiaExportador exportador){
-        return new OrdenDelDiaCUImplAdaptador(gateway, gatewaySolicitud,formateadorExcepciones, log, exportador);
+                                                         OrdenDelDiaExportador exportador,
+                                                         RespuestaGatewayIntPuerto gatewayRespuesta){
+        return new OrdenDelDiaCUImplAdaptador(gateway, gatewaySolicitud,formateadorExcepciones, log, exportador, gatewayRespuesta);
     }
 
     @Bean

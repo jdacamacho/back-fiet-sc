@@ -16,5 +16,5 @@ public interface OrdenDelDiaExportador {
      * @param data información del orden del día en formato clave-valor
      * @return contenido del orden del día en bytes
      */
-    byte[] exportarOrdenDelDia(HashMap<String, String> data);
+    byte[] exportarOrdenDelDia(HashMap<String, String> data, String plantilla);
 }

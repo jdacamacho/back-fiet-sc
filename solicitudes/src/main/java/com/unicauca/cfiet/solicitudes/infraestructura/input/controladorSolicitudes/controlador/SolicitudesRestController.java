@@ -355,10 +355,41 @@ public class SolicitudesRestController {
                 .body(resource);
     }
 
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/exportar")
     public ResponseEntity<byte[]> exportarOrden(@RequestParam String uuidOrden) {
 
         byte[] archivo = ordenDelDiaCU.generarOrdenDelDia(uuidOrden);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"Orden_Del_Dia.docx\"")
+                .contentType(
+                        MediaType.parseMediaType(
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
+                .body(archivo);
+    }
+
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @GetMapping("/exportar/respuestas")
+    public ResponseEntity<byte[]> exportarOrdenRespuestas(@RequestParam String uuidOrden) {
+
+        byte[] archivo = ordenDelDiaCU.generarOrdenDelDiaConRespuestas(uuidOrden);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"Orden_Del_Dia.docx\"")
+                .contentType(
+                        MediaType.parseMediaType(
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
+                .body(archivo);
+    }
+
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @GetMapping("/exportar/reunion")
+    public ResponseEntity<byte[]> exportarOrdenDesarrolloReunion(@RequestParam String uuidOrden) {
+
+        byte[] archivo = ordenDelDiaCU.generarOrdenDelDiaMerge(uuidOrden);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,

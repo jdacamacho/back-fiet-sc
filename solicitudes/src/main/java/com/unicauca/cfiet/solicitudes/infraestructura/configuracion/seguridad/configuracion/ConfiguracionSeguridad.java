@@ -65,7 +65,7 @@ public class ConfiguracionSeguridad {
                         .requestMatchers(HttpMethod.POST, baseUrl + "respuestas/**")
                         .hasAnyAuthority(
                                 ApplicationConstantes.SECRETARIO_GENERAL,
-                                ApplicationConstantes.FUNCIONARIO
+                                ApplicationConstantes.FUNCIONARIO_ROL
                         )
                         .anyRequest().authenticated()
                 )
