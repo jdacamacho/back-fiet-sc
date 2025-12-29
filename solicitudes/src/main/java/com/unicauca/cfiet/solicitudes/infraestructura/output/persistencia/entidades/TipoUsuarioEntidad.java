@@ -18,7 +18,7 @@ public class TipoUsuarioEntidad {
     @Id
     @Column(length = 150)
     private String uuidTipoUsuario;
-    @Column(nullable = false, unique = true, length = 1000)
+    @Column(nullable = false, unique = true)
     private String nombre;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "objTipoUsuario")
     private List<UsuarioEntidad> usuarios;

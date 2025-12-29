@@ -24,13 +24,13 @@ import java.util.List;
 public class UsuarioEntidad extends UsuarioLivianoEntidad implements UserDetails {
     @Column(nullable = false, length = 1000)
     private String tipoDocumento;
-    @Column(nullable = false, unique = true, length = 1000)
+    @Column(nullable = false, unique = true)
     private String numeroDocumento;
     @Column(nullable = false, length = 1000)
     private String telefono;
-    @Column(nullable = false, unique = true, length = 1000)
+    @Column(nullable = false, unique = true)
     private String correoElectronico;
-    @Column(nullable = false, unique = true, length = 1000)
+    @Column(nullable = false, unique = true)
     private String username;
     @Column(nullable = false, length = 1000)
     private String password;

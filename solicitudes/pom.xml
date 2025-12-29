@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>com.unicauca.cfiet</groupId>
 	<artifactId>solicitudes</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>solicitudes</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Aplicación para la gestión de solicitudes del consejo de facultad FIET</description>
 	<url/>
 	<licenses>
 		<license/>

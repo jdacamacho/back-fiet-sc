@@ -20,7 +20,7 @@ public class RolEntidad {
     @Id
     @Column(length = 150)
     private String uuidRol;
-    @Column(nullable = false, unique = true, length = 1000)
+    @Column(nullable = false, unique = true)
     private String nombre;
     @Column(length = 1500)
     private String descripcion;

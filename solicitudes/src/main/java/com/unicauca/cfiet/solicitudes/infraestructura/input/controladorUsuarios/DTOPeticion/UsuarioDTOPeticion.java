@@ -23,7 +23,7 @@ public class UsuarioDTOPeticion extends UsuarioLivianoDTOPeticion{
 
     @NotNull(message = "El número de documento no puede ser nulo")
     @NotBlank(message = "El número de documento no puede estar vacío")
-    @Size(min = 5, max = 1000, message = "El número de documento debe tener entre 5 y 1000 caracteres")
+    @Size(min = 5, max = 255, message = "El número de documento debe tener entre 5 y 255 caracteres")
     private String numeroDocumento;
 
     @NotNull(message = "El teléfono no puede ser nulo")
@@ -40,12 +40,12 @@ public class UsuarioDTOPeticion extends UsuarioLivianoDTOPeticion{
 
     @NotNull(message = "El nombre de usuario no puede ser nulo")
     @NotBlank(message = "El nombre de usuario no puede estar vacío")
-    @Size(min = 5, max = 1000, message = "El nombre de usuario debe tener entre 5 y 1000 caracteres")
+    @Size(min = 5, max = 255, message = "El nombre de usuario debe tener entre 5 y 255 caracteres")
     private String username;
 
     @NotNull(message = "La contraseña no puede ser nula")
     @NotBlank(message = "La contraseña no puede estar vacía")
-    @Size(min = 5, max = 1000, message = "La contraseña debe tener entre 5 y 1000 caracteres")
+    @Size(min = 5, max = 255, message = "La contraseña debe tener entre 5 y 255 caracteres")
     private String password;
 
     @Valid
