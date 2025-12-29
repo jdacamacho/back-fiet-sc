@@ -5,11 +5,12 @@ import com.unicauca.cfiet.solicitudes.aplicacion.input.UsuarioCUIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.ExcepcionesFormateadorIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.PasswordEncoderGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.aplicacion.output.UsuarioGatewayIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Funcionario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.manejadorExcepciones.MensajesError;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -53,13 +54,28 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
     }
 
     @Override
-    public List<UsuarioLiviano> getUsuarios(int pagina, int tamanio) {
-        if(pagina < 0 || tamanio < 0)
+    public List<Funcionario> getFuncionarios(){
+        return gateway.getFuncionarios();
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<UsuarioLiviano> getUsuarios(int pagina, int tamanio) {
+        if (pagina < 0 || tamanio < 0)
             formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
-        List<UsuarioLiviano> usuarios = gateway.getUsuarios(pagina, tamanio);
-        if(usuarios.isEmpty())
+        PaginacionRespuestaDTO<UsuarioLiviano> respuesta = gateway.getUsuarios(pagina, tamanio);
+        if (respuesta.getContent().isEmpty())
             formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, USUARIOS));
-        return  usuarios;
+        return respuesta;
+    }
+
+    @Override
+    public PaginacionRespuestaDTO<UsuarioLiviano> getUsuariosByNombreCompleto(String nombreCompleto, int pagina, int tamanio) {
+        if (pagina < 0 || tamanio < 0)
+            formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
+        PaginacionRespuestaDTO<UsuarioLiviano> respuesta = gateway.getUsuariosByNombreCompleto(nombreCompleto, pagina, tamanio);
+        if (respuesta.getContent().isEmpty())
+            formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.SIN_REGISTROS, USUARIOS));
+        return respuesta;
     }
 
     @Override
@@ -72,6 +88,8 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
 
     @Override
     public Usuario crearUsuario(Usuario usuario, String tipoUsuario, String token) {
+        if(!usuario.revisarTipoDocumento())
+            formateadorExcepciones.lanzarMalFormato(MensajesError.TIPO_DOCUMENTO_ERRONEO);
         if(gateway.existeUsuarioNumeroDocumento(usuario.getNumeroDocumento()))
             formateadorExcepciones.lanzarEntidadExiste(String.format(MensajesError.ATRIBUTO_UNICO_YA_EXISTE, USUARIO, NUMERO_DOCUMENTO, usuario.getNumeroDocumento()));
         if(gateway.existeUsuarioCorreo(usuario.getCorreoElectronico()))
@@ -105,6 +123,8 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
             formateadorExcepciones.lanzarSinInformacion(String.format(MensajesError.ARCHIVO_EXCEL_VACIO, USUARIOS));
 
         for (Usuario usuario : usuarios) {
+            if(!usuario.revisarTipoDocumento())
+                formateadorExcepciones.lanzarMalFormato(MensajesError.TIPO_DOCUMENTO_ERRONEO);
             if (gateway.existeUsuarioNumeroDocumento(usuario.getNumeroDocumento()))
                 formateadorExcepciones.lanzarEntidadExiste(String.format(
                         MensajesError.ATRIBUTO_UNICO_YA_EXISTE, USUARIO, NUMERO_DOCUMENTO, usuario.getNumeroDocumento()));
@@ -160,6 +180,9 @@ public class UsuarioCUImplAdaptador implements UsuarioCUIntPuerto {
         Usuario usuarioObtenido = gateway.getUsuario(uuidUsuario);
         if(usuarioObtenido == null)
             formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, USUARIO, uuidUsuario));
+
+        if(!usuario.revisarTipoDocumento())
+            formateadorExcepciones.lanzarMalFormato(MensajesError.TIPO_DOCUMENTO_ERRONEO);
 
         if(usuario.tieneRolesDuplicados())
             formateadorExcepciones.lanzarReglaNegocioViolada(MensajesError.ROLES_DUPLICADOS_USUARIO);

@@ -1,5 +1,6 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.configuracion.seguridad.configuracion;
 
+import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.seguridad.jwt.JwtFiltroAutenticacion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +21,7 @@ import org.springframework.web.filter.CorsFilter;
 import java.util.List;
 
 /**
- *  Configuración de Seguridad (Acceso en endpoints)
+ *  Configuración de Acceso en endpoints.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
@@ -46,11 +47,27 @@ public class ConfiguracionSeguridad {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authRequest -> authRequest
                         .requestMatchers(baseUrl + "sesiones").permitAll()
-                        .requestMatchers(baseUrl + "logs/**").hasAuthority("Secretario General")
-                        .requestMatchers(baseUrl + "roles/**").hasAuthority("Secretario General")
+                        .requestMatchers(HttpMethod.POST, baseUrl + "solicitudes/public").permitAll()
+                        .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil").permitAll()
+                        .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil/paginado").permitAll()
+                        .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil/filtro").permitAll()
+                        .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/{uuidTipoSolicitud}").permitAll()
+                        .requestMatchers(baseUrl + "tipos/solicitudes/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
+                        .requestMatchers(HttpMethod.GET, baseUrl + "solicitudes/orden-del-dia/estado").authenticated()
+                        .requestMatchers(baseUrl + "solicitudes/orden-del-dia/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
+                        .requestMatchers(baseUrl + "logs/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
+                        .requestMatchers(baseUrl + "roles/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
                         .requestMatchers(HttpMethod.GET, baseUrl + "usuarios/**").authenticated()
-                        .requestMatchers(baseUrl + "usuarios/**").hasAuthority("Secretario General")
                         .requestMatchers(HttpMethod.PATCH, baseUrl + "usuarios/**").authenticated()
+                        .requestMatchers(baseUrl + "usuarios/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
+                        .requestMatchers(baseUrl + "solicitudes/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, baseUrl + "respuestas/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, baseUrl + "respuestas/**")
+                        .hasAnyAuthority(
+                                ApplicationConstantes.SECRETARIO_GENERAL,
+                                ApplicationConstantes.FUNCIONARIO_ROL
+                        )
+                        .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
                     .authenticationEntryPoint(authEntryPoint)

@@ -28,7 +28,7 @@ public class ProcesarArchivoUsuariosImpl implements ProcesadorArchivos<UsuarioDT
     private final ModelMapper mapper;
 
     public ProcesarArchivoUsuariosImpl( UsuarioGatewayIntPuerto gateway
-            , @Qualifier("mapeadorSimple") ModelMapper mapper){
+            ,@Qualifier("mapeadorSimple") ModelMapper mapper){
         this.gateway = gateway;
         this.mapper = mapper;
     }
@@ -61,9 +61,9 @@ public class ProcesarArchivoUsuariosImpl implements ProcesadorArchivos<UsuarioDT
                 Cell cell4 = row.getCell(4);
                 if (cell4 != null) {
                     if (cell4.getCellType() == CellType.NUMERIC)
-                        telefono = "+" + String.valueOf((long) cell4.getNumericCellValue());
+                        telefono = String.valueOf((long) cell4.getNumericCellValue());
                     else
-                        telefono = "+" + cell4.toString();
+                        telefono = cell4.toString();
                 }
                 String correo = row.getCell(5) != null ? row.getCell(5).toString() : "";
                 String estado = row.getCell(6) != null ? row.getCell(6).toString() : "";

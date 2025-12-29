@@ -1,6 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.controlador;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.RolCUIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTOPeticion.RolDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorRoles.DTORespuesta.RolDTORespuesta;
@@ -9,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +32,8 @@ import java.util.Map;
 public class RolRestController {
     private final RolCUIntPuerto casoDeUso;
     private final MapperRolInfraestructuraDominio mapper;
-    @Value("${rol.secretarioGeneral}")
-    private String rolSecretarioGeneral;
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping
     public ResponseEntity<List<RolDTORespuesta>> index(){
         List<Rol> roles = casoDeUso.getRoles();
@@ -44,7 +42,7 @@ public class RolRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/paginado")
     public ResponseEntity<List<RolDTORespuesta>> indexPaginado(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
         List<Rol> roles = casoDeUso.getRoles(pagina, tamanio);
@@ -53,7 +51,7 @@ public class RolRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/{uuidRol}")
     public ResponseEntity<RolDTORespuesta> getRol(@PathVariable String uuidRol){
         Rol rol = casoDeUso.getRol(uuidRol);
@@ -62,7 +60,7 @@ public class RolRestController {
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @PutMapping("/{uuidRol}")
     @Transactional
     public ResponseEntity<?> actualizarRol(@PathVariable String uuidRol, @Valid @RequestBody RolDTOPeticion rolPeticion,

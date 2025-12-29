@@ -1,46 +1,58 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.output;
 
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
-
-
 import java.util.List;
 
 /**
- * Interface que actua como fachada con la capa de persistencia para la gestión de logs.
+ * Interfaz que actúa como fachada hacia la capa de persistencia para la gestión de logs.
+ * Permite crear, consultar y contar logs, así como obtener usuarios por nombre.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 public interface LogGatewayIntPuerto {
+
     /**
-     * Crear un log en el sistema.
+     * Crea un log en el sistema.
      *
-     * @param log el objeto Log a crear.
-     * @return El log creado en el sistema.
+     * @param log objeto Log a crear
+     * @return log creado
      */
     Log crearLog(Log log);
 
     /**
-     * Obtener logs paginados.
+     * Obtiene logs paginados.
      *
-     * @param pagina el número de página.
-     * @param tamanio el tamaño de cada página.
-     * @return Lista de logs correspondiente a la página solicitada.
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de logs
      */
-    List<Log> getLogs(int pagina, int tamanio);
+    PaginacionRespuestaDTO<Log> getLogs(int pagina, int tamanio);
 
     /**
-     * Obtener todos los logs del sistema.
+     * Obtiene logs filtrados por responsable y fecha.
      *
-     * @return Lista completa de logs.
+     * @param responsable responsable de la acción
+     * @param fecha fecha de creación
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de logs que coinciden con los filtros
+     */
+    PaginacionRespuestaDTO<Log> getLogs(String responsable, String fecha, int pagina, int tamanio);
+
+    /**
+     * Obtiene todos los logs del sistema.
+     *
+     * @return lista completa de logs
      */
     List<Log> getLogs();
 
     /**
-     * Obtener un usuario por su nombre de usuario.
+     * Obtiene un usuario por su nombre de usuario.
      *
-     * @param username el nombre de usuario.
-     * @return El usuario correspondiente al username proporcionado.
+     * @param username nombre de usuario
+     * @return usuario correspondiente
      */
     Usuario getUsuarioUsername(String username);
 }

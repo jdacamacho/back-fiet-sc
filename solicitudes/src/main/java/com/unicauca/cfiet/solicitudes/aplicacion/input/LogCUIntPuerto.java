@@ -1,45 +1,58 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.input;
 
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Log;
 import java.util.List;
 
 /**
- * Interface de los casos de usos para la gestión de Logs.
+ * Interfaz de caso de uso para la gestión de Logs en el sistema.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 public interface LogCUIntPuerto {
+
     /**
-     * Crear un log en el sistema.
+     * Crea un log en el sistema.
      *
-     * @param accion la acción realizada.
-     * @param resultado el resultado de la acción.
-     * @param token el JWT del usuario que realiza la acción.
+     * @param accion la acción realizada
+     * @param resultado el resultado de la acción
+     * @param token JWT del usuario que realiza la acción
      */
     void crearLog(String accion, String resultado, String token);
 
     /**
-     * Crear un log de inicio de sesión para un usuario específico.
+     * Crea un log de inicio de sesión para un usuario.
      *
-     * @param accion la acción de la sesión.
-     * @param resultado el resultado de la acción.
-     * @param username el nombre de usuario de la sesión.
+     * @param accion la acción de la sesión
+     * @param resultado el resultado de la acción
+     * @param username nombre de usuario
      */
     void crearLogSesion(String accion, String resultado, String username);
 
     /**
-     * Obtener logs paginados.
+     * Obtiene logs paginados.
      *
-     * @param pagina el número de página.
-     * @param tamanio el tamaño de cada página.
-     * @return Lista de logs correspondientes a la página solicitada.
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return lista de logs correspondiente a la página
      */
-    List<Log> getLogs(int pagina, int tamanio);
+    PaginacionRespuestaDTO<Log> getLogs(int pagina, int tamanio);
 
     /**
-     * Obtener todos los logs del sistema.
+     * Obtiene logs filtrados por responsable y fecha.
      *
-     * @return Lista completa de logs.
+     * @param responsable responsable de la acción
+     * @param fecha fecha de creación
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return lista de logs correspondiente a la página
+     */
+    PaginacionRespuestaDTO<Log> getLogs(String responsable, String fecha, int pagina, int tamanio);
+
+    /**
+     * Obtiene todos los logs del sistema.
+     *
+     * @return lista completa de logs
      */
     List<Log> getLogs();
 }

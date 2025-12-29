@@ -4,14 +4,13 @@ import com.unicauca.cfiet.solicitudes.aplicacion.output.SesionGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.seguridad.jwt.JwtServicio;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.UsuarioEntidad;
+import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.mapeador.ownMapper.UsuarioOwnMapper;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.UsuarioRepositorio;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 /**
@@ -20,26 +19,20 @@ import java.util.Optional;
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Service
+@RequiredArgsConstructor
 public class SesionGatewayImplAdaptador implements SesionGatewayIntPuerto {
     private final UsuarioRepositorio repositorio;
     private final JwtServicio jwtServicio;
     private final AuthenticationManager authenticationManager;
-    private final ModelMapper mapper;
+    private final UsuarioOwnMapper usuarioMapper;
 
-    public SesionGatewayImplAdaptador(UsuarioRepositorio repositorio,
-                                      JwtServicio jwtServicio,
-                                      AuthenticationManager authenticationManager,
-                                      @Qualifier("mapeadorSimple") ModelMapper mapper){
-        this.repositorio = repositorio;
-        this.jwtServicio = jwtServicio;
-        this.authenticationManager = authenticationManager;
-        this.mapper = mapper;
-    }
     @Override
     public String login(String username, String password) {
         Optional<UsuarioEntidad> usuario = repositorio.findByUsername(username);
         if(usuario.isPresent()){
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
             if(authentication.isAuthenticated())
                 return jwtServicio.getToken(usuario.get());
         }
@@ -48,7 +41,9 @@ public class SesionGatewayImplAdaptador implements SesionGatewayIntPuerto {
 
     @Override
     public Usuario getUsuario(String username) {
-        Optional<UsuarioEntidad> usuario = repositorio.findByUsername(username);
-        return usuario.map(usuarioEntidad -> mapper.map(usuarioEntidad, Usuario.class)).orElse(null);
+        return repositorio.findByUsername(username)
+                .map(usuarioMapper::toDominio)
+                .orElse(null);
     }
 }
+

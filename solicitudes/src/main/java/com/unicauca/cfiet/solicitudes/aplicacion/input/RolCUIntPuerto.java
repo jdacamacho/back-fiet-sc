@@ -4,42 +4,43 @@ import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 import java.util.List;
 
 /**
- * Interface de los casos de usos para la gestión de Roles.
+ * Interfaz de caso de uso para la gestión de Roles.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 public interface RolCUIntPuerto {
+
     /**
-     * Consultar roles.
+     * Obtiene todos los roles del sistema.
      *
-     * @return La información de los roles en el sistema, o lanza una excepción en caso de ocurrir un error.
+     * @return lista de roles
      */
     List<Rol> getRoles();
 
     /**
-     * Consultar roles.
+     * Obtiene roles del sistema con paginación.
      *
-     * @param pagina el numero de paginas.
-     * @param tamanio el tamanio de las paginas.
-     * @return La información de los roles en el sistema, o lanza una excepción en caso de ocurrir un error.
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return lista de roles correspondientes a la página
      */
     List<Rol> getRoles(int pagina, int tamanio);
 
     /**
-     * Consultar rol.
+     * Obtiene un rol por su identificador.
      *
-     * @param uuidRol Identificador del rol a consultar.
-     * @return La información del rol consultado, o lanza una excepción en caso de ocurrir un error.
+     * @param uuidRol identificador único del rol
+     * @return rol correspondiente
      */
     Rol getRol(String uuidRol);
 
     /**
-     * Actualiza un rol existente
+     * Actualiza un rol existente.
      *
-     * @param uuidRol identificador del rol a modificar.
-     * @param rol campos a modificar del rol.
+     * @param uuidRol identificador del rol a actualizar
+     * @param rol información actualizada del rol
      * @param token token de autorización
-     * @return La información del rol guardado si la operación se realiza con éxito, o lanza una excepción en caso de ocurrir un error.
+     * @return rol actualizado
      */
     Rol actualizarRol(String uuidRol, Rol rol, String token);
 }

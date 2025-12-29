@@ -5,7 +5,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -15,12 +14,13 @@ import java.util.stream.Collectors;
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
-@Service
+@Service("validador-usuarios")
 @RequiredArgsConstructor
-public class UsuarioExcelService {
+public class UsuarioExcelService implements ValidadorPeticionesExcel<UsuarioDTOPeticion>{
     private final Validator validator;
 
-    public Map<String, String> validarUsuario(UsuarioDTOPeticion peticion) {
+    @Override
+    public Map<String, String> validar(UsuarioDTOPeticion peticion) {
         Set<ConstraintViolation<UsuarioDTOPeticion>> violaciones = validator.validate(peticion);
         if (violaciones.isEmpty())
             return null;

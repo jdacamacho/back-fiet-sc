@@ -1,84 +1,104 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.input;
 
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Funcionario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
 import java.util.List;
 
 /**
- * Interface de los casos de usos para la gestión de usuarios.
+ * Interfaz de caso de uso para la gestión de Usuarios.
  *
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 public interface UsuarioCUIntPuerto {
+
     /**
-     * Consultar lista de usuarios.
+     * Obtiene todos los usuarios en formato liviano.
      *
-     * @return la lista de usuarios en formato liviano.
+     * @return lista de usuarios
      */
     List<UsuarioLiviano> getUsuarios();
 
     /**
-     * Consultar lista de usuarios.
+     * Obtiene todos los funcionarios.
      *
-     * @param pagina el número de página.
-     * @param tamanio el tamaño de la página.
-     * @return la lista de usuarios en formato liviano.
+     * @return lista de funcionarios
      */
-    List<UsuarioLiviano> getUsuarios(int pagina, int tamanio);
+    List<Funcionario> getFuncionarios();
 
     /**
-     * Consultar un usuario por su identificador.
+     * Obtiene usuarios paginados en formato liviano.
      *
-     * @param uuidUsuario identificador único del usuario.
-     * @return la información del usuario.
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de usuarios
+     */
+    PaginacionRespuestaDTO<UsuarioLiviano> getUsuarios(int pagina, int tamanio);
+
+    /**
+     * Obtiene usuarios filtrados por nombre completo de forma paginada.
+     *
+     * @param nombreCompleto nombre completo del usuario
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de usuarios que coinciden con el filtro
+     */
+    PaginacionRespuestaDTO<UsuarioLiviano> getUsuariosByNombreCompleto(String nombreCompleto, int pagina, int tamanio);
+
+    /**
+     * Obtiene un usuario por su identificador.
+     *
+     * @param uuidUsuario identificador único
+     * @return usuario correspondiente
      */
     Usuario getUsuario(String uuidUsuario);
 
     /**
-     * Crear un nuevo usuario.
+     * Crea un nuevo usuario.
      *
-     * @param usuario la información del usuario a crear.
-     * @param tipoUsuario el tipo de usuario a crear (Decano, Secretario General, Funcionario, Secretaria Decanatura Fiet)
+     * @param usuario información del usuario a crear
+     * @param tipoUsuario tipo de usuario (Decano, Secretario General, Funcionario, Secretaria Decanatura Fiet)
      * @param token token de autorización
-     * @return el usuario creado.
+     * @return usuario creado
      */
     Usuario crearUsuario(Usuario usuario, String tipoUsuario, String token);
 
     /**
-     * Crear múltiples usuarios.
+     * Crea múltiples usuarios de una sola vez.
      *
-     * @param usuarios la lista de usuarios a crear (obtenida del archivo excel).
+     * @param usuarios lista de usuarios a crear (ej. desde archivo Excel)
      * @param token token de autorización
-     * @return la lista de usuarios creados.
+     * @return lista de usuarios creados
      */
     List<Usuario> crearUsuarios(List<Usuario> usuarios, String token);
 
     /**
-     * Actualizar un usuario existente.
+     * Actualiza un usuario existente.
      *
-     * @param uuidUsuario el identificador único del usuario a actualizar.
-     * @param usuario la información actualizada del usuario.
-     *  @param token token de autorización
-     * @return el usuario actualizado.
+     * @param uuidUsuario identificador único del usuario
+     * @param usuario información actualizada del usuario
+     * @param token token de autorización
+     * @return usuario actualizado
      */
     Usuario actualizarUsuario(String uuidUsuario, Usuario usuario, String token);
 
     /**
-     * Cambiar la contraseña de un usuario.
+     * Cambia la contraseña de un usuario.
      *
-     * @param uuidUsuario el identificador único del usuario.
-     * @param contraseña la contraseña actual del usuario.
-     * @param nuevaContraseña la nueva contraseña a establecer.
+     * @param uuidUsuario identificador único del usuario
+     * @param contraseña contraseña actual
+     * @param nuevaContraseña nueva contraseña a establecer
      * @param token token de autorización
-     * @return el usuario con la contraseña actualizada.
+     * @return usuario con la contraseña actualizada
      */
     Usuario cambiarContraseña(String uuidUsuario, String contraseña, String nuevaContraseña, String token);
 
     /**
-     * Obtener los tipos de Usuario soportados
+     * Obtiene los tipos de usuario soportados en el sistema.
      *
-     * @return lista de tipos de usuario soportados
+     * @return lista de tipos de usuario
      */
     List<TipoUsuario> getTiposUsuario();
 }

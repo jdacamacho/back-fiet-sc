@@ -3,10 +3,9 @@ package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.gatew
 import com.unicauca.cfiet.solicitudes.aplicacion.output.RolGatewayIntPuerto;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades.RolEntidad;
+import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.mapeador.ownMapper.RolOwnMapperImpl;
 import com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.repositorios.RolRepositorio;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,41 +17,40 @@ import java.util.List;
  * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 @Service
+@RequiredArgsConstructor
 public class RolGatewayImplAdaptador implements RolGatewayIntPuerto {
     private final RolRepositorio repositorio;
-    private final ModelMapper mapper;
-
-    public RolGatewayImplAdaptador(RolRepositorio repositorio, @Qualifier("mapeadorSimple") ModelMapper mapper){
-        this.repositorio = repositorio;
-        this.mapper = mapper;
-    }
+    private final RolOwnMapperImpl mapper;
 
     @Override
     public List<Rol> getRoles() {
-        List<RolEntidad> entidades = repositorio.findAll();
-        return mapper.map(entidades, new TypeToken<List<Rol>>(){}.getType());
+        return repositorio.findAll().stream()
+                .map(mapper::toDominio)
+                .toList();
     }
 
     @Override
     public List<Rol> getRoles(int pagina, int tamanio) {
         Pageable paginado = PageRequest.of(pagina, tamanio);
         List<RolEntidad> entidades = repositorio.findAll(paginado).getContent();
-        return mapper.map(entidades, new TypeToken<List<Rol>>(){}.getType());
+        return entidades.stream()
+                .map(mapper::toDominio)
+                .toList();
     }
 
     @Override
     public Rol getRol(String uuid) {
         if(repositorio.existsById(uuid)) {
             RolEntidad entidad = repositorio.findById(uuid).get();
-            return mapper.map(entidad, Rol.class);
+            return mapper.toDominio(entidad);
         }
         return null;
     }
 
     @Override
     public Rol guardarRol(Rol rol) {
-        RolEntidad rolGuardar = mapper.map(rol, RolEntidad.class);
+        RolEntidad rolGuardar = mapper.toEntidad(rol);
         RolEntidad rolGuardado = repositorio.save(rolGuardar);
-        return mapper.map(rolGuardado, Rol.class);
+        return mapper.toDominio(rolGuardado);
     }
 }

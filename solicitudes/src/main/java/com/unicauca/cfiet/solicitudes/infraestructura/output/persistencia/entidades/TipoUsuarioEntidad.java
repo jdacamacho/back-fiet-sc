@@ -1,9 +1,7 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.output.persistencia.entidades;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.util.List;
 
 /**
@@ -11,13 +9,16 @@ import java.util.List;
  */
 @Entity
 @Table(name = "tiposUsuario")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TipoUsuarioEntidad {
     @Id
-    @Column(length = 100)
+    @Column(length = 150)
     private String uuidTipoUsuario;
-    @Column(nullable = false, unique = true, length = 45)
+    @Column(nullable = false, unique = true, length = 1000)
     private String nombre;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "objTipoUsuario")
     private List<UsuarioEntidad> usuarios;

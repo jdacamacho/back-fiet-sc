@@ -1,11 +1,14 @@
 package com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.controlador;
 
 import com.unicauca.cfiet.solicitudes.aplicacion.input.UsuarioCUIntPuerto;
+import com.unicauca.cfiet.solicitudes.dominio.helper.PaginacionRespuestaDTO;
+import com.unicauca.cfiet.solicitudes.dominio.helper.constantes.ApplicationConstantes;
+import com.unicauca.cfiet.solicitudes.dominio.modelos.Funcionario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.TipoUsuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Usuario;
 import com.unicauca.cfiet.solicitudes.dominio.modelos.UsuarioLiviano;
 import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.ProcesadorArchivos;
-import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.validadoresArchivos.UsuarioExcelService;
+import com.unicauca.cfiet.solicitudes.infraestructura.configuracion.lectorArchivos.validadoresArchivos.ValidadorPeticionesExcel;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.CambioContraseñaDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.UsuarioActualizarDTOPeticion;
 import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.DTOPeticion.UsuarioDTOPeticion;
@@ -16,7 +19,6 @@ import com.unicauca.cfiet.solicitudes.infraestructura.input.controladorUsuarios.
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,21 +43,19 @@ public class UsuarioRestController{
     private final UsuarioCUIntPuerto casoDeUso;
     private final MapperUsuarioInfraestructuraDominio mapper;
     private final ProcesadorArchivos<UsuarioDTOPeticion> procesadorArchivos;
-    private final UsuarioExcelService usuarioExcelService;
-    @Value("${rol.secretarioGeneral}")
-    private String rolSecretarioGeneral;
+    private final ValidadorPeticionesExcel<UsuarioDTOPeticion> validadorPeticion;
 
     public UsuarioRestController(UsuarioCUIntPuerto casoDeUso,
                                  MapperUsuarioInfraestructuraDominio mapper,
                                  @Qualifier("archivos-usuarios") ProcesadorArchivos<UsuarioDTOPeticion> procesadorArchivos,
-                                 UsuarioExcelService usuarioExcelService){
+                                 @Qualifier("validador-usuarios") ValidadorPeticionesExcel<UsuarioDTOPeticion> validadorPeticion){
         this.casoDeUso = casoDeUso;
         this.mapper = mapper;
         this.procesadorArchivos = procesadorArchivos;
-        this.usuarioExcelService = usuarioExcelService;
+        this.validadorPeticion = validadorPeticion;
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/tipos")
     public ResponseEntity<?> getTiposUsuarios(){
         List<TipoUsuario> tiposUsuario = casoDeUso.getTiposUsuario();
@@ -64,21 +64,51 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping("/paginado")
-    public ResponseEntity<?> indexPaginado(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
-        List<UsuarioLiviano> usuarios = casoDeUso.getUsuarios(pagina, tamanio);
-        return new ResponseEntity<List<UsuarioLivianoDTORespuesta>>(
-                mapper.mapearModelosARespuestaLiviano(usuarios), HttpStatus.OK
+    public ResponseEntity<?> indexPaginado(@RequestParam("pagina") int pagina,
+                                           @RequestParam("tamanio") int tamanio) {
+        var respuesta = casoDeUso.getUsuarios(pagina, tamanio);
+        return new ResponseEntity<>(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuestaLiviano(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                ),
+                HttpStatus.OK
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @GetMapping("/filtro")
+    public ResponseEntity<?> getUsuariosByNombresApellidos(
+            @RequestParam(value = "nombreCompleto", required = false) String nombreCompleto,
+            @RequestParam("pagina") int pagina,
+            @RequestParam("tamanio") int tamanio) {
+        var respuesta = casoDeUso.getUsuariosByNombreCompleto(nombreCompleto, pagina, tamanio);
+        return new ResponseEntity<>(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuestaLiviano(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                ),
+                HttpStatus.OK
+        );
+    }
+
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @GetMapping
     public ResponseEntity<?> index(){
         List<UsuarioLiviano> usuarios = casoDeUso.getUsuarios();
         return new ResponseEntity<List<UsuarioLivianoDTORespuesta>>(
                 mapper.mapearModelosARespuestaLiviano(usuarios), HttpStatus.OK
+        );
+    }
+
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @GetMapping("/funcionarios")
+    public ResponseEntity<?> getFuncionarios(){
+        List<Funcionario> funcionarios = casoDeUso.getFuncionarios();
+        return new ResponseEntity<List<UsuarioLivianoDTORespuesta>>(
+                mapper.mapearModelosARespuestaFuncionario(funcionarios), HttpStatus.OK
         );
     }
 
@@ -90,7 +120,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @Transactional
     @PostMapping
     public ResponseEntity<?> crearUsuario(@Valid @RequestBody UsuarioDTOPeticion peticion, @RequestParam String tipoUsuario,
@@ -110,14 +140,14 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @Transactional
     @PostMapping("/cargar/archivo")
     public ResponseEntity<?> crearUsuarios(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token){
         List<UsuarioDTOPeticion> peticiones = procesadorArchivos.procesarArchivo(file);
         Map<String, String> erroresPeticiones;
         for(UsuarioDTOPeticion peticion : peticiones) {
-            erroresPeticiones = usuarioExcelService.validarUsuario(peticion);
+            erroresPeticiones = validadorPeticion.validar(peticion);
             if(erroresPeticiones != null)
                 return new ResponseEntity<Map<String, String>>(erroresPeticiones, HttpStatus.BAD_REQUEST);
         }
@@ -138,7 +168,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize("hasAuthority(#this.rolSecretarioGeneral)")
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
     @Transactional
     @PutMapping("/{uuidUsuario}")
     public ResponseEntity<?> actualizarUsuario(@PathVariable String uuidUsuario, @Valid @RequestBody UsuarioActualizarDTOPeticion peticion,

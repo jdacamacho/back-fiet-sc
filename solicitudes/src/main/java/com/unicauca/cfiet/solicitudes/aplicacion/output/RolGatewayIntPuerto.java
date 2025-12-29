@@ -1,44 +1,45 @@
 package com.unicauca.cfiet.solicitudes.aplicacion.output;
 
 import com.unicauca.cfiet.solicitudes.dominio.modelos.Rol;
-
 import java.util.List;
 
 /**
- * Interface que actua como fachada con la capa de persistencia para la gestión de roles.
+ * Interfaz que actúa como fachada hacia la capa de persistencia para la gestión de roles.
+ * Permite consultar y guardar roles en el sistema.
  *
- * @author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
+ * author Julian David Camacho Erazo  {@literal <jdacamacho@unicauca.edu.co>}
  */
 public interface RolGatewayIntPuerto {
+
     /**
-     * Consultar roles.
+     * Obtiene todos los roles del sistema.
      *
-     * @return La información de los roles en el sistema, o lanza una excepción en caso de ocurrir un error.
+     * @return lista de roles
      */
     List<Rol> getRoles();
 
     /**
-     * Consultar roles.
+     * Obtiene roles del sistema de forma paginada.
      *
-     * @param pagina el numero de paginas.
-     * @param tamanio el tamanio de las paginas.
-     * @return La información de los roles en el sistema, o lanza una excepción en caso de ocurrir un error.
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return lista de roles correspondientes a la página
      */
     List<Rol> getRoles(int pagina, int tamanio);
 
     /**
-     * Consultar rol.
+     * Obtiene un rol por su identificador.
      *
-     * @param uuidRol Identificador del rol a consultar.
-     * @return La información del rol consultado, o lanza una excepción en caso de ocurrir un error.
+     * @param uuidRol identificador único del rol
+     * @return rol correspondiente
      */
     Rol getRol(String uuidRol);
 
     /**
-     * Actualiza un rol existente
+     * Guarda un rol en el sistema.
      *
-     * @param rol El rol a guardar.
-     * @return La información del rol guardado si la operación se realiza con éxito, o lanza una excepción en caso de ocurrir un error.
+     * @param rol rol a guardar
+     * @return rol guardado
      */
     Rol guardarRol(Rol rol);
 }
