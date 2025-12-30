@@ -21,7 +21,7 @@ public class ValidadorAnexosService {
     public void validarYAsignarArchivos(List<AnexoDTOPeticion> anexos, List<MultipartFile> archivos) {
 
         if (anexos == null || anexos.isEmpty())
-            throw new ErrorMalFormatoExcepcion("La solicitud no contiene anexos.");
+            throw new ErrorMalFormatoExcepcion("La solicitud debe contener al menos un anexo");
 
         if (archivos == null || archivos.isEmpty())
             throw new ErrorMalFormatoExcepcion("No se han enviado archivos.");

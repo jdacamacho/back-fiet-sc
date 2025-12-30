@@ -163,7 +163,7 @@ public class SolicitudesRestController {
     @Transactional
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> enviarSolicitud(@Valid @RequestPart("solicitud") SolicitudDTOPeticion peticion,
-                                             @RequestPart("archivos") List<MultipartFile> archivos,
+                                             @RequestPart(value = "archivos", required = false) List<MultipartFile> archivos,
                                              @RequestHeader("Authorization") String token){
 
         validadorAnexosService.validarYAsignarArchivos(peticion.getAnexos(), archivos);
@@ -186,7 +186,7 @@ public class SolicitudesRestController {
     @Transactional
     @PostMapping(value = "/public", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> enviarSolicitudPublica(@Valid @RequestPart("solicitud") SolicitudPublicaDTOPeticion peticion,
-                                                    @RequestPart("archivos") List<MultipartFile> archivos,
+                                                    @RequestPart(value = "archivos", required = false) List<MultipartFile> archivos,
                                                     @RequestHeader("Authorization") String token){
 
         validadorAnexosService.validarYAsignarArchivos(peticion.getAnexos(), archivos);
