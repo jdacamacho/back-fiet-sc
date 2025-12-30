@@ -39,7 +39,14 @@ public class LogGatewayImplAdaptador implements LogGatewayIntPuerto {
 
     @Override
     public PaginacionRespuestaDTO<Log> getLogs(int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Pageable paginado =
+                PageRequest.of(
+                        pagina,
+                        tamanio,
+                        Sort.by("fechaCreacion").descending()
+                                .and(Sort.by("uuidLog").ascending())
+                );
+
         Page<LogEntidad> page = repositorio.findAll(paginado);
 
         List<Log> logs = page.getContent().stream()
@@ -59,8 +66,16 @@ public class LogGatewayImplAdaptador implements LogGatewayIntPuerto {
 
     @Override
     public PaginacionRespuestaDTO<Log> getLogs(String responsable, String fecha, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
-        Page<LogEntidad> page = repositorio.findByResponsableAndFecha(responsable, fecha, paginado);
+        Pageable paginado =
+                PageRequest.of(
+                        pagina,
+                        tamanio,
+                        Sort.by("fechaCreacion").descending()
+                                .and(Sort.by("uuidLog").ascending())
+                );
+
+        Page<LogEntidad> page =
+                repositorio.findByResponsableAndFecha(responsable, fecha, paginado);
 
         List<Log> logs = page.getContent().stream()
                 .map(logMapper::toDominio)

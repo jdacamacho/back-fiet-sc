@@ -45,7 +45,13 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
 
     @Override
     public PaginacionRespuestaDTO<UsuarioLiviano> getUsuarios(int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Pageable paginado = PageRequest.of(
+                pagina,
+                tamanio,
+                Sort.by("fechaCreacion").descending()
+                        .and(Sort.by("uuidUsuario").ascending())
+        );
+
         Page<UsuarioLivianoEntidad> page = repositorioBasico.findAll(paginado);
 
         List<UsuarioLiviano> usuarios = page.getContent().stream()
@@ -56,9 +62,18 @@ public class UsuarioGatewayImplAdapter implements UsuarioGatewayIntPuerto {
     }
 
     @Override
-    public PaginacionRespuestaDTO<UsuarioLiviano> getUsuariosByNombreCompleto(String nombreCompleto, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
-        Page<UsuarioLivianoEntidad> page = repositorioBasico.findByNombreCompleto(nombreCompleto, paginado);
+    public PaginacionRespuestaDTO<UsuarioLiviano> getUsuariosByNombreCompleto(
+            String nombreCompleto, int pagina, int tamanio) {
+
+        Pageable paginado = PageRequest.of(
+                pagina,
+                tamanio,
+                Sort.by("fechaCreacion").descending()
+                        .and(Sort.by("uuidUsuario").ascending())
+        );
+
+        Page<UsuarioLivianoEntidad> page =
+                repositorioBasico.findByNombreCompleto(nombreCompleto, paginado);
 
         List<UsuarioLiviano> usuarios = page.getContent().stream()
                 .map(usuarioLivianoOwnMapper::toDominio)

@@ -41,7 +41,13 @@ public class RespuestaGatewayImplAdaptador implements RespuestaGatewayIntPuerto 
 
     @Override
     public PaginacionRespuestaDTO<Respuesta> getRespuestas(int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Pageable paginado =
+                PageRequest.of(
+                        pagina,
+                        tamanio,
+                        Sort.by("fechaCreacion").descending()
+                                .and(Sort.by("uuidRespuesta").ascending())
+                );
         Page<RespuestaEntidad> page = respuestaRepositorio.findAll(paginado);
 
         List<Respuesta> lista = page.getContent().stream()
@@ -53,7 +59,13 @@ public class RespuestaGatewayImplAdaptador implements RespuestaGatewayIntPuerto 
 
     @Override
     public PaginacionRespuestaDTO<Respuesta> getRespuestasPorNombreSolicitud(String nombreSolicitud, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Pageable paginado =
+                PageRequest.of(
+                        pagina,
+                        tamanio,
+                        Sort.by("fechaCreacion").descending()
+                                .and(Sort.by("uuidRespuesta").ascending())
+                );
         Page<RespuestaEntidad> page = respuestaRepositorio.obtenerPorNombreSolicitud(nombreSolicitud, paginado);
 
         List<Respuesta> lista = page.getContent().stream()
@@ -65,7 +77,13 @@ public class RespuestaGatewayImplAdaptador implements RespuestaGatewayIntPuerto 
 
     @Override
     public PaginacionRespuestaDTO<Respuesta> getRespuestasPorFuncionario(String uuidFuncionario, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Pageable paginado =
+                PageRequest.of(
+                        pagina,
+                        tamanio,
+                        Sort.by("fechaCreacion").descending()
+                                .and(Sort.by("uuidRespuesta").ascending())
+                );
         Page<RespuestaEntidad> page = respuestaRepositorio.obtenerRespuestasPorFuncionario(uuidFuncionario, paginado);
 
         List<Respuesta> lista = page.getContent().stream()
@@ -77,7 +95,13 @@ public class RespuestaGatewayImplAdaptador implements RespuestaGatewayIntPuerto 
 
     @Override
     public PaginacionRespuestaDTO<Respuesta> getRespuestasPorFuncionarioNombreSolicitud(String uuidFuncionario, String nombreSolicitud, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Pageable paginado =
+                PageRequest.of(
+                        pagina,
+                        tamanio,
+                        Sort.by("fechaCreacion").descending()
+                                .and(Sort.by("uuidRespuesta").ascending())
+                );
         Page<RespuestaEntidad> page = respuestaRepositorio.obtenerRespuestasPorFuncionarioYNombreSolicitud(uuidFuncionario, nombreSolicitud, paginado);
 
         List<Respuesta> lista = page.getContent().stream()

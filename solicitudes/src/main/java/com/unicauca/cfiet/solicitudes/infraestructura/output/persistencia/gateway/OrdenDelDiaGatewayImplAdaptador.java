@@ -45,7 +45,12 @@ public class OrdenDelDiaGatewayImplAdaptador implements OrdenDelDiaGatewayIntPue
     @Override
     public PaginacionRespuestaDTO<OrdenDelDia> getOrdenesDelDia(int pagina, int tamanio) {
         Pageable paginado =
-                PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+                PageRequest.of(
+                        pagina,
+                        tamanio,
+                        Sort.by("fechaCreacion").descending()
+                                .and(Sort.by("uuidOrdenDelDia").ascending())
+                );
 
         Page<OrdenDelDiaEntidad> page = repositorio.findAll(paginado);
         List<OrdenDelDia> lista = page.getContent().stream()
@@ -70,7 +75,14 @@ public class OrdenDelDiaGatewayImplAdaptador implements OrdenDelDiaGatewayIntPue
 
     @Override
     public PaginacionRespuestaDTO<OrdenDelDia> getOrdenesDelDia(String filtro, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio);
+        Pageable paginado =
+                PageRequest.of(
+                        pagina,
+                        tamanio,
+                        Sort.by("fechaCreacion").descending()
+                                .and(Sort.by("uuidOrdenDelDia").ascending())
+                );
+
         Page<OrdenDelDiaEntidad> page =
                 repositorio.findByNumeroActaContainingIgnoreCase(filtro, paginado);
 

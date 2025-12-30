@@ -11,10 +11,13 @@ services:
       DB_URL: jdbc:mysql://cfiet_database:3306/cfiet?createDatabaseIfNotExist=true&serverTimezone=UTC
       DB_USER_NAME: root
       DB_PASSWORD: mysql
+      UPLOADS_PATH: /app/uploads
+    volumes:
+      - ./uploads:/app/uploads
     restart: always
     depends_on:
       cfiet_database:
-          condition: service_healthy
+        condition: service_healthy
   cfiet_database:
     image: mysql:8.0.33
     ports:
@@ -25,6 +28,6 @@ services:
       MYSQL_DATABASE: cfiet_database
     restart: always
     healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 10s
       retries: 10

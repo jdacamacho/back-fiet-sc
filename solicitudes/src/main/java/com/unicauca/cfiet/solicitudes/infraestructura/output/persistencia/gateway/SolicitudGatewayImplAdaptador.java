@@ -36,7 +36,13 @@ public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto 
 
     @Override
     public PaginacionRespuestaDTO<Solicitud> getSolicitudes(int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Pageable paginado =
+                PageRequest.of(
+                        pagina,
+                        tamanio,
+                        Sort.by("fechaCreacion").descending()
+                                .and(Sort.by("uuidSolicitud").ascending())
+                );
         Page<SolicitudEntidad> page = repositorio.findAll(paginado);
         List<Solicitud> respuesta = page.getContent().stream()
                 .map(mapper::toDominio)
@@ -61,7 +67,13 @@ public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto 
 
     @Override
     public PaginacionRespuestaDTO<Solicitud> getSolicitudesPorFuncionario(String uuidFuncionario, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Pageable paginado =
+                PageRequest.of(
+                        pagina,
+                        tamanio,
+                        Sort.by("fechaCreacion").descending()
+                                .and(Sort.by("uuidSolicitud").ascending())
+                );
         Page<SolicitudEntidad> page =
                 repositorio.findByObjFuncionarioUuidUsuario(uuidFuncionario, paginado);
 
@@ -93,7 +105,13 @@ public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto 
 
     @Override
     public PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorNombre(String filtro, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Pageable paginado =
+                PageRequest.of(
+                        pagina,
+                        tamanio,
+                        Sort.by("fechaCreacion").descending()
+                                .and(Sort.by("uuidSolicitud").ascending())
+                );
         Page<SolicitudEntidad> page = repositorio.buscarPorNombre(filtro, paginado);
 
         List<Solicitud> resultado = page.getContent().stream()
@@ -105,7 +123,14 @@ public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto 
 
     @Override
     public PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorNombreYFuncionario(String uuidFuncionario, String filtro, int pagina, int tamanio) {
-        Pageable paginado = PageRequest.of(pagina, tamanio, Sort.by("fechaCreacion").descending());
+        Pageable paginado =
+                PageRequest.of(
+                        pagina,
+                        tamanio,
+                        Sort.by("fechaCreacion").descending()
+                                .and(Sort.by("uuidSolicitud").ascending())
+                );
+
         Page<SolicitudEntidad> page = repositorio.buscarPorNombreYFuncionario(uuidFuncionario, filtro, paginado);
 
         List<Solicitud> resultado = page.getContent().stream()
