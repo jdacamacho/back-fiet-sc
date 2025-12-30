@@ -114,7 +114,7 @@ public class RespuestaRestController {
     }
 
     @PreAuthorize(ApplicationConstantes.AUTHENTICATED)
-    @GetMapping("solicitud/{uuidSolicitud}")
+    @GetMapping("/solicitud/{uuidSolicitud}")
     public ResponseEntity<?> getRespuestaPorSolicitud(@PathVariable String uuidSolicitud){
         return ResponseEntity.ok(
                 mapper.mapearModeloARespuesta(respuestaCU.getRespuestaPorSolicitud(uuidSolicitud))
