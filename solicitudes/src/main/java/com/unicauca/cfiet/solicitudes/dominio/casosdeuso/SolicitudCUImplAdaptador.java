@@ -14,6 +14,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -266,17 +268,20 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
 
                 for (Solicitud solicitud : entrySeccion.getValue()) {
                     String solicitudName = sanitizeFileName(solicitud.getNombre());
-                    File solicitudFolder = new File(basePath, solicitud.getUuidSolicitud());
+                    Path solicitudFolder = Paths.get(basePath, "anexos", solicitud.getUuidSolicitud());
+                    File folder = solicitudFolder.toFile();
 
-                    if (!solicitudFolder.exists() || !solicitudFolder.isDirectory()) continue;
+                    if (!folder.exists() || !folder.isDirectory())
+                        formateadorExcepciones.lanzarMalFormato(String.format("La carpeta de anexos no fue encontrada o fue eliminada: %s", folder.getAbsolutePath()));
 
                     int contadorAnexos = 1;
                     for (Anexo anexo : solicitud.getAnexos()) {
                         String url = anexo.getUrlAnexo();
                         String realFileName = url.substring(url.lastIndexOf("/") + 1);
-                        File file = new File(solicitudFolder, realFileName);
+                        File file = new File(folder, realFileName);
 
-                        if (!file.exists() || !file.isFile()) continue;
+                        if (!file.exists() || !file.isFile())
+                            formateadorExcepciones.lanzarMalFormato("El archivo de anexo no fue encontrado o fue eliminado: " + file.getAbsolutePath());
 
                         String zipEntryPath = String.format("%s/%s/%d_%s",
                                 seccionName,

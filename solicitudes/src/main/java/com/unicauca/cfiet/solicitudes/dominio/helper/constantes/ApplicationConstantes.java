@@ -17,7 +17,7 @@ public final class ApplicationConstantes {
     public static final String ASUNTOS_POSGRADOS = "asuntos posgrados";
     public static final String ASUNTOS_DELEGADOS_EN_DECANO = "asuntos delegados en decano";
     public static final String SOLICITUD_COMISION_ACADEMICA_INTERIOR_PAIS = "solicitud comisión académica al interior del país";
-    public static final String SOLICITUD_COMISION_ACADEMICA_EXTERIOR_PAIS = "solicitud comisión académica al exterior al país";
+    public static final String SOLICITUD_COMISION_ACADEMICA_EXTERIOR_PAIS = "solicitud comisión académica al exterior del país";
     public static final String INFORME_COMISION_ACADEMICA = "informe de comisión académica";
     public static final String ASUNTOS_VARIOS = "asuntos varios";
     /*Estados de solicitudes*/
