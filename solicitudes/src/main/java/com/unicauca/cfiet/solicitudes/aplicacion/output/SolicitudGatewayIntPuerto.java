@@ -28,6 +28,17 @@ public interface SolicitudGatewayIntPuerto {
     PaginacionRespuestaDTO<Solicitud> getSolicitudes(int pagina, int tamanio);
 
     /**
+     * Obtener solicitudes por filtro.
+     *
+     * @param nombreSolicitud nombre de la solicitud
+     * @param solicitante nombre del solicitante (nombres apellidos)
+     * @param pagina número de página
+     * @param tamanio tamaño de cada página
+     * @return paginación de solicitudes
+     */
+    PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorSolicitante(String nombreSolicitud, String solicitante, int pagina, int tamanio);
+
+    /**
      * Obtiene una solicitud por su identificador único.
      *
      * @param uuidSolicitud identificador de la solicitud

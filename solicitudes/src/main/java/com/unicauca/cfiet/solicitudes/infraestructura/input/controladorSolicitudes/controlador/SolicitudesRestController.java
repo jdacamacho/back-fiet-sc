@@ -276,6 +276,23 @@ public class SolicitudesRestController {
         );
     }
 
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @GetMapping("/buscar/solicitante")
+    public ResponseEntity<?> buscarSolicitudesPorSolicitante(
+            @RequestParam("solicitud") String nombreSolicitud,
+            @RequestParam("solicitante") String solicitante,
+            @RequestParam("pagina") int pagina,
+            @RequestParam("tamanio") int tamanio) {
+
+        var respuesta = solicitudCU.buscarSolicitudesPorSolicitante(nombreSolicitud, solicitante, pagina, tamanio);
+        return ResponseEntity.ok(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuestaSolicitud(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                )
+        );
+    }
+
     @PreAuthorize(ApplicationConstantes.SECRETARIO_O_FUNCIONARIO_ACCESO)
     @GetMapping("fun/buscar/")
     public ResponseEntity<?> buscarSolicitudesPorNombreYFuncionario(
