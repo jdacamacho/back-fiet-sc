@@ -52,19 +52,20 @@ public class ConfiguracionSeguridad {
                         .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil/paginado").permitAll()
                         .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/perfil/filtro").permitAll()
                         .requestMatchers(HttpMethod.GET, baseUrl + "tipos/solicitudes/{uuidTipoSolicitud}").permitAll()
-                        .requestMatchers(baseUrl + "tipos/solicitudes/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
+                        .requestMatchers(baseUrl + "tipos/solicitudes/**").hasAnyAuthority(ApplicationConstantes.SECRETARIO_GENERAL, ApplicationConstantes.DECANO)
                         .requestMatchers(HttpMethod.GET, baseUrl + "solicitudes/orden-del-dia/estado").authenticated()
-                        .requestMatchers(baseUrl + "solicitudes/orden-del-dia/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
-                        .requestMatchers(baseUrl + "logs/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
-                        .requestMatchers(baseUrl + "roles/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
+                        .requestMatchers(baseUrl + "solicitudes/orden-del-dia/**").hasAnyAuthority(ApplicationConstantes.SECRETARIO_GENERAL, ApplicationConstantes.DECANO)
+                        .requestMatchers(baseUrl + "logs/**").hasAnyAuthority(ApplicationConstantes.SECRETARIO_GENERAL, ApplicationConstantes.DECANO)
+                        .requestMatchers(baseUrl + "roles/**").hasAnyAuthority(ApplicationConstantes.SECRETARIO_GENERAL, ApplicationConstantes.DECANO)
                         .requestMatchers(HttpMethod.GET, baseUrl + "usuarios/**").authenticated()
                         .requestMatchers(HttpMethod.PATCH, baseUrl + "usuarios/**").authenticated()
-                        .requestMatchers(baseUrl + "usuarios/**").hasAuthority(ApplicationConstantes.SECRETARIO_GENERAL)
+                        .requestMatchers(baseUrl + "usuarios/**").hasAnyAuthority(ApplicationConstantes.SECRETARIO_GENERAL, ApplicationConstantes.DECANO)
                         .requestMatchers(baseUrl + "solicitudes/**").authenticated()
                         .requestMatchers(HttpMethod.GET, baseUrl + "respuestas/**").authenticated()
                         .requestMatchers(HttpMethod.POST, baseUrl + "respuestas/**")
                         .hasAnyAuthority(
                                 ApplicationConstantes.SECRETARIO_GENERAL,
+                                ApplicationConstantes.DECANO,
                                 ApplicationConstantes.FUNCIONARIO_ROL
                         )
                         .anyRequest().authenticated()

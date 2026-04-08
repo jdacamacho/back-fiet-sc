@@ -28,7 +28,7 @@ public class LogRestController {
     private final LogCUIntPuerto casoDeUso;
     private final MapperLogInfraestructuraDominio mapper;
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping
     public ResponseEntity<List<LogDTORespuesta>> index(){
         List<Log> logs = casoDeUso.getLogs();
@@ -37,7 +37,7 @@ public class LogRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/paginado")
     public ResponseEntity<?> indexPaginado(@RequestParam("pagina") int pagina, @RequestParam("tamanio") int tamanio){
         var respuesta = casoDeUso.getLogs(pagina, tamanio);
@@ -50,7 +50,7 @@ public class LogRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/filtro")
     public ResponseEntity<?> filtrarLogs(
             @RequestParam(value = "responsable", required = false) String responsable,

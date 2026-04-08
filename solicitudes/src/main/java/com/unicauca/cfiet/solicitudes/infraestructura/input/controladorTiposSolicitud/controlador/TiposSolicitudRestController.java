@@ -49,7 +49,7 @@ public class TiposSolicitudRestController {
         this.validadorPeticion = validadorPeticion;
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/paginado")
     public ResponseEntity<?> indexPaginado(
             @RequestParam("pagina") int pagina,
@@ -64,7 +64,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/filtro")
     public ResponseEntity<?> getTiposDeSolicitudFiltrado(
             @RequestParam(value = "nombreSolicitud", required = false) String nombreSolicitud,
@@ -81,7 +81,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping
     public ResponseEntity<?> index(){
         List<TipoSolicitud> tipos = casoDeUso.getTiposSolicitud();
@@ -99,7 +99,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @Transactional
     @PostMapping
     public ResponseEntity<?> crearTipoSolicitud(@Valid @RequestBody TipoSolicitudDTOPeticion peticion,
@@ -119,7 +119,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @Transactional
     @PostMapping("/cargar/archivo")
     public ResponseEntity<?> crearTiposSolicitud(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token){
@@ -147,7 +147,7 @@ public class TiposSolicitudRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @Transactional
     @PutMapping("/{uuidTipoSolicitud}")
     public ResponseEntity<?> actualizarTipoSolicitud(@PathVariable String uuidTipoSolicitud, @Valid @RequestBody TipoSolicitudDTOPeticion peticion,

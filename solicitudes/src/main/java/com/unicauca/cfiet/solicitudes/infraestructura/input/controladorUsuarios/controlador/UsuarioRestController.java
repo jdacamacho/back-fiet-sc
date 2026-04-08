@@ -55,7 +55,7 @@ public class UsuarioRestController{
         this.validadorPeticion = validadorPeticion;
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/tipos")
     public ResponseEntity<?> getTiposUsuarios(){
         List<TipoUsuario> tiposUsuario = casoDeUso.getTiposUsuario();
@@ -64,7 +64,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/paginado")
     public ResponseEntity<?> indexPaginado(@RequestParam("pagina") int pagina,
                                            @RequestParam("tamanio") int tamanio) {
@@ -78,7 +78,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/filtro")
     public ResponseEntity<?> getUsuariosByNombresApellidos(
             @RequestParam(value = "nombreCompleto", required = false) String nombreCompleto,
@@ -94,7 +94,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping
     public ResponseEntity<?> index(){
         List<UsuarioLiviano> usuarios = casoDeUso.getUsuarios();
@@ -103,7 +103,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/funcionarios")
     public ResponseEntity<?> getFuncionarios(){
         List<Funcionario> funcionarios = casoDeUso.getFuncionarios();
@@ -120,7 +120,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @Transactional
     @PostMapping
     public ResponseEntity<?> crearUsuario(@Valid @RequestBody UsuarioDTOPeticion peticion, @RequestParam String tipoUsuario,
@@ -140,7 +140,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @Transactional
     @PostMapping("/cargar/archivo")
     public ResponseEntity<?> crearUsuarios(@RequestParam("file") MultipartFile file, @RequestHeader("Authorization") String token){
@@ -168,7 +168,7 @@ public class UsuarioRestController{
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @Transactional
     @PutMapping("/{uuidUsuario}")
     public ResponseEntity<?> actualizarUsuario(@PathVariable String uuidUsuario, @Valid @RequestBody UsuarioActualizarDTOPeticion peticion,

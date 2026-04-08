@@ -9,6 +9,7 @@ package com.unicauca.cfiet.solicitudes.dominio.helper.constantes;
 public final class ApplicationConstantes {
     /*Roles del Sistema*/
     public static final String SECRETARIO_GENERAL = "Secretario General";
+    public static final String DECANO = "Decano";
     public static final String FUNCIONARIO_ROL = "Funcionario";
     public static final String FUNCIONARIO = "FUNCIONARIO";
     /*Secciones del Orden del Día*/
@@ -35,9 +36,9 @@ public final class ApplicationConstantes {
     public static final String TARJETA_IDENTIDAD_LOWER = "tarjeta de identidad";
     public static final String CEDULA_EXTRANJERIA_LOWER = "cédula de extranjería";
     /*Perfil de Seguridad*/
-    public static final String SECRETARIO_ACCESO = "hasAuthority('" + SECRETARIO_GENERAL + "')";
+    public static final String SECRETARIO_DECANO_ACCESO =  "hasAnyAuthority('" + SECRETARIO_GENERAL + "', '" + DECANO + "')";
     public static final String AUTHENTICATED = "isAuthenticated()";
-    public static final String SECRETARIO_O_FUNCIONARIO_ACCESO = "hasAnyAuthority('" + SECRETARIO_GENERAL + "', '" + FUNCIONARIO_ROL + "')";
+    public static final String SECRETARIO_DECANO_FUNCIONARIO_ACCESO = "hasAnyAuthority('" + SECRETARIO_GENERAL + "', '" + FUNCIONARIO_ROL + "', '" + DECANO + "')";
     /*Tipos de Respuesta*/
     public static final String OFICIO = "Oficio";
     public static final String RESOLUCION = "Resolución";
