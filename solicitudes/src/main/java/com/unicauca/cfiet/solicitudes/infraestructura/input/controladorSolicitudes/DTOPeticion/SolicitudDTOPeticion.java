@@ -33,8 +33,6 @@ public class SolicitudDTOPeticion {
 
     private List<AnexoDTOPeticion> anexos;
 
-    @NotNull(message = "La orden del día es obligatoria")
-    @NotBlank(message = "La orden del día no puede estar vacía")
-    @Size(min = 5, max = 1000, message = "La orden del día debe tener entre 5 y 1000 caracteres")
+    @Size(max = 1000, message = "La orden del día debe maximo 1000 caracteres")
     private String uuidOrdenDelDia;
 }

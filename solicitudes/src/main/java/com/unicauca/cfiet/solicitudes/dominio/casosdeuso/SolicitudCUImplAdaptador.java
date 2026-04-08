@@ -100,7 +100,6 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
         checkSolicitud(solicitud, token);
         String uuidSolicitud = UUID.randomUUID().toString();
         solicitud.setUuidSolicitud(uuidSolicitud);
-        solicitud.setEstado(ApplicationConstantes.AGREGADO_EN_EL_ORDEN_DEL_DIA);
         solicitud.getInformacionSolicitante().setUuidInformacionSolicitante(UUID.randomUUID().toString());
         solicitud.getInformacionSolicitante().setSolicitud(solicitud);
 
@@ -363,11 +362,14 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
 
         }
 
-        OrdenDelDia ordenDelDia = gatewayOrdenDelDia.getOrdenDelDia(solicitud.getUuidOrdenDelDia());
-        if(ordenDelDia == null)
-            formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ORDEN_DEL_DIA, solicitud.getUuidOrdenDelDia()));
-
-        solicitud.setObjOrdenDelDia(ordenDelDia);
+        if(solicitud.getUuidOrdenDelDia() != null && !solicitud.getUuidOrdenDelDia().isBlank() ) {
+            OrdenDelDia ordenDelDia = gatewayOrdenDelDia.getOrdenDelDia(solicitud.getUuidOrdenDelDia());
+            if (ordenDelDia == null)
+                formateadorExcepciones.lanzarEntidadNoExiste(String.format(MensajesError.ENTIDAD_NO_ENCONTRADA, ORDEN_DEL_DIA, solicitud.getUuidOrdenDelDia()));
+            solicitud.setObjOrdenDelDia(ordenDelDia);
+            solicitud.setEstado(ApplicationConstantes.AGREGADO_EN_EL_ORDEN_DEL_DIA);
+        } else
+            solicitud.setEstado(ApplicationConstantes.SIN_RESPONDER);
 
         Funcionario funcionario = tipoSolicitud.getObjFuncionarioEncargado();
         if(funcionario != null)
