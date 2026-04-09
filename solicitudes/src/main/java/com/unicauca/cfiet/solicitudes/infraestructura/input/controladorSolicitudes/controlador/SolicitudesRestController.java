@@ -281,10 +281,11 @@ public class SolicitudesRestController {
     public ResponseEntity<?> buscarSolicitudesPorSolicitante(
             @RequestParam("solicitud") String nombreSolicitud,
             @RequestParam("solicitante") String solicitante,
+            @RequestParam("estado") String estado,
             @RequestParam("pagina") int pagina,
             @RequestParam("tamanio") int tamanio) {
 
-        var respuesta = solicitudCU.buscarSolicitudesPorSolicitante(nombreSolicitud, solicitante, pagina, tamanio);
+        var respuesta = solicitudCU.buscarSolicitudesPorSolicitante(nombreSolicitud, solicitante, estado, pagina, tamanio);
         return ResponseEntity.ok(
                 new PaginacionRespuestaDTO<>(
                         mapper.mapearModelosARespuestaSolicitud(respuesta.getContent()),

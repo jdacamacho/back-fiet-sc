@@ -108,7 +108,7 @@ public interface SolicitudCUintPuerto {
      * @param tamanio tamaño de cada página
      * @return paginación de solicitudes que coinciden con el filtro
      */
-    PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorSolicitante(String nombreSolicitud,String solicitante, int pagina, int tamanio);
+    PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorSolicitante(String nombreSolicitud,String solicitante, String estado, int pagina, int tamanio);
 
     /**
      * Busca solicitudes por nombre y funcionario.

@@ -236,11 +236,11 @@ public class SolicitudCUImplAdaptador implements SolicitudCUintPuerto {
     }
 
     @Override
-    public PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorSolicitante(String nombreSolicitud, String solicitante, int pagina, int tamanio) {
+    public PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorSolicitante(String nombreSolicitud, String solicitante, String estado, int pagina, int tamanio) {
         if (pagina < 0 || tamanio < 0)
             formateadorExcepciones.lanzarMalFormato(MensajesError.PAGINACION_ERROR);
 
-        PaginacionRespuestaDTO<Solicitud> respuesta = gateway.buscarSolicitudesPorSolicitante(nombreSolicitud, solicitante, pagina, tamanio);
+        PaginacionRespuestaDTO<Solicitud> respuesta = gateway.buscarSolicitudesPorSolicitante(nombreSolicitud, solicitante, estado, pagina, tamanio);
         if (respuesta.getContent().isEmpty())
             formateadorExcepciones.lanzarSinInformacion("No se encontraron solicitudes que coincidan con la búsqueda");
         return respuesta;

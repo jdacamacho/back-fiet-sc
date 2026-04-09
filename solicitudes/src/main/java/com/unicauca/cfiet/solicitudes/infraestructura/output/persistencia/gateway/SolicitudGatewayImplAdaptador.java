@@ -52,7 +52,7 @@ public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto 
     }
 
     @Override
-    public PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorSolicitante(String nombreSolicitud, String solicitante, int pagina, int tamanio) {
+    public PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorSolicitante(String nombreSolicitud, String solicitante, String estado, int pagina, int tamanio) {
         Pageable paginado =
                 PageRequest.of(
                         pagina,
@@ -62,7 +62,7 @@ public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto 
                 );
 
         Page<SolicitudEntidad> page =
-                repositorio.buscarSolicitudPorSolicitante(nombreSolicitud, solicitante, paginado);
+                repositorio.buscarSolicitudPorSolicitante(nombreSolicitud, solicitante, estado, paginado);
 
         List<Solicitud> solicitudes = page.getContent().stream()
                 .map(mapper::toDominio)

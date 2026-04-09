@@ -59,13 +59,18 @@ public interface SolicitudRepositorio extends JpaRepository<SolicitudEntidad, St
                     )
                 )
             )
+        AND
+            (:estado IS NULL OR :estado = '' OR 
+                LOWER(s.estado) LIKE LOWER(CONCAT('%', :estado, '%'))
+            )
         ORDER BY s.fechaCreacion DESC
     """)
-    Page<SolicitudEntidad> buscarSolicitudPorSolicitante(
-            @Param("nombreSolicitud") String nombreSolicitud,
-            @Param("solicitante") String solicitante,
-            Pageable pageable
-    );
+        Page<SolicitudEntidad> buscarSolicitudPorSolicitante(
+                @Param("nombreSolicitud") String nombreSolicitud,
+                @Param("solicitante") String solicitante,
+                @Param("estado") String estado,
+                Pageable pageable
+        );
 
     List<SolicitudEntidad> findByEstadoIgnoreCase(String estado);
 
