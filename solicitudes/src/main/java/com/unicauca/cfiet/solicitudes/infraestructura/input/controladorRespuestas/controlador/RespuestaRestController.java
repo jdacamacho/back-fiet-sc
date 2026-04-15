@@ -74,7 +74,7 @@ public class RespuestaRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_O_FUNCIONARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_FUNCIONARIO_ACCESO)
     @GetMapping("/paginado/funcionario")
     public ResponseEntity<?> indexPaginadoPorFuncionario(
             @RequestParam("pagina") int pagina,
@@ -89,7 +89,7 @@ public class RespuestaRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_O_FUNCIONARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_FUNCIONARIO_ACCESO)
     @GetMapping("/paginado/funcionario-nombre-solicitud")
     public ResponseEntity<?> indexPaginadoPorFuncionarioYNombreSolicitud(
             @RequestParam("pagina") int pagina,
@@ -121,7 +121,7 @@ public class RespuestaRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @Transactional
     @PostMapping("/{uuidSolicitud}")
     public ResponseEntity<?> registrarRespuesta(@PathVariable String uuidSolicitud,
@@ -142,7 +142,7 @@ public class RespuestaRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_O_FUNCIONARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_FUNCIONARIO_ACCESO)
     @Transactional
     @PostMapping("/{uuidRespuesta}/archivo")
     public ResponseEntity<?> responderSolicitud(@PathVariable String uuidRespuesta,
@@ -164,7 +164,7 @@ public class RespuestaRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_O_FUNCIONARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_FUNCIONARIO_ACCESO)
     @Transactional
     @PatchMapping("/{uuidRespuesta}/archivo")
     public ResponseEntity<?> eliminarArchivoRespuesta(

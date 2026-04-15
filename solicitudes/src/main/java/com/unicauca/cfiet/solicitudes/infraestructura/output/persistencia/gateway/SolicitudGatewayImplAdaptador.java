@@ -52,6 +52,26 @@ public class SolicitudGatewayImplAdaptador implements SolicitudGatewayIntPuerto 
     }
 
     @Override
+    public PaginacionRespuestaDTO<Solicitud> buscarSolicitudesPorSolicitante(String nombreSolicitud, String solicitante, String estado, int pagina, int tamanio) {
+        Pageable paginado =
+                PageRequest.of(
+                        pagina,
+                        tamanio,
+                        Sort.by("fechaCreacion").descending()
+                                .and(Sort.by("uuidSolicitud").ascending())
+                );
+
+        Page<SolicitudEntidad> page =
+                repositorio.buscarSolicitudPorSolicitante(nombreSolicitud, solicitante, estado, paginado);
+
+        List<Solicitud> solicitudes = page.getContent().stream()
+                .map(mapper::toDominio)
+                .toList();
+
+        return new PaginacionRespuestaDTO<>(solicitudes, page.getTotalElements());
+    }
+
+    @Override
     public Solicitud getSolicitud(String uuidSolicitud) {
         return repositorio.findById(uuidSolicitud)
                 .map(mapper::toDominio)

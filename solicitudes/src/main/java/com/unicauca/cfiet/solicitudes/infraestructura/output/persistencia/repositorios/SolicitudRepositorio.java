@@ -34,6 +34,43 @@ public interface SolicitudRepositorio extends JpaRepository<SolicitudEntidad, St
             Pageable pageable
     );
 
+    @Query("""
+        SELECT s FROM SolicitudEntidad s
+        WHERE 
+            (:nombreSolicitud IS NULL OR :nombreSolicitud = '' OR 
+                LOWER(s.nombre) LIKE LOWER(CONCAT('%', :nombreSolicitud, '%')))
+        AND 
+            (:solicitante IS NULL OR :solicitante = '' OR 
+                LOWER(
+                    REPLACE(
+                        CONCAT(
+                            s.informacionSolicitante.nombres, 
+                            s.informacionSolicitante.apellidos
+                        ), 
+                        ' ', 
+                        ''
+                    )
+                ) 
+                LIKE LOWER(
+                    CONCAT(
+                        '%', 
+                        REPLACE(:solicitante, ' ', ''), 
+                        '%'
+                    )
+                )
+            )
+        AND
+            (:estado IS NULL OR :estado = '' OR 
+                LOWER(s.estado) LIKE LOWER(CONCAT('%', :estado, '%'))
+            )
+        ORDER BY s.fechaCreacion DESC
+    """)
+        Page<SolicitudEntidad> buscarSolicitudPorSolicitante(
+                @Param("nombreSolicitud") String nombreSolicitud,
+                @Param("solicitante") String solicitante,
+                @Param("estado") String estado,
+                Pageable pageable
+        );
 
     List<SolicitudEntidad> findByEstadoIgnoreCase(String estado);
 

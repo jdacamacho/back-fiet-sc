@@ -54,7 +54,7 @@ public class SolicitudesRestController {
     @Value("${app.uploads.base-path}")
     private String basePath;
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/orden-del-dia/paginado")
     public ResponseEntity<?> indexPaginado(
             @RequestParam("pagina") int pagina,
@@ -68,7 +68,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/orden-del-dia")
     public ResponseEntity<?> index(){
         List<OrdenDelDia> ordenesDelDia = ordenDelDiaCU.getOrdenesDelDia();
@@ -77,7 +77,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/orden-del-dia/{uuidOrdenDelDia}")
     public ResponseEntity<?> getOrdenDelDia(@PathVariable String uuidOrdenDelDia){
         OrdenDelDia ordenDelDia = ordenDelDiaCU.getOrdenDelDia(uuidOrdenDelDia);
@@ -86,7 +86,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @Transactional
     @PostMapping("/orden-del-dia")
     public ResponseEntity<?> crearOrdenDelDia(@Valid @RequestBody OrdenDelDiaDTOPeticion peticion,
@@ -106,7 +106,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @Transactional
     @PutMapping("/orden-del-dia/{uuidOrdenDelDia}")
     public ResponseEntity<?> actualizarOrdenDelDia(@PathVariable String uuidOrdenDelDia,
@@ -127,7 +127,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_O_FUNCIONARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_FUNCIONARIO_ACCESO)
     @GetMapping("/paginado")
     public ResponseEntity<?> solicitudesPaginado(
             @RequestParam("pagina") int pagina,
@@ -141,7 +141,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_O_FUNCIONARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_FUNCIONARIO_ACCESO)
     @GetMapping
     public ResponseEntity<?> solicitudesIndex(){
         List<Solicitud> ordenesDelDia = solicitudCU.getSolicitudes();
@@ -150,7 +150,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_O_FUNCIONARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_FUNCIONARIO_ACCESO)
     @GetMapping("/{uuidSolicitud}")
     public ResponseEntity<?> getSolicitud(@PathVariable String uuidSolicitud){
         Solicitud solicitud = solicitudCU.getSolicitud(uuidSolicitud);
@@ -182,7 +182,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_O_FUNCIONARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_FUNCIONARIO_ACCESO)
     @Transactional
     @PostMapping(value = "/public", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> enviarSolicitudPublica(@Valid @RequestPart("solicitud") SolicitudPublicaDTOPeticion peticion,
@@ -205,7 +205,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @Transactional
     @PutMapping("/{uuidSolicitud}")
     public ResponseEntity<?> actualizarOrdenDelDia(@PathVariable String uuidSolicitud,
@@ -226,7 +226,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/funcionario/{uuidFuncionario}")
     public ResponseEntity<?> getSolicitudesPorFuncionario(
             @PathVariable String uuidFuncionario,
@@ -242,7 +242,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/orden-del-dia/{uuidOrdenDelDia}/solicitudes")
     public ResponseEntity<?> getSolicitudesPorOrdenDelDia(@PathVariable String uuidOrdenDelDia) {
         List<Solicitud> lista = solicitudCU.getSolicitudesPorOrdenDelDia(uuidOrdenDelDia);
@@ -260,7 +260,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_O_FUNCIONARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_FUNCIONARIO_ACCESO)
     @GetMapping("/buscar")
     public ResponseEntity<?> buscarSolicitudesPorNombre(
             @RequestParam("filtro") String filtro,
@@ -276,7 +276,25 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_O_FUNCIONARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
+    @GetMapping("/buscar/solicitante")
+    public ResponseEntity<?> buscarSolicitudesPorSolicitante(
+            @RequestParam("solicitud") String nombreSolicitud,
+            @RequestParam("solicitante") String solicitante,
+            @RequestParam("estado") String estado,
+            @RequestParam("pagina") int pagina,
+            @RequestParam("tamanio") int tamanio) {
+
+        var respuesta = solicitudCU.buscarSolicitudesPorSolicitante(nombreSolicitud, solicitante, estado, pagina, tamanio);
+        return ResponseEntity.ok(
+                new PaginacionRespuestaDTO<>(
+                        mapper.mapearModelosARespuestaSolicitud(respuesta.getContent()),
+                        respuesta.getTotalElements()
+                )
+        );
+    }
+
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_FUNCIONARIO_ACCESO)
     @GetMapping("fun/buscar/")
     public ResponseEntity<?> buscarSolicitudesPorNombreYFuncionario(
             @RequestParam("uuidFuncionario") String uuidFuncionario,
@@ -293,7 +311,7 @@ public class SolicitudesRestController {
         );
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/orden-del-dia/buscar")
     public ResponseEntity<?> buscarOrdenDelDiaPorNumeroActa(
             @RequestParam("filtro") String filtro,
@@ -338,7 +356,7 @@ public class SolicitudesRestController {
         }
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/anexos/download")
     public ResponseEntity<?> descargarAnexos(
             @RequestParam String uuidOrden,
@@ -355,7 +373,7 @@ public class SolicitudesRestController {
                 .body(resource);
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/exportar")
     public ResponseEntity<byte[]> exportarOrden(@RequestParam String uuidOrden) {
 
@@ -370,7 +388,7 @@ public class SolicitudesRestController {
                 .body(archivo);
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/exportar/respuestas")
     public ResponseEntity<byte[]> exportarOrdenRespuestas(@RequestParam String uuidOrden) {
 
@@ -385,7 +403,7 @@ public class SolicitudesRestController {
                 .body(archivo);
     }
 
-    @PreAuthorize(ApplicationConstantes.SECRETARIO_ACCESO)
+    @PreAuthorize(ApplicationConstantes.SECRETARIO_DECANO_ACCESO)
     @GetMapping("/exportar/reunion")
     public ResponseEntity<byte[]> exportarOrdenDesarrolloReunion(@RequestParam String uuidOrden) {
 
